@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D2179B2B2DBF8B1D0029ED50 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2179B2A2DBF8B1D0029ED50 /* TrackerViewController.swift */; };
 		D2929C9D2DBEC574005CCC70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */; };
 		D2929C9F2DBEC574005CCC70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */; };
 		D2929CA12DBEC574005CCC70 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CA02DBEC574005CCC70 /* ViewController.swift */; };
@@ -17,6 +18,8 @@
 		D2929CB72DBEC577005CCC70 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CB62DBEC577005CCC70 /* TrackerTests.swift */; };
 		D2929CC12DBEC577005CCC70 /* TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CC02DBEC577005CCC70 /* TrackerUITests.swift */; };
 		D2929CC32DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CC22DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift */; };
+		D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */; };
+		D2929CD42DBF762E005CCC70 /* UIColorForSections+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D2179B2A2DBF8B1D0029ED50 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		D2929C992DBEC574005CCC70 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +55,8 @@
 		D2929CBC2DBEC577005CCC70 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2929CC02DBEC577005CCC70 /* TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITests.swift; sourceTree = "<group>"; };
 		D2929CC22DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColorForSections+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,13 +107,13 @@
 		D2929C9B2DBEC574005CCC70 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				D2179B2A2DBF8B1D0029ED50 /* TrackerViewController.swift */,
+				D2929CD02DBF75AC005CCC70 /* Helpers */,
+				D2929CCF2DBF750B005CCC70 /* Resources */,
 				D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */,
 				D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */,
 				D2929CA02DBEC574005CCC70 /* ViewController.swift */,
 				D2929CA22DBEC574005CCC70 /* Main.storyboard */,
-				D2929CA82DBEC577005CCC70 /* Assets.xcassets */,
-				D2929CAA2DBEC577005CCC70 /* LaunchScreen.storyboard */,
-				D2929CAD2DBEC577005CCC70 /* Info.plist */,
 				D2929CA52DBEC574005CCC70 /* Tracker.xcdatamodeld */,
 			);
 			path = Tracker;
@@ -128,6 +134,25 @@
 				D2929CC22DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift */,
 			);
 			path = TrackerUITests;
+			sourceTree = "<group>";
+		};
+		D2929CCF2DBF750B005CCC70 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D2929CA82DBEC577005CCC70 /* Assets.xcassets */,
+				D2929CAA2DBEC577005CCC70 /* LaunchScreen.storyboard */,
+				D2929CAD2DBEC577005CCC70 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D2929CD02DBF75AC005CCC70 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */,
+				D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,8 +287,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2929CA72DBEC574005CCC70 /* Tracker.xcdatamodeld in Sources */,
+				D2929CD42DBF762E005CCC70 /* UIColorForSections+Extensions.swift in Sources */,
+				D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */,
 				D2929CA12DBEC574005CCC70 /* ViewController.swift in Sources */,
 				D2929C9D2DBEC574005CCC70 /* AppDelegate.swift in Sources */,
+				D2179B2B2DBF8B1D0029ED50 /* TrackerViewController.swift in Sources */,
 				D2929C9F2DBEC574005CCC70 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,6 +399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -426,6 +455,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -445,12 +475,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 499MJS72J9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -460,7 +492,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -473,12 +505,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 499MJS72J9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Tracker/Info.plist;
+				INFOPLIST_FILE = Tracker/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -488,7 +522,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -1,24 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2kB-Jj-cGJ">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Статистика-->
+        <scene sceneID="Hjh-lw-w0u">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController id="lCf-lF-5UL" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9a0-hc-Enb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Статистика" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsr-oo-AyF">
+                                <rect key="frame" x="16" y="88" width="194" height="41"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StaticticsSectionMainImage" translatesAutoresizingMaskIntoConstraints="NO" id="TaJ-Vo-nB8">
+                                <rect key="frame" x="167" y="420" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="5pN-9l-eeC"/>
+                                    <constraint firstAttribute="width" constant="80" id="SbB-6z-9rl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Анализировать пока нечего" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWR-ao-gNP">
+                                <rect key="frame" x="16" y="508" width="382" height="15"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" name="Black [day]"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IsF-yl-qNF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="TaJ-Vo-nB8" firstAttribute="leading" secondItem="IsF-yl-qNF" secondAttribute="leading" constant="167" id="047-Ln-4Rs"/>
+                            <constraint firstItem="yWR-ao-gNP" firstAttribute="top" secondItem="IsF-yl-qNF" secondAttribute="top" constant="464" id="26H-iz-LFX"/>
+                            <constraint firstItem="TaJ-Vo-nB8" firstAttribute="top" secondItem="IsF-yl-qNF" secondAttribute="top" constant="376" id="3nx-zb-AWH"/>
+                            <constraint firstItem="IsF-yl-qNF" firstAttribute="bottom" secondItem="yWR-ao-gNP" secondAttribute="bottom" constant="290" id="BiK-9M-0jg"/>
+                            <constraint firstItem="IsF-yl-qNF" firstAttribute="trailing" secondItem="TaJ-Vo-nB8" secondAttribute="trailing" constant="167" id="LPT-yC-nxK"/>
+                            <constraint firstItem="IsF-yl-qNF" firstAttribute="bottom" secondItem="TaJ-Vo-nB8" secondAttribute="bottom" constant="313" id="Una-oC-dwS"/>
+                            <constraint firstItem="yWR-ao-gNP" firstAttribute="leading" secondItem="IsF-yl-qNF" secondAttribute="leading" constant="16" id="WVV-Ag-vc1"/>
+                            <constraint firstItem="IsF-yl-qNF" firstAttribute="trailing" secondItem="yWR-ao-gNP" secondAttribute="trailing" constant="16" id="dKy-YB-Nqr"/>
+                        </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Статистика" image="StatisticsTabBarItem" id="g3j-pR-39q"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vHq-4G-ugs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1025" y="190"/>
+        </scene>
+        <!--Трекер-->
+        <scene sceneID="xfH-y0-iyV">
+            <objects>
+                <viewController id="C9t-rV-JZN" customClass="TrackerViewController" customModule="Tracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="E59-KY-De6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rI-mK-Qwu">
+                                <rect key="frame" x="308" y="50" width="89" height="35"/>
+                                <color key="tintColor" name="Black [day]"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" title="14.12.22">
+                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                                </buttonConfiguration>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Что будем отслеживать?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aRq-9S-eaB">
+                                <rect key="frame" x="16" y="509" width="382" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" name="Black [day]"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Трекеры" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3i-xU-ov0">
+                                <rect key="frame" x="16" y="88" width="145" height="41"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="flx-LC-U5x">
+                                <rect key="frame" x="16" y="57" width="19" height="18"/>
+                                <color key="tintColor" name="Black [day]"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Plus">
+                                    <color key="titleColor" name="Black [day]"/>
+                                </state>
+                            </button>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="En3-G9-pRN">
+                                <rect key="frame" x="16" y="137" width="382" height="51"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="7h9-ZK-kv8">
+                                <rect key="frame" x="167" y="421" width="80" height="80"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="opc-KJ-ACy"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="trailing" secondItem="9rI-mK-Qwu" secondAttribute="trailing" constant="17" id="0aS-3Q-drY"/>
+                            <constraint firstItem="r3i-xU-ov0" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="44" id="9Ca-2I-DNz"/>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="bottom" secondItem="7h9-ZK-kv8" secondAttribute="bottom" constant="312" id="9ak-2u-UTF"/>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="trailing" secondItem="7h9-ZK-kv8" secondAttribute="trailing" constant="167" id="9et-Xh-MW4"/>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="trailing" secondItem="aRq-9S-eaB" secondAttribute="trailing" constant="16" id="EKW-h7-AYI"/>
+                            <constraint firstItem="flx-LC-U5x" firstAttribute="leading" secondItem="opc-KJ-ACy" secondAttribute="leading" constant="16" id="F3b-1e-3Ov"/>
+                            <constraint firstItem="flx-LC-U5x" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="13" id="Fyg-F0-R5K"/>
+                            <constraint firstItem="aRq-9S-eaB" firstAttribute="leading" secondItem="opc-KJ-ACy" secondAttribute="leading" constant="16" id="SH5-52-wZb"/>
+                            <constraint firstItem="7h9-ZK-kv8" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="377" id="Sax-lj-LFW"/>
+                            <constraint firstItem="En3-G9-pRN" firstAttribute="leading" secondItem="opc-KJ-ACy" secondAttribute="leading" constant="16" id="Sb0-vx-yFJ"/>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="trailing" secondItem="En3-G9-pRN" secondAttribute="trailing" constant="16" id="bgL-v9-fsC"/>
+                            <constraint firstItem="9rI-mK-Qwu" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="6" id="fbn-Vr-Rqy"/>
+                            <constraint firstItem="r3i-xU-ov0" firstAttribute="leading" secondItem="opc-KJ-ACy" secondAttribute="leading" constant="16" id="gL4-F9-xL7"/>
+                            <constraint firstItem="aRq-9S-eaB" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="465" id="gej-Ge-2nK"/>
+                            <constraint firstItem="opc-KJ-ACy" firstAttribute="bottom" secondItem="aRq-9S-eaB" secondAttribute="bottom" constant="289.5" id="qba-NW-p91"/>
+                            <constraint firstItem="En3-G9-pRN" firstAttribute="top" secondItem="opc-KJ-ACy" secondAttribute="top" constant="93" id="qy9-0s-9tc"/>
+                            <constraint firstItem="7h9-ZK-kv8" firstAttribute="leading" secondItem="opc-KJ-ACy" secondAttribute="leading" constant="167" id="sRe-FS-oH7"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Трекер" image="TrakerTabBarItem" id="rzN-gg-ahW"/>
+                    <connections>
+                        <outlet property="searchBar" destination="En3-G9-pRN" id="pIe-2G-NJL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QY5-WI-vZ9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1024.6376811594205" y="-417.1875"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="gST-gg-uAt">
+            <objects>
+                <tabBarController id="2kB-Jj-cGJ" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dvr-El-eOf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="C9t-rV-JZN" kind="relationship" relationship="viewControllers" id="1H0-hP-nNO"/>
+                        <segue destination="lCf-lF-5UL" kind="relationship" relationship="viewControllers" id="aVA-nS-G5K"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mHi-Ht-5Zy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="134" y="-113"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Image" width="80" height="80"/>
+        <image name="Plus" width="19" height="18"/>
+        <image name="StaticticsSectionMainImage" width="80" height="80"/>
+        <image name="StatisticsTabBarItem" width="28" height="28"/>
+        <image name="TrakerTabBarItem" width="28" height="28"/>
+        <namedColor name="Black [day]">
+            <color red="0.10196078431372549" green="0.10588235294117647" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
