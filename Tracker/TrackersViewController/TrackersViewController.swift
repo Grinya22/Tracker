@@ -279,6 +279,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
 }
 
+// MARK: - TrackerCreationDelegate
+
 extension TrackersViewController: TrackerCreationDelegate {
     func didCreateTracker(_ tracker: Tracker, categoryTitle: String) {
         print("Создан трекер: \(tracker.name), категория: \(categoryTitle)")

@@ -98,14 +98,14 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.reuseIdentifier) as? ScheduleTableViewCell else { return UITableViewCell() }
         cell.dayLabel.text = days[indexPath.row]
         cell.daySwitch.isOn = selectedDays[indexPath.row]
-        
+
         cell.selectionStyle = .none
-        
+
         cell.switchChanged = { [ weak self ] isOn in
             self?.selectedDays[indexPath.row] = isOn
         }
