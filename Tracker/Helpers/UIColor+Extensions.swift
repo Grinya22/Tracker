@@ -12,4 +12,7 @@ extension UIColor {
     static var ypBlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.black }
     static var ypWhiteNight: UIColor { UIColor(named: "White [night]") ?? UIColor.white }
     static var ypBackgroundNight: UIColor { UIColor(named: "Background [night]") ?? UIColor.darkGray }
+    
+    static var ypRedTracker: UIColor { UIColor(named: "Red") ?? UIColor.red }
+    static var ypBlueTracker: UIColor { UIColor(named: "Blue") ?? UIColor.blue }
 }
