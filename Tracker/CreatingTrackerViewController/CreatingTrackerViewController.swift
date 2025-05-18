@@ -1,7 +1,11 @@
 import UIKit
 
+// MARK: - CreatingTrackerViewController
+
 final class CreatingTrackerViewController: UIViewController {
     weak var delegate: TrackerCreationDelegate?
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -12,6 +16,8 @@ final class CreatingTrackerViewController: UIViewController {
         
         setUpCreatingTrackerViewController()
     }
+    
+    // MARK: - Setup UI
     
     func setUpCreatingTrackerViewController() {
         let habitButton = UIButton()
@@ -50,6 +56,8 @@ final class CreatingTrackerViewController: UIViewController {
         habitButton.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
         irregularEventButton.addTarget(self, action: #selector(irregularEventButtonTapped), for: .touchUpInside)
     }
+    
+    // MARK: - Actions
     
     @objc
     func habitButtonTapped() {

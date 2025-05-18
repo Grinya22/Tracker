@@ -1,10 +1,17 @@
 import UIKit
 
+// MARK: - TrackerCreationDelegate
+
 protocol TrackerCreationDelegate: AnyObject {
     func didCreateTracker(_ tracker: Tracker, categoryTitle: String)
 }
 
+// MARK: - CreatingHabitViewController
+
 final class CreatingHabitViewController: UIViewController, TrackerOptionsTableViewDelegate, CollectionTableViewControllerDelegate, ScheduleTableViewControllerDelegate, EmojiSelectionDelegate, ColorSelectionDelegate {
+    
+    // MARK: - Properties
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.keyboardDismissMode = .interactive
@@ -25,12 +32,14 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     private let textField = UITextField()
     
     private var selectedCategory: String?
-    private var selectedDays: [String] = []
+    private var selectedDays: [WeekDay] = []
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
     private var trackerName: String?
     
     weak var delegate: TrackerCreationDelegate?
+    
+    // MARK: - Initialization
     
     init() {
         optionsTableView = TrackerOptionsTableView(itemsOfTableView: ["Категория", "Расписание"])
@@ -42,6 +51,8 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +69,8 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         super.viewWillAppear(animated)
         optionsTableView.deselectSelectedRow()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -205,21 +218,12 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         createButton.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
     }
     
+    // MARK: - Actions
+    
     @objc
     func textFieldDidChange() {
         trackerName = textField.text?.trimmingCharacters(in: .whitespaces)
         updateCreateButtonState()
-    }
-    
-    private func updateCreateButtonState() {
-        let isFormValid = trackerName?.isEmpty == false &&
-                        selectedCategory != nil &&
-                        !selectedDays.isEmpty &&
-                        selectedColor != nil &&
-                        selectedEmoji != nil
-        let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
-        createButton?.isEnabled = isFormValid
-        createButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
     }
     
     @objc
@@ -252,7 +256,21 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - Helper Methods
+    
+    private func updateCreateButtonState() {
+        let isFormValid = trackerName?.isEmpty == false &&
+                        selectedCategory != nil &&
+                        !selectedDays.isEmpty &&
+                        selectedColor != nil &&
+                        selectedEmoji != nil
+        let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
+        createButton?.isEnabled = isFormValid
+        createButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+    }
+    
     // MARK: - TrackerOptionsTableViewDelegate
+    
     func didSelectOption(at index: Int) {
         switch index {
         case 0:
@@ -269,6 +287,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     }
     
     // MARK: - CollectionTableViewControllerDelegate
+    
     func didSelectOption(_ category: String?) {
         print("Выбрана категория: \(category ?? "нет")")
         selectedCategory = category
@@ -277,13 +296,25 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     }
     
     // MARK: - ScheduleTableViewControllerDelegate
-    func didSelectDays(_ days: [String]) {
+    
+    func didSelectDays(_ days: [WeekDay]) {
         selectedDays = days
         let stringDays: String
         if days.count == 7 {
             stringDays = "Каждый день"
         } else {
-            stringDays = days.joined(separator: ", ")
+            let dayNames = days.map { weekDay -> String in
+                switch weekDay {
+                case .monday: return "Пн"
+                case .tuesday: return "Вт"
+                case .wednesday: return "Ср"
+                case .thursday: return "Чт"
+                case .friday: return "Пт"
+                case .saturday: return "Сб"
+                case .sunday: return "Вс"
+                }
+            }
+            stringDays = dayNames.joined(separator: ", ")
         }
         print("Выбраны дни: \(stringDays)")
         optionsTableView.updateScheduleSubtitle(stringDays)
@@ -291,6 +322,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     }
     
     // MARK: - EmojiSelectionDelegate
+    
     func didSelectEmoji(_ emoji: String?) {
         selectedEmoji = emoji
         print("Выбран эмодзи: \(selectedEmoji ?? "нет")")
@@ -298,6 +330,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     }
     
     // MARK: - ColorSelectionDelegate
+    
     func didSelectColor(_ color: UIColor?) {
         selectedColor = color
         print("Выбран цвет: \(selectedColor?.description ?? "нет")")

@@ -1,10 +1,17 @@
 import UIKit
 
+// MARK: - CollectionTableViewControllerDelegate
+
 protocol CollectionTableViewControllerDelegate: AnyObject {
     func didSelectOption(_ category: String?)
 }
 
+// MARK: - CollectionTableViewController
+
 final class CollectionTableViewController: UIViewController, CreatingCollectionDelegate, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
+    
     var tableView = UITableView()
     let placeholderImage = UIImageView()
     let placeholderLabel = UILabel()
@@ -22,6 +29,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     private var selectedCategoryIndex: Int?
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,6 +41,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         updatePlaceholderVisibility()
         setUpCollectionTableViewController()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -109,6 +120,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         buttonAddtNewCollection.addTarget(self, action: #selector(buttonAddtNewCollectionTapped), for: .touchUpInside)
     }
     
+    // MARK: - Actions
+    
     @objc
     func backTapped() {
         navigationController?.popViewController(animated: true)
@@ -122,6 +135,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     // MARK: - TableView DataSource & Delegate
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
@@ -135,6 +149,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         cell.accessoryType = indexPath.row == selectedCategoryIndex ? .checkmark : .none
         return cell
     }
+    
+    // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
@@ -169,6 +185,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.reloadData()
     }
     
+    // MARK: - Helper Methods
+    
     func deselectSelectedRow() {
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
@@ -183,6 +201,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
     }
     
+    // MARK: - CreatingCollectionDelegate
+    
     func didCreateNewCategory(_ name: String) {
         categories.append(name)
         selectedCategoryIndex = categories.count - 1
@@ -190,7 +210,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.reloadData()
     }
     
-    // MARK: - Сохранение и загрузка категорий
+    // MARK: - Persistence
+
     private func saveCategories() {
         UserDefaults.standard.set(categories, forKey: "savedCategories")
     }

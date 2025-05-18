@@ -1,12 +1,18 @@
 import UIKit
 
+// MARK: - AppTabBarController
+
 final class AppTabBarController: UITabBarController {
+    
+    // MARK: - Lifecycle
     
    override func viewDidLoad() {
         super.viewDidLoad()
         
        setUpTabBar()
     }
+    
+    // MARK: - Setup UI
     
     private func setUpTabBar() {
         let trackerViewController = TrackersViewController()

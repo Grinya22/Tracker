@@ -1,14 +1,23 @@
 import UIKit
 
+// MARK: - CreatingCollectionDelegate
+
 protocol CreatingCollectionDelegate: AnyObject {
     func didCreateNewCategory(_ name: String)
 }
 
+// MARK: - CreatingCollectionViewController
+
 class CreatingCollectionViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     private let buttonDoneCollection = UIButton()
     private let textField = UITextField()
     
     weak var delegate: CreatingCollectionDelegate?
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +27,8 @@ class CreatingCollectionViewController: UIViewController {
         setupNavigationBar()
         setUpCreatingCollectionTableViewController()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -75,6 +86,8 @@ class CreatingCollectionViewController: UIViewController {
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         buttonDoneCollection.addTarget(self, action: #selector(buttonDoneCollectionTapped), for: .touchUpInside)
     }
+    
+    // MARK: - Actions
     
     @objc
     func backTapped() {

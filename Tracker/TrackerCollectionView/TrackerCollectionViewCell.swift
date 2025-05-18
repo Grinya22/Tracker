@@ -1,10 +1,17 @@
 import UIKit
 
+// MARK: - TrackerCollectionViewCellDelegate
+
 protocol TrackerCollectionViewCellDelegate: AnyObject {
     func didTapTrackerPlusButton(trackerId: UUID, date: Date, isCompleted: Bool)
 }
 
+// MARK: - TrackerCollectionViewCell
+
 class TrackerCollectionViewCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
     private let topView = UIView()
     private let circleViewEmoji = UIView()
     private let emojiLabel = UILabel()
@@ -22,6 +29,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: TrackerCollectionViewCellDelegate?
     
+    // MARK: - Initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -32,6 +41,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup UI
     
     func setUpUI() {
         // Настройка topView
@@ -112,6 +123,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    // MARK: - Configuration
+    
     func configure(emoji: String, title: String, completedDays: Int, isCompletedToday: Bool, date: Date, color: UIColor, trackerID: UUID) {
         emojiLabel.text = emoji
         titleLabel.text = title
@@ -137,6 +150,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    // MARK: - Helper Methods
+    
     private func pluralForm(for count: Int) -> String {
         let remainder10 = count % 10
         let remainder100 = count % 100
@@ -149,6 +164,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         default: return "дней"
         }
     }
+    
+    // MARK: - Actions
     
     @objc
     func didTapPlusButton(_ sender: UIButton) {

@@ -1,25 +1,17 @@
 import UIKit
 
+// MARK: - EmojiSelectionDelegate
+
 // Протокол для уведомления о выборе эмодзи
 protocol EmojiSelectionDelegate: AnyObject {
     func didSelectEmoji(_ emoji: String?)
 }
 
+// MARK: - EmojiCollectionView
+
 class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-//    private let collectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 8
-//        layout.minimumInteritemSpacing = 8
-//        layout.scrollDirection = .vertical
-//        let collectionView = UICollectionView(
-//            frame: .zero,
-//            collectionViewLayout: layout
-//        )
-//        collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier)
-//        collectionView.backgroundColor = .clear
-//        collectionView.tag = 1
-//        return collectionView
-//    }()
+    
+    // MARK: - Properties
     
     weak var delegate: EmojiSelectionDelegate?
     let collectionView: UICollectionView
@@ -32,6 +24,8 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     
     let emojis: [String] = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶", "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
     private var selectedIndexPath: IndexPath?
+    
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         self.collectionView = {
@@ -56,6 +50,8 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup UI
+    
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = false
@@ -73,6 +69,7 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
     
     // MARK: - UICollectionViewDataSource
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return emojis.count
     }
@@ -85,6 +82,7 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 52, height: 52)
     }

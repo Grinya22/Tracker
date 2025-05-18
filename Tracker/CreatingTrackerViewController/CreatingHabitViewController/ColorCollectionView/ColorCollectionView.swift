@@ -1,25 +1,17 @@
 import UIKit
 
+// MARK: - ColorSelectionDelegate
+
 // Протокол для уведомления о выборе цвета
 protocol ColorSelectionDelegate: AnyObject {
     func didSelectColor(_ color: UIColor?)
 }
 
+// MARK: - ColorCollectionView
+
 class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-//    private let collectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 2
-//        layout.minimumInteritemSpacing = 2
-//        layout.scrollDirection = .vertical
-//        let collectionView = UICollectionView(
-//            frame: .zero,
-//            collectionViewLayout: layout
-//        )
-//        collectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: ColorCollectionViewCell.reuseIdentifier)
-//        collectionView.backgroundColor = .clear
-//        collectionView.tag = 2
-//        return collectionView
-//    }()
+    
+    // MARK: - Properties
     
     weak var delegate: ColorSelectionDelegate?
     let collectionView: UICollectionView
@@ -35,7 +27,10 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         .ypDarkViolet, .ypCoral, .ypLightOrange, .ypSoftGreen, .ypDeepBlue, .ypPurple,
         .ypStrongViolet, .ypLightViolet, .ypLightGreen, .ypNeonGreen
     ]
+    
     private var selectedIndexPath: IndexPath?
+    
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         self.collectionView = {
@@ -61,6 +56,8 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup UI
+    
     private func setupCollectionView() {
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = false
@@ -78,6 +75,7 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
     
     // MARK: - UICollectionViewDataSource
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colors.count
     }
@@ -90,6 +88,7 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 58, height: 58)
     }

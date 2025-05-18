@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D2179B2B2DBF8B1D0029ED50 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */; };
+		D2403B012DD9E17100E65CDC /* UIColorValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B002DD9E17100E65CDC /* UIColorValueTransformer.swift */; };
+		D2403B032DD9E37E00E65CDC /* ScheduleValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */; };
 		D2929C9D2DBEC574005CCC70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */; };
 		D2929C9F2DBEC574005CCC70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */; };
 		D2929CA42DBEC574005CCC70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2929CA22DBEC574005CCC70 /* Main.storyboard */; };
@@ -61,6 +63,8 @@
 
 /* Begin PBXFileReference section */
 		D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
+		D2403B002DD9E17100E65CDC /* UIColorValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorValueTransformer.swift; sourceTree = "<group>"; };
+		D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleValueTransformer.swift; sourceTree = "<group>"; };
 		D2929C992DBEC574005CCC70 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +128,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D2403AFF2DD9E14F00E65CDC /* Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				D2403B002DD9E17100E65CDC /* UIColorValueTransformer.swift */,
+				D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */,
+			);
+			path = Transformer;
+			sourceTree = "<group>";
+		};
 		D2929C902DBEC574005CCC70 = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +252,7 @@
 		D2D110C82DC34B5E003AE980 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D2403AFF2DD9E14F00E65CDC /* Transformer */,
 				D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */,
 				D2D110C92DC34B70003AE980 /* TrackerCategory.swift */,
 				D2D110CD2DC34B8D003AE980 /* Tracker.swift */,
@@ -468,6 +482,7 @@
 				D2C45D4F2DCA5E0F00DA5D1F /* ScheduleTableViewController.swift in Sources */,
 				D2929CD42DBF762E005CCC70 /* UIColorForSections+Extensions.swift in Sources */,
 				D2DB264C2DC7A60B00B913F4 /* EmojiCollectionViewCell.swift in Sources */,
+				D2403B012DD9E17100E65CDC /* UIColorValueTransformer.swift in Sources */,
 				D2DB264E2DC7AD4B00B913F4 /* ColorCollectionViewCell.swift in Sources */,
 				D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */,
 				D2D110CC2DC34B7A003AE980 /* TrackerRecord.swift in Sources */,
@@ -481,6 +496,7 @@
 				D2DB263C2DC7678D00B913F4 /* CreatingTrackerViewController.swift in Sources */,
 				D2FD0B8D2DBFC4CB00552FFC /* AppTabBarController.swift in Sources */,
 				D2179B2B2DBF8B1D0029ED50 /* TrackersViewController.swift in Sources */,
+				D2403B032DD9E37E00E65CDC /* ScheduleValueTransformer.swift in Sources */,
 				D2C45D512DCA5E2600DA5D1F /* CollectionTableViewController.swift in Sources */,
 				D2D110D32DC4148A003AE980 /* TrackerCollectionViewCell.swift in Sources */,
 				D2BD72752DD651DE0054DC18 /* TrackersMockups.swift in Sources */,

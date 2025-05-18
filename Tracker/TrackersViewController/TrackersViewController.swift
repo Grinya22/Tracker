@@ -1,6 +1,11 @@
 import UIKit
 
+// MARK: - TrackersViewController
+
 final class TrackersViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     var categories: [TrackerCategory] = [] {
         didSet {
             updatePlaceholderVisibility()
@@ -28,6 +33,8 @@ final class TrackersViewController: UIViewController {
     }()
 
     private var imageView: UIImageView!
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +59,8 @@ final class TrackersViewController: UIViewController {
         
         updatePlaceholderVisibility()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         view.backgroundColor = .ypWhite
@@ -120,6 +129,8 @@ final class TrackersViewController: UIViewController {
             descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
+    
+    // MARK: - Helper Methods
 
     func updatePlaceholderVisibility() {
         guard let imageView = imageView else { return }
@@ -128,7 +139,9 @@ final class TrackersViewController: UIViewController {
         imageView.isHidden = hasTrackers
         descriptionLabel.isHidden = hasTrackers
     }
-
+    
+    // MARK: - Actions
+    
     @objc
     func plusTapped(_ sender: UITabBarItem) {
         let creatingTrackerVC = UINavigationController(rootViewController: CreatingTrackerViewController())
@@ -156,7 +169,12 @@ final class TrackersViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegateFlowLayout
+
 extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    // MARK: DataSource
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return filteredCategories().count
     }
@@ -194,41 +212,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         return cell
     }
     
-    private func filteredCategories() -> [TrackerCategory] {
-        // Если фильтрация не нужна, возвращаем все категории без изменений
-        guard shouldFilterByDate else {
-            print("Фильтрация отключена, возвращены все категории: \(categories)")
-            return categories
-        }
-
-        let date = datePicker.date
-        let dayAbbreviations = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
-        let dateDayIndex = Calendar.current.component(.weekday, from: date) - 1 // -1, потому что индексы начинаются с 0, а .weekday с 1
-        let dayString = dayAbbreviations[dateDayIndex]
-
-        let filtered = categories.map { category -> TrackerCategory in
-            let filteredTrackers = category.trackers.filter { tracker in
-                print("Проверка трекера \(tracker.name): schedule = \(tracker.schedule), creationDate = \(tracker.creationDate)")
-                if tracker.schedule.isEmpty {
-                    return isSameDay(date, as: tracker.creationDate)
-                } else {
-                    return tracker.schedule.contains(dayString)
-                }
-            }
-            return TrackerCategory(title: category.title, trackers: filteredTrackers)
-        }.filter { !$0.trackers.isEmpty } // Убираем пустые категории после фильтрации
-        print("Отфильтрованные категории: \(filtered)")
-        return filtered
-    }
-    
-    private func isSameDay(_ date1: Date, as date2: Date) -> Bool {
-        let calendar = Calendar.current
-        let components1 = calendar.dateComponents([.year, .month, .day], from: date1)
-        let components2 = calendar.dateComponents([.year, .month, .day], from: date2)
-        return components1.year == components2.year &&
-               components1.month == components2.month &&
-               components1.day == components2.day
-    }
+    // MARK: Delegate Flow Layout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.bounds.width // Уже учли отступы в TrackerCollectionView (16 + 16)
@@ -250,7 +234,49 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 50)
     }
+    
+    // MARK: Helper Methods
+    
+    private func filteredCategories() -> [TrackerCategory] {
+        // Если фильтрация не нужна, возвращаем все категории без изменений
+        guard shouldFilterByDate else {
+            print("Фильтрация отключена, возвращены все категории: \(categories)")
+            return categories
+        }
+
+        let date = datePicker.date
+        let weekday = Calendar.current.component(.weekday, from: date) // 1 = Воскресенье, 2 = Понедельник, ...
+        // Преобразуем календарный weekday в WeekDay (monday = 1, tuesday = 2, ..., sunday = 7)
+        let adjustedWeekday = weekday == 1 ? 7 : weekday - 1 // Воскресенье (1) -> 7, Понедельник (2) -> 1, и т.д.
+        // условие ? значениеЕслиУсловиеИстинно : значениеЕслиУсловиеЛожно
+        let currentWeekDay = WeekDay(rawValue: adjustedWeekday)
+
+        let filtered = categories.map { category -> TrackerCategory in
+            let filteredTrackers = category.trackers.filter { tracker in
+                print("Проверка трекера \(tracker.name): schedule = \(tracker.schedule), creationDate = \(tracker.creationDate)")
+                if tracker.schedule.isEmpty {
+                    return isSameDay(date, as: tracker.creationDate)
+                } else {
+                    return tracker.schedule.contains { $0 == currentWeekDay }
+                }
+            }
+            return TrackerCategory(title: category.title, trackers: filteredTrackers)
+        }.filter { !$0.trackers.isEmpty } // Убираем пустые категории после фильтрации
+        print("Отфильтрованные категории: \(filtered)")
+        return filtered
+    }
+    
+    private func isSameDay(_ date1: Date, as date2: Date) -> Bool {
+        let calendar = Calendar.current
+        let components1 = calendar.dateComponents([.year, .month, .day], from: date1)
+        let components2 = calendar.dateComponents([.year, .month, .day], from: date2)
+        return components1.year == components2.year &&
+               components1.month == components2.month &&
+               components1.day == components2.day
+    }
 }
+
+// MARK: - TrackerCollectionViewCellDelegate
 
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func didTapTrackerPlusButton(trackerId: UUID, date: Date, isCompleted: Bool) {

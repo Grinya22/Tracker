@@ -1,7 +1,14 @@
 import UIKit
 
+// MARK: - TrackerCollectionView
+
 final class TrackerCollectionView: UIView {
+    
+    // MARK: - Properties
+    
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    // MARK: - Setup UI
     
     func setUpCollectionView() {
         let layout = UICollectionViewFlowLayout()

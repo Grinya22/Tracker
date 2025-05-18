@@ -1,8 +1,15 @@
 import UIKit
 //Домашний уют
 
+// MARK: - SupplementaryView
+
 class SupplementaryView: UICollectionReusableView {
+    
+    // MARK: - Properties
+    
     let titleLabel = UILabel()
+    
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
