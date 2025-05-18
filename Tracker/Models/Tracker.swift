@@ -5,8 +5,7 @@ struct Tracker {
     let name: String
     let color: UIColor
     let emoji: String
-    //let schedule: [String] // расписание
-    let schedule: [WeekDay] // расписание
+    let schedule: [WeekDay]
     let creationDate: Date
 }
 
