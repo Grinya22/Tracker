@@ -29,7 +29,7 @@ final class CoreDataStack {
             do {
                 try context.save()
             } catch {
-                fatalError("Saving error: \(error)")
+                context.rollback() // Если что-то пошло не так, то мы просто "откатываем" все изменения назад
             }
         }
     }

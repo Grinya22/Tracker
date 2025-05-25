@@ -1,18 +1,8 @@
-//
-//  AppDelegate.swift
-//  Tracker
-//
-//  Created by Gregory Vanyurin on 28.04.2025.
-//
-
 import UIKit
 import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UIColorValueTransformer.register()
         ScheduleValueTransformer.register()
