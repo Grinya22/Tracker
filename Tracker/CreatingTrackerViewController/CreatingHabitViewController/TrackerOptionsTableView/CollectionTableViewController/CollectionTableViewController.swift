@@ -12,21 +12,15 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     // MARK: - Properties
     
-    var tableView = UITableView()
+    let tableView = UITableView()
     let placeholderImage = UIImageView()
     let placeholderLabel = UILabel()
     let buttonAddtNewCollection = UIButton()
     
     weak var delegate: CollectionTableViewControllerDelegate?
     
-    private var categories: [String] = [] {
-        didSet {
-            saveCategories()
-            updatePlaceholderVisibility()
-            tableView.reloadData()
-        }
-    }
-    
+    var categories: [TrackerCategoryCoreData] = []
+    private let categoryStore = TrackerCategoryStore()
     private var selectedCategoryIndex: Int?
     
     // MARK: - Lifecycle
@@ -38,6 +32,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
         setupNavigationBar()
         loadCategories()
+        calculateTableHeight()
         updatePlaceholderVisibility()
         setUpCollectionTableViewController()
     }
@@ -45,6 +40,11 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     // MARK: - Setup UI
     
     func setupNavigationBar() {
+        navigationController?.navigationBar.barTintColor = .ypWhite // Убедитесь, что фон навигатора белый
+        navigationController?.navigationBar.shadowImage = UIImage() // Убираем разделитель под навигатором
+//        Свойство shadowImage — это изображение, которое используется для рендеринга тени под UINavigationBar. По умолчанию iOS предоставляет стандартное изображение для этой тени.
+//        Когда вы устанавливаете пустое UIImage(), система перестаёт рисовать что-либо в этой области, оставляя только фон NavigationBar (определяемый barTintColor).
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
@@ -65,15 +65,18 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.layer.cornerRadius = 16
         tableView.backgroundColor = .ypBackground
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.tableHeaderView = UIView(frame: .zero)
+        tableView.isScrollEnabled = true
         tableView.separatorStyle = .singleLine
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
+        view.addSubview(buttonAddtNewCollection)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: 75)
+            tableView.bottomAnchor.constraint(equalTo: buttonAddtNewCollection.topAnchor, constant: -28)
         ])
         
         placeholderImage.image = UIImage(named: "TrakerSectionMainImage")
@@ -108,8 +111,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         buttonAddtNewCollection.layer.cornerRadius = 16
         buttonAddtNewCollection.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         buttonAddtNewCollection.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(buttonAddtNewCollection)
-    
+//        view.addSubview(buttonAddtNewCollection)
+        
         NSLayoutConstraint.activate([
             buttonAddtNewCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             buttonAddtNewCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
@@ -143,7 +146,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        cell.textLabel?.text = categories[indexPath.row]
+        cell.textLabel?.text = categories[indexPath.row].title
         cell.backgroundColor = .clear
         cell.textLabel?.textColor = .ypBlack
         cell.accessoryType = indexPath.row == selectedCategoryIndex ? .checkmark : .none
@@ -157,19 +160,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let lastSectionIndex = tableView.numberOfSections - 1
-        let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
-        
-        // Убираем разделитель над первой ячейкой
-        if indexPath.row == 0 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
-        }
-        // Убираем разделитель под последней ячейкой
-        else if indexPath.section == lastSectionIndex && indexPath.row == lastRowIndex {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
-        }
-        // Для единственного элемента тоже убираем разделитель
-        else if categories.count == 1 {
+        if indexPath.row == categories.count - 1 {
+            // Убираем разделитель под последней строкой
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
         }
     }
@@ -180,7 +172,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             delegate?.didSelectOption(nil)
         } else {
             selectedCategoryIndex = indexPath.row
-            delegate?.didSelectOption(categories[indexPath.row])
+            delegate?.didSelectOption(categories[indexPath.row].title)
         }
         tableView.reloadData()
     }
@@ -204,29 +196,33 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     // MARK: - CreatingCollectionDelegate
     
     func didCreateNewCategory(_ name: String) {
-        categories.append(name)
-        selectedCategoryIndex = categories.count - 1
-        updatePlaceholderVisibility()
+        do {
+            let newCategory = try categoryStore.addCategory(name)
+            loadCategories()
+            selectedCategoryIndex = categories.firstIndex(where: {$0.title == name})
+            delegate?.didSelectOption(name)
+            
+            if !categories.isEmpty {
+                let indexPath = IndexPath(row: categories.count - 1, section: 0)
+                tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
+        } catch {
+            print("Ошибка добавления категории: \(error)")
+        }
+        
         tableView.reloadData()
+        updatePlaceholderVisibility()
     }
     
     // MARK: - Persistence
-
-    private func saveCategories() {
-        UserDefaults.standard.set(categories, forKey: "savedCategories")
-    }
     
     private func loadCategories() {
-        if let savedCategories = UserDefaults.standard.array(forKey: "savedCategories") as? [String] {
-            categories = savedCategories
-            
-            if let lastIndex = selectedCategoryIndex, lastIndex < categories.count {
-                delegate?.didSelectOption(categories[lastIndex])
-            }
+        do {
+            categories = try categoryStore.fetchCategories()
+            tableView.reloadData()
+            updatePlaceholderVisibility()
+        } catch {
+            print("Ошибка загрузки категорий: \(error)")
         }
     }
 }
-
-
-
-

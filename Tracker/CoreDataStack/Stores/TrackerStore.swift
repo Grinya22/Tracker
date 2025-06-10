@@ -2,7 +2,7 @@ import UIKit
 import CoreData
 
 final class TrackerStore {
-    private let context: NSManagedObjectContext
+    let context: NSManagedObjectContext
     
     init(context: NSManagedObjectContext = CoreDataStack.shared.context) {
         self.context = context
@@ -17,14 +17,12 @@ final class TrackerStore {
         object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
         
-        // Преобразуем schedule в Data через трансформер
-        //if let transformed = ScheduleValueTransformer().transformedValue(tracker.schedule) as? NSObject {
-        //    object.schedule = transformed
-        //}
-        
         CoreDataStack.shared.saveContext()
     }
     
-    
+    func deleteTracker(_ tracker: NSManagedObject) throws {
+        context.delete(tracker)
+        CoreDataStack.shared.saveContext()
+    }
 }
 

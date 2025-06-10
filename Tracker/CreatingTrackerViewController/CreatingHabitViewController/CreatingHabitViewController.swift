@@ -228,6 +228,9 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     @objc
     func backTapped() {
+        UserDefaults.standard.removeObject(forKey: "savedDays")
+        UserDefaults.standard.synchronize()
+        
         navigationController?.popViewController(animated: true)
     }
     
@@ -251,6 +254,9 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
             tabBarController.selectedIndex = 0
         }
+        
+        UserDefaults.standard.removeObject(forKey: "savedDays")
+        UserDefaults.standard.synchronize()
         
         // Закрываем модальный контроллер
         dismiss(animated: true, completion: nil)

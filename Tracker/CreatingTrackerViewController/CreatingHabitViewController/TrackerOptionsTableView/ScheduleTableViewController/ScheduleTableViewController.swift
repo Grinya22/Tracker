@@ -14,7 +14,6 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     let days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     var selectedDays: [Bool] = Array(repeating: false, count: 7)
-    
     var selectedWeekDays: [WeekDay] = []
     
     weak var delegate: ScheduleTableViewControllerDelegate?
@@ -30,6 +29,8 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         
         setupNavigationBar()
         setUpScheduleTableViewController()
+        
+        
         loadDays()
     }
     
@@ -41,7 +42,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
             style: .plain,
             target: self,
             action: #selector(backTapped)
-        )
+        )  
         
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
@@ -57,6 +58,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorStyle = .singleLine
         tableView.tableHeaderView = UIView(frame: .zero)
+        tableView.isScrollEnabled = false 
         tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -117,6 +119,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.reuseIdentifier) as? ScheduleTableViewCell else { return UITableViewCell() }
+        
         cell.dayLabel.text = days[indexPath.row]
         cell.daySwitch.isOn = selectedDays[indexPath.row]
         
