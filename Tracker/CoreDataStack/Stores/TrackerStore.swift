@@ -24,5 +24,14 @@ final class TrackerStore {
         context.delete(tracker)
         CoreDataStack.shared.saveContext()
     }
+    
+    func deleteTrackers(for category: TrackerCategoryCoreData) throws {
+        if let trackers = category.trackers as? Set<TrackerCoreData> {
+            for tracker in trackers {
+                context.delete(tracker)
+            }
+        }
+        CoreDataStack.shared.saveContext()
+    }
 }
 

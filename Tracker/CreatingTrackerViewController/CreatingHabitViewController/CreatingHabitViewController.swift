@@ -237,29 +237,57 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     @objc
     func createTapped() {
         guard let name = trackerName,
-              let category = selectedCategory,
+              let categoryTitle = selectedCategory,
               let color = selectedColor,
-              let emoji = selectedEmoji else { return }
-        
-        let tracker = Tracker(id: UUID(),
-                              name: name,
-                              color: color,
-                              emoji: emoji,
-                              schedule: selectedDays,
-                              creationDate: Date()
-        )
-        delegate?.didCreateTracker(tracker, categoryTitle: category)
-        
-        // Переключаемся на TrackersViewController
-        if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
-            tabBarController.selectedIndex = 0
+              let emoji = selectedEmoji else {
+            print("Ошибка: не все данные заполнены")
+            return
         }
         
-        UserDefaults.standard.removeObject(forKey: "savedDays")
-        UserDefaults.standard.synchronize()
+        let tracker = Tracker(
+            id: UUID(),
+            name: name,
+            color: color,
+            emoji: emoji,
+            schedule: selectedDays,
+            creationDate: Date()
+        )
         
-        // Закрываем модальный контроллер
-        dismiss(animated: true, completion: nil)
+        do {
+            // Инициализируем TrackerDataProvider.
+            let dataProvider = try TrackerDataProvider(
+                trackerStore: TrackerStore(),
+                categoryStore: TrackerCategoryStore(),
+                recordStore: TrackerRecordStore()
+            )
+            // Добавляем трекер через исправленный TrackerDataProvider.
+            try dataProvider.addTracker(tracker, to: categoryTitle)
+            // Зачем: Чтобы трекер сохранился в Core Data и был связан с категорией.
+            // Почему так: TrackerDataProvider использует исправленный addTracker.
+            
+            // Уведомляем делегата.
+            delegate?.didCreateTracker(tracker, categoryTitle: categoryTitle)
+            // Зачем: Чтобы TrackersViewController обновил UI.
+            // Почему так: Это часть твоей архитектуры.
+            
+            // Переключаемся на TrackersViewController.
+            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
+                tabBarController.selectedIndex = 0
+            }
+            // Зачем: Для перехода на главный экран.
+            // Почему так: Это твоя логика навигации.
+            
+            // Очищаем UserDefaults.
+            UserDefaults.standard.removeObject(forKey: "savedDays")
+            UserDefaults.standard.synchronize()
+            // Зачем: Чтобы сбросить временные данные.
+            // Почему так: Это часть твоего кода.
+            
+            // Закрываем контроллер.
+            dismiss(animated: true, completion: nil)
+        } catch {
+            print("Ошибка при создании трекера: \(error)")
+        }
     }
     
     // MARK: - Helper Methods

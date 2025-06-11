@@ -23,6 +23,7 @@
 		D2929CC32DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CC22DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift */; };
 		D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */; };
 		D2929CD42DBF762E005CCC70 /* UIColorForSections+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */; };
+		D2B895492DF8906100775372 /* EditCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B895482DF8906100775372 /* EditCollectionViewController.swift */; };
 		D2BD72752DD651DE0054DC18 /* TrackersMockups.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BD72742DD651DE0054DC18 /* TrackersMockups.swift */; };
 		D2C45D4D2DCA164A00DA5D1F /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C45D4C2DCA164A00DA5D1F /* ScheduleTableViewCell.swift */; };
 		D2C45D4F2DCA5E0F00DA5D1F /* ScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C45D4E2DCA5E0F00DA5D1F /* ScheduleTableViewController.swift */; };
@@ -87,6 +88,7 @@
 		D2929CC22DBEC577005CCC70 /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColorForSections+Extensions.swift"; sourceTree = "<group>"; };
+		D2B895482DF8906100775372 /* EditCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCollectionViewController.swift; sourceTree = "<group>"; };
 		D2BD72742DD651DE0054DC18 /* TrackersMockups.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersMockups.swift; sourceTree = "<group>"; };
 		D2C45D4C2DCA164A00DA5D1F /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		D2C45D4E2DCA5E0F00DA5D1F /* ScheduleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewController.swift; sourceTree = "<group>"; };
@@ -242,6 +244,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		D2B895472DF8904200775372 /* EditCollectionViewController */ = {
+			isa = PBXGroup;
+			children = (
+				D2B895482DF8906100775372 /* EditCollectionViewController.swift */,
+			);
+			path = EditCollectionViewController;
+			sourceTree = "<group>";
+		};
 		D2C45D462DCA155F00DA5D1F /* CreatingHabitViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +276,7 @@
 			children = (
 				D2C45D502DCA5E2600DA5D1F /* CollectionTableViewController.swift */,
 				D2FB9CFC2DCF77D700DFFAF4 /* CreatingCollectionViewController */,
+				D2B895472DF8904200775372 /* EditCollectionViewController */,
 			);
 			path = CollectionTableViewController;
 			sourceTree = "<group>";
@@ -523,6 +534,7 @@
 				D2DB264C2DC7A60B00B913F4 /* EmojiCollectionViewCell.swift in Sources */,
 				D2403B012DD9E17100E65CDC /* UIColorValueTransformer.swift in Sources */,
 				D2DB264E2DC7AD4B00B913F4 /* ColorCollectionViewCell.swift in Sources */,
+				D2B895492DF8906100775372 /* EditCollectionViewController.swift in Sources */,
 				D2C6751C2DDBB1B2000255D8 /* TrackerCategoryStore.swift in Sources */,
 				D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */,
 				D2D110CC2DC34B7A003AE980 /* TrackerRecord.swift in Sources */,

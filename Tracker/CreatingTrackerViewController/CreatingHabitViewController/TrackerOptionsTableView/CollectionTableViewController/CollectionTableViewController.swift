@@ -32,7 +32,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
         setupNavigationBar()
         loadCategories()
-        calculateTableHeight()
         updatePlaceholderVisibility()
         setUpCollectionTableViewController()
     }
@@ -42,8 +41,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     func setupNavigationBar() {
         navigationController?.navigationBar.barTintColor = .ypWhite // Убедитесь, что фон навигатора белый
         navigationController?.navigationBar.shadowImage = UIImage() // Убираем разделитель под навигатором
-//        Свойство shadowImage — это изображение, которое используется для рендеринга тени под UINavigationBar. По умолчанию iOS предоставляет стандартное изображение для этой тени.
-//        Когда вы устанавливаете пустое UIImage(), система перестаёт рисовать что-либо в этой области, оставляя только фон NavigationBar (определяемый barTintColor).
+        //        Свойство shadowImage — это изображение, которое используется для рендеринга тени под UINavigationBar. По умолчанию iOS предоставляет стандартное изображение для этой тени.
+        //        Когда вы устанавливаете пустое UIImage(), система перестаёт рисовать что-либо в этой области, оставляя только фон NavigationBar (определяемый barTintColor).
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
@@ -111,7 +110,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         buttonAddtNewCollection.layer.cornerRadius = 16
         buttonAddtNewCollection.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         buttonAddtNewCollection.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(buttonAddtNewCollection)
+        //        view.addSubview(buttonAddtNewCollection)
         
         NSLayoutConstraint.activate([
             buttonAddtNewCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
@@ -138,12 +137,19 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     // MARK: - TableView DataSource & Delegate
-    
+     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.row < categories.count else {
+            print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+            cell.textLabel?.text = "Ошибка"
+            return cell
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
         cell.textLabel?.text = categories[indexPath.row].title
@@ -177,6 +183,26 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.reloadData()
     }
     
+    internal func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let categoryToDelete = categories[indexPath.row]
+        
+        return UIContextMenuConfiguration(
+            identifier: nil, previewProvider: nil) { [weak self] _ in
+                guard let self = self else { return nil }
+                
+                return UIMenu(children: [
+                    UIAction(title: "Редактировать") { _ in
+                        
+                    },
+                    UIAction(title: "Удалить", attributes: .destructive) { _ in
+                        self.deselectSelectedRow()
+                        self.showDeleteConfirmationAlert(for: categoryToDelete, at: indexPath)
+                    }
+                ])
+            }
+    }
+    
     // MARK: - Helper Methods
     
     func deselectSelectedRow() {
@@ -193,34 +219,188 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
     }
     
+    private func showDeleteConfirmationAlert(for category: TrackerCategoryCoreData, at indexPath: IndexPath) {
+        // Проверяем валидность индекса.
+        guard indexPath.row < categories.count else {
+            print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+            return
+        }
+        // Зачем: Чтобы избежать ошибок при работе с массивом.
+        // Почему так: Индекс может быть неверным из-за асинхронных изменений.
+        
+        let alert = UIAlertController(
+            title: nil,
+            message: "Эта категория точно не нужна?",
+            preferredStyle: .actionSheet
+        )
+        
+        let deleteConfirmAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            
+            guard indexPath.row < self.categories.count else {
+                print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+                return
+            }
+            
+            // Проверяем, есть ли трекеры.
+            if let trackers = category.trackers as? Set<TrackerCoreData>, !trackers.isEmpty {
+                self.showDeleteConfirmationAlertOfAlert(category: category, at: indexPath)
+                return
+            } else {
+                self.performDelete(category: category, at: indexPath)
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { [weak self] _ in
+            print("Удаление отменено.")
+        }
+        
+        alert.addAction(deleteConfirmAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func showDeleteConfirmationAlertOfAlert(category: TrackerCategoryCoreData, at indexPath: IndexPath) {
+        // Проверяем валидность индекса.
+        guard indexPath.row < categories.count else {
+            print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+            return
+        }
+        // Зачем: Для безопасности при работе с массивом.
+        // Почему так: Защищает от ошибок при быстрых изменениях.
+        
+        if let trackers = category.trackers as? Set<TrackerCoreData>, !trackers.isEmpty {
+            let alert = UIAlertController(
+                title: nil,
+                message: "Вы уврены что хотите удалить категорию, к ней привязаны трекеры.",
+                preferredStyle: .actionSheet
+            )
+            
+            let deleteConfirmAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
+                guard indexPath.row < self.categories.count else {
+                    print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+                    return
+                }
+                
+                do {
+                    let trackerStore = TrackerStore()
+                    // Удаляем трекеры.
+                    try trackerStore.deleteTrackers(for: category)
+                    // Удаляем категорию.
+                    self.performDelete(category: category, at: indexPath)
+                    // Зачем: Реализует вторую алерту для удаления категории с трекерами.
+                    // Почему так: Это твоя исходная логика, сохранена без изменений.
+                } catch {
+                    print("Ошибка при удалении трекеров или категории: \(error)")
+                    let errorAlert = UIAlertController(
+                        title: "Ошибка",
+                        message: "Не удалось удалить категорию или трекеры. Попробуйте снова.",
+                        preferredStyle: .alert
+                    )
+                    errorAlert.addAction(UIAlertAction(title: "ОК", style: .default))
+                    self.present(errorAlert, animated: true)
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { [weak self] _ in
+                print("Удаление отменено.")
+            }
+            
+            alert.addAction(deleteConfirmAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func performDelete(category: TrackerCategoryCoreData, at indexPath: IndexPath) {
+        // Проверяем валидность индекса.
+        guard indexPath.row < categories.count else {
+            print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
+            return
+        }
+        // Зачем: Для защиты от ошибок при удалении.
+        // Почему так: Массив может измениться асинхронно.
+        
+        do {
+            // Если удаляемая категория была выбрана, сбрасываем выбор
+            if selectedCategoryIndex == indexPath.row {
+                selectedCategoryIndex = nil
+                delegate?.didSelectOption(nil)
+            }
+            
+            // Удаляем категорию через TrackerCategoryStore.
+            try categoryStore.deleteCategory(category)
+            
+            // Удаляем из локального массива.
+            categories.remove(at: indexPath.row)
+            
+            // Обновляем таблицу.
+            tableView.performBatchUpdates({
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }, completion: { [weak self] _ in
+                self?.updatePlaceholderVisibility()
+            })
+            // Зачем: Удаляет категорию и обновляет UI.
+            // Почему так: Это твоя исходная логика с добавленной проверкой.
+            
+            print("Категория \"\(category.title ?? "")\" успешно удалена.")
+        } catch {
+            print("Ошибка при удалении категории: \(error)")
+            let alert = UIAlertController(
+                title: "Ошибка",
+                message: "Не удалось удалить категорию. Попробуйте снова.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "ОК", style: .default))
+            present(alert, animated: true)
+        }
+    }
+    
     // MARK: - CreatingCollectionDelegate
     
     func didCreateNewCategory(_ name: String) {
         do {
-            let newCategory = try categoryStore.addCategory(name)
-            loadCategories()
-            selectedCategoryIndex = categories.firstIndex(where: {$0.title == name})
-            delegate?.didSelectOption(name)
+            try categoryStore.addCategory(name)
+            loadCategories() // Перезагружаем категории
             
-            if !categories.isEmpty {
-                let indexPath = IndexPath(row: categories.count - 1, section: 0)
-                tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            // Устанавливаем selectedCategoryIndex для новой категории
+            if let newIndex = categories.firstIndex(where: { $0.title == name }) {
+                selectedCategoryIndex = newIndex
+                delegate?.didSelectOption(name)
+                
+                if !categories.isEmpty {
+                    let indexPath = IndexPath(row: newIndex, section: 0)
+                    tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                }
             }
+            
+            updatePlaceholderVisibility()
         } catch {
             print("Ошибка добавления категории: \(error)")
         }
-        
-        tableView.reloadData()
-        updatePlaceholderVisibility()
     }
     
     // MARK: - Persistence
     
     private func loadCategories() {
         do {
+            let oldCount = categories.count
             categories = try categoryStore.fetchCategories()
-            tableView.reloadData()
+            
+            if let selectedIndex = selectedCategoryIndex, selectedIndex >= categories.count {
+                selectedCategoryIndex = nil
+                delegate?.didSelectOption(nil)
+            }
+            
+            if oldCount != categories.count {
+                tableView.reloadData()
+            }
             updatePlaceholderVisibility()
+
         } catch {
             print("Ошибка загрузки категорий: \(error)")
         }
