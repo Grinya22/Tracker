@@ -42,7 +42,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     // MARK: - Initialization
     
     init() {
-        optionsTableView = TrackerOptionsTableView(itemsOfTableView: ["Категория", "Расписание"])
+        optionsTableView = TrackerOptionsTableView(itemsOfTableView: [L10n.category, L10n.schedule])
         emojiCollectionView = EmojiCollectionView(frame: .zero)
         colorCollectionView = ColorCollectionView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
@@ -83,7 +83,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
         
-        navigationItem.title = "Новая привычка"
+        navigationItem.title = L10n.New.Habit.title
     }
     
     func setUpCreatingTrackerViewController() {
@@ -105,7 +105,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         textField.textColor = .ypBlack
         textField.attributedPlaceholder = NSAttributedString(
-            string: "Введите название трекера",
+            string: L10n.SearchBar.nameTracker,
             attributes: [.foregroundColor: UIColor.ypGray]
         )
         textField.backgroundColor = .ypBackground
@@ -137,7 +137,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let emojiLabel = UILabel()
-        emojiLabel.text = "Emoji"
+        emojiLabel.text = L10n.Title.chooseEmoji
         emojiLabel.textColor = .ypBlack
         emojiLabel.font = UIFont.boldSystemFont(ofSize: 19)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -159,7 +159,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let colorLabel = UILabel()
-        colorLabel.text = "Цвет"
+        colorLabel.text = L10n.Title.chooseColor
         colorLabel.textColor = .ypBlack
         colorLabel.font = UIFont.boldSystemFont(ofSize: 19)
         colorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -181,7 +181,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let cancelButton = UIButton()
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(L10n.Cancel.button, for: .normal)
         cancelButton.setTitleColor(.ypRed, for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cancelButton.layer.cornerRadius = 16
@@ -198,7 +198,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let createButton = UIButton()
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(L10n.Create.button, for: .normal)
         createButton.setTitleColor(.ypWhite, for: .normal)
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.layer.cornerRadius = 16
@@ -298,7 +298,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
                         !selectedDays.isEmpty &&
                         selectedColor != nil &&
                         selectedEmoji != nil
-        let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
+        let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == L10n.Create.button }) as? UIButton
         createButton?.isEnabled = isFormValid
         createButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
     }
@@ -335,17 +335,17 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         selectedDays = days
         let stringDays: String
         if days.count == 7 {
-            stringDays = "Каждый день"
+            stringDays = L10n.everyday
         } else {
             let dayNames = days.map { weekDay -> String in
                 switch weekDay {
-                case .monday: return "Пн"
-                case .tuesday: return "Вт"
-                case .wednesday: return "Ср"
-                case .thursday: return "Чт"
-                case .friday: return "Пт"
-                case .saturday: return "Сб"
-                case .sunday: return "Вс"
+                case .monday: return L10n.Short.monday
+                case .tuesday: return L10n.Short.tuesday
+                case .wednesday: return L10n.Short.wednesday
+                case .thursday: return L10n.Short.thursday
+                case .friday: return L10n.Short.friday
+                case .saturday: return L10n.Short.saturday
+                case .sunday: return L10n.Short.sunday
                 }
             }
             stringDays = dayNames.joined(separator: ", ")

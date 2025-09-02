@@ -1,0 +1,90 @@
+// MARK: - Main Screen
+
+"title.mainScreen" = "Trackers";
+"trackers.category" = "%@";
+"trackers.search.title" = "Search";
+"empty.trackers" = "What will we track?";
+"trackers.filter.today" = "Today";
+"trackers.filter.all" = "All trackers";
+
+// MARK: - Creating Trackers Screen
+
+"title.creatingTrackerScreen" = "Create Tracker";
+"habit.button" = "Habit";
+"irregularEvent.button" = "Irregular Event";
+"searchBar.nameTracker" = "Enter tracker name";
+"category" = "Category";
+"schedule" = "Schedule";
+"title.chooseEmoji" = "Emoji";
+"title.chooseColor" = "Color";
+"cancel.button" = "Cancel";
+"create.button" = "Create";
+
+// MARK: - UINavigationBar Titles
+
+"new.habit.title" = "New Habit";
+"new.irregularEvent.title" = "New Irregular Event";
+
+// MARK: - Tracker Options Table View
+
+"edit.button" = "Edit";
+"delete.button" = "Delete";
+"error" = "Error";
+"error.warning.message" = "Are you sure you want to delete the category? It has linked trackers.";
+"error.message.categoryortracker" = "Could not delete category or trackers. Please try again.";
+"error.message.category" = "Could not delete category or trackers. Please try again.";
+"ok.button" = "OK";
+
+// MARK: - Category Screen
+
+"categories" = "%@";
+"addCategory.button" = "Add category";
+"empty.category" = "You can group habits and events by meaning";
+
+// MARK: - Creating Category Screen
+
+"new.category.title" = "New Category";
+"searchBar.nameCategory" = "Enter category name";
+"done.button" = "Done";
+
+// MARK: - Schedule Table Screen
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+
+// MARK: - Short Schedule
+
+"short.monday" = "Mon";
+"short.tuesday" = "Tue";
+"short.wednesday" = "Wed";
+"short.thursday" = "Thu";
+"short.friday" = "Fri";
+"short.saturday" = "Sat";
+"short.sunday" = "Sun";
+"everyday" = "Every day";
+
+// MARK: - Onboarding Screen
+
+"onboarding.title.blue" = "Track only what you want";
+"onboarding.title.red" = "Even if it’s not water and yoga";
+"onboarding.button" = "That’s some tech!";
+
+// MARK: - Tab Bar
+
+"tabBar.trackers" = "Trackers";
+"tabBar.statistics" = "Statistics";
+
+// MARK: - Statistics Screen
+
+"title.statisticsScreen" = "Statistics";
+"empty.statistics" = "Nothing to analyze yet";
+
+// MARK: - Day Count
+
+"day_count" = "%d day";
+

@@ -41,13 +41,13 @@ class CreatingCollectionViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.leftBarButtonItem?.title = ""
         
-        navigationItem.title = "Новая категория"
+        navigationItem.title = L10n.New.Category.title
     }
     
     func setUpCreatingCollectionTableViewController() {
         textField.textColor = .ypBlack
         textField.attributedPlaceholder = NSAttributedString(
-            string: "Введите название категории",
+            string: L10n.SearchBar.nameCategory,
             attributes: [.foregroundColor: UIColor.ypGray]
         )
         textField.backgroundColor = .ypBackground
@@ -68,7 +68,7 @@ class CreatingCollectionViewController: UIViewController {
             textField.heightAnchor.constraint(equalToConstant: 75)
         ])
         
-        buttonDoneCollection.setTitle("Готово", for: .normal)
+        buttonDoneCollection.setTitle(L10n.Done.button, for: .normal)
         buttonDoneCollection.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         buttonDoneCollection.setTitleColor(.ypWhite, for: .normal)
         buttonDoneCollection.backgroundColor = .ypGray

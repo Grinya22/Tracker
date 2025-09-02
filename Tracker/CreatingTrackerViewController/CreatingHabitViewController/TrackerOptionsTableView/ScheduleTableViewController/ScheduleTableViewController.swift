@@ -12,7 +12,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     // MARK: - Properties
     
-    let days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    let days = [L10n.monday, L10n.tuesday, L10n.wednesday, L10n.thursday, L10n.friday, L10n.saturday, L10n.sunday]
     var selectedDays: [Bool] = Array(repeating: false, count: 7)
     var selectedWeekDays: [WeekDay] = []
     
@@ -47,7 +47,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
         
-        navigationItem.title = "Расписание"
+        navigationItem.title = L10n.schedule
     }
     
     func setUpScheduleTableViewController() {
@@ -71,7 +71,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         ])
         
         let doneButton = UIButton()
-        doneButton.setTitle("Готово", for: .normal)
+        doneButton.setTitle(L10n.Done.button, for: .normal)
         doneButton.setTitleColor(.ypWhite, for: .normal)
         doneButton.backgroundColor = .ypBlack
         doneButton.layer.cornerRadius = 16

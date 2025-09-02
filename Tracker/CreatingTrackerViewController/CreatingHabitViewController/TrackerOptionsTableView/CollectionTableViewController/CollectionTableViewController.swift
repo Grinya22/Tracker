@@ -54,7 +54,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
         
-        navigationItem.title = "Категория"
+        navigationItem.title = L10n.category
     }
     
     func setUpCollectionTableViewController() {
@@ -90,7 +90,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             placeholderImage.heightAnchor.constraint(equalToConstant: 80)
         ])
         
-        placeholderLabel.text = "Привычки и события можно \n объединить по смыслу"
+        placeholderLabel.text = L10n.Empty.category
         placeholderLabel.textAlignment = .center
         placeholderLabel.textColor = .ypBlack
         placeholderLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -104,7 +104,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             placeholderLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
-        buttonAddtNewCollection.setTitle("Добавить категорию", for: .normal)
+        buttonAddtNewCollection.setTitle(L10n.AddCategory.button, for: .normal)
         buttonAddtNewCollection.setTitleColor(.ypWhite, for: .normal)
         buttonAddtNewCollection.backgroundColor = .ypBlack
         buttonAddtNewCollection.layer.cornerRadius = 16
@@ -146,7 +146,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         guard indexPath.row < categories.count else {
             print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-            cell.textLabel?.text = "Ошибка"
+            cell.textLabel?.text = L10n.error
             return cell
         }
         
@@ -192,10 +192,10 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 guard let self = self else { return nil }
                 
                 return UIMenu(children: [
-                    UIAction(title: "Редактировать") { _ in
+                    UIAction(title: L10n.Edit.button) { _ in
                         
                     },
-                    UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    UIAction(title: L10n.Delete.button, attributes: .destructive) { _ in
                         self.deselectSelectedRow()
                         self.showDeleteConfirmationAlert(for: categoryToDelete, at: indexPath)
                     }
@@ -234,7 +234,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             preferredStyle: .actionSheet
         )
         
-        let deleteConfirmAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+        let deleteConfirmAction = UIAlertAction(title: L10n.Delete.button, style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             
             guard indexPath.row < self.categories.count else {
@@ -251,7 +251,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { [weak self] _ in
+        let cancelAction = UIAlertAction(title: L10n.Cancel.button, style: .cancel) { [weak self] _ in
             print("Удаление отменено.")
         }
         
@@ -273,11 +273,11 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         if let trackers = category.trackers as? Set<TrackerCoreData>, !trackers.isEmpty {
             let alert = UIAlertController(
                 title: nil,
-                message: "Вы уврены что хотите удалить категорию, к ней привязаны трекеры.",
+                message: L10n.Error.Warning.message,
                 preferredStyle: .actionSheet
             )
             
-            let deleteConfirmAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            let deleteConfirmAction = UIAlertAction(title: L10n.Delete.button, style: .destructive) { [weak self] _ in
                 guard let self = self else { return }
                 
                 guard indexPath.row < self.categories.count else {
@@ -296,16 +296,16 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 } catch {
                     print("Ошибка при удалении трекеров или категории: \(error)")
                     let errorAlert = UIAlertController(
-                        title: "Ошибка",
-                        message: "Не удалось удалить категорию или трекеры. Попробуйте снова.",
+                        title: L10n.error,
+                        message: L10n.Error.Message.categoryortracker,
                         preferredStyle: .alert
                     )
-                    errorAlert.addAction(UIAlertAction(title: "ОК", style: .default))
+                    errorAlert.addAction(UIAlertAction(title: L10n.Ok.button, style: .default))
                     self.present(errorAlert, animated: true)
                 }
             }
             
-            let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { [weak self] _ in
+            let cancelAction = UIAlertAction(title: L10n.Cancel.button, style: .cancel) { [weak self] _ in
                 print("Удаление отменено.")
             }
             
@@ -351,8 +351,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         } catch {
             print("Ошибка при удалении категории: \(error)")
             let alert = UIAlertController(
-                title: "Ошибка",
-                message: "Не удалось удалить категорию. Попробуйте снова.",
+                title: L10n.error,
+                message: L10n.Error.Message.category,
                 preferredStyle: .alert
             )
             alert.addAction(UIAlertAction(title: "ОК", style: .default))
@@ -406,3 +406,4 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         }
     }
 }
+

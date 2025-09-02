@@ -5,9 +5,17 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
     // MARK: - Properties
     
     lazy var pages: [UIViewController] = {
-        let blueOne = createPage(with: UIImage(named: "backgroundBlue")!, text: "Отслеживайте только \nто, что хотите", buttonText: "Вот это технологии!")
+        let blueOne = createPage(
+            with: UIImage(named: "backgroundBlue")!,
+            text: L10n.Onboarding.Title.blue,
+            buttonText: L10n.Onboarding.button
+        )
 
-        let redOne = createPage(with: UIImage(named: "backgroundRed")!, text: "Даже если это \nне литры воды и йога", buttonText: "Вот это технологии!")
+        let redOne = createPage(
+            with: UIImage(named: "backgroundRed")!,
+            text: L10n.Onboarding.Title.red,
+            buttonText: L10n.Onboarding.button
+        )
 
         return [blueOne, redOne]
     }()

@@ -24,8 +24,8 @@ final class AppTabBarController: UITabBarController {
         trackerNavigationController.navigationBar.prefersLargeTitles = true
         statisticNavigationController.navigationBar.prefersLargeTitles = true
         
-        trackerNavigationController.tabBarItem = UITabBarItem(title: "Трекер", image: UIImage(named: "TrakerTabBarItem"), tag: 0)
-        statisticNavigationController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "StatisticsTabBarItem"), tag: 1)
+        trackerNavigationController.tabBarItem = UITabBarItem(title: L10n.TabBar.trackers, image: UIImage(named: "TrakerTabBarItem"), tag: 0)
+        statisticNavigationController.tabBarItem = UITabBarItem(title: L10n.TabBar.statistics, image: UIImage(named: "StatisticsTabBarItem"), tag: 1)
         
         viewControllers = [trackerNavigationController, statisticNavigationController]
         

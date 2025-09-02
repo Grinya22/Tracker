@@ -128,8 +128,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     func configure(emoji: String, title: String, completedDays: Int, isCompletedToday: Bool, date: Date, color: UIColor, trackerID: UUID) {
         emojiLabel.text = emoji
         titleLabel.text = title
-        dayCountLabel.text = "\(completedDays) \(pluralForm(for: completedDays))"
-        
+        dayCountLabel.text = L10n.Day.count(completedDays)
+
         self.completedDays = completedDays
         self.isCompletedPlusButton = isCompletedToday
         self.currentDate = date
@@ -151,19 +151,19 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Helper Methods
-    
-    private func pluralForm(for count: Int) -> String {
-        let remainder10 = count % 10
-        let remainder100 = count % 100
-        if remainder100 >= 11 && remainder100 <= 14 {
-            return "дней"
-        }
-        switch remainder10 {
-        case 1: return "день"
-        case 2...4: return "дня"
-        default: return "дней"
-        }
-    }
+//
+//    private func pluralForm(for count: Int) -> String {
+//        let remainder10 = count % 10
+//        let remainder100 = count % 100
+//        if remainder100 >= 11 && remainder100 <= 14 {
+//            return "дней"
+//        }
+//        switch remainder10 {
+//        case 1: return "день"
+//        case 2...4: return "дня"
+//        default: return "дней"
+//        }
+//    }
     
     // MARK: - Actions
     
@@ -200,7 +200,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.backgroundColor = color
         }
 
-        dayCountLabel.text = "\(completedDays) \(pluralForm(for: completedDays))"
+        dayCountLabel.text = L10n.Day.count(completedDays)
     }
 }
 

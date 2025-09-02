@@ -12,7 +12,7 @@ final class CreatingTrackerViewController: UIViewController {
         
         view.backgroundColor = .ypWhite
         
-        navigationItem.title = "Создание трекера"
+        navigationItem.title = L10n.Title.creatingTrackerScreen
         
         setUpCreatingTrackerViewController()
     }
@@ -21,7 +21,7 @@ final class CreatingTrackerViewController: UIViewController {
     
     func setUpCreatingTrackerViewController() {
         let habitButton = UIButton()
-        habitButton.setTitle("Привычка", for: .normal)
+        habitButton.setTitle(L10n.Habit.button, for: .normal)
         habitButton.setTitleColor(.ypWhite, for: .normal)
         habitButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         habitButton.layer.cornerRadius = 16
@@ -38,7 +38,7 @@ final class CreatingTrackerViewController: UIViewController {
         ])
         
         let irregularEventButton = UIButton()
-        irregularEventButton.setTitle("Нерегулярное событие", for: .normal)
+        irregularEventButton.setTitle(L10n.IrregularEvent.button, for: .normal)
         irregularEventButton.setTitleColor(.ypWhite, for: .normal)
         irregularEventButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         irregularEventButton.layer.cornerRadius = 16

@@ -21,7 +21,7 @@ final class StatisticsViewController: UIViewController {
         
         view.backgroundColor = .ypWhite
         
-        title = "Статистика"
+        title = L10n.Title.statisticsScreen
         
         setUpTracker()
     }
@@ -43,7 +43,7 @@ final class StatisticsViewController: UIViewController {
         ])
         
         descriptionLabel = UILabel()
-        descriptionLabel.text = "Анализировать пока нечего"
+        descriptionLabel.text = L10n.Empty.statistics
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .ypBlack
         descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)

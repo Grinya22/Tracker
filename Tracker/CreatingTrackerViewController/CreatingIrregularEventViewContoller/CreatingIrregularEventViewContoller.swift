@@ -35,7 +35,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     // MARK: - Initialization
     
     init() {
-        optionTableView = TrackerOptionsTableView(itemsOfTableView: ["Категория"])
+        optionTableView = TrackerOptionsTableView(itemsOfTableView: [L10n.category])
         emojiCollectionView = EmojiCollectionView(frame: .zero)
         colorCollectionView = ColorCollectionView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
@@ -52,7 +52,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         
         view.backgroundColor = .ypWhite
         
-        navigationItem.title = "Новое нерегулярное событие"
+        navigationItem.title = L10n.New.IrregularEvent.title
         
         setupNavigationBar()
         setUpCreatingTrackerViewController()
@@ -78,7 +78,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
         
-        navigationItem.title = "Новое нерегулярное событие"
+        navigationItem.title = L10n.New.IrregularEvent.title
     }
           
     func setUpCreatingTrackerViewController() {
@@ -100,7 +100,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         
         textField.textColor = .ypBlack
         textField.attributedPlaceholder = NSAttributedString(
-            string: "Введите название трекера",
+            string: L10n.SearchBar.nameTracker,
             attributes: [.foregroundColor: UIColor.ypGray]
         )
         textField.backgroundColor = .ypBackground
@@ -135,7 +135,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         ])
         
         let emojiLabel = UILabel()
-        emojiLabel.text = "Emoji"
+        emojiLabel.text = L10n.Title.chooseEmoji
         emojiLabel.textColor = .ypBlack
         emojiLabel.font = UIFont.systemFont(ofSize: 19)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -157,7 +157,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         ])
         
         let colorLabel = UILabel()
-        colorLabel.text = "Цвет"
+        colorLabel.text =
+        L10n.Title.chooseColor
         colorLabel.textColor = .ypBlack
         colorLabel.font = UIFont.boldSystemFont(ofSize: 19)
         colorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -179,7 +180,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         ])
         
         let cancelButton = UIButton()
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(L10n.Cancel.button, for: .normal)
         cancelButton.setTitleColor(.ypRed, for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cancelButton.layer.cornerRadius = 16
@@ -197,7 +198,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         cancelButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         
         let createButton = UIButton()
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(L10n.Create.button, for: .normal)
         createButton.setTitleColor(.ypWhite, for: .normal)
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.layer.cornerRadius = 16
@@ -261,7 +262,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
                         selectedCategory != nil &&
                         selectedColor != nil &&
                         selectedEmoji != nil
-        let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
+        let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == L10n.Create.button }) as? UIButton
         creatButton?.isEnabled = isFormValid
         creatButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
     }

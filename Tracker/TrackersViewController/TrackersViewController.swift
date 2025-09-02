@@ -76,7 +76,7 @@ final class TrackersViewController: UIViewController {
     
     func setupNavigationBar() {
         view.backgroundColor = .ypWhite
-        title = "Трекеры"
+        title = L10n.Title.mainScreen
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "Plus"),
@@ -90,7 +90,7 @@ final class TrackersViewController: UIViewController {
         // Добавляем поиск
         let searchController = UISearchController(searchResultsController: nil)
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = L10n.Trackers.Search.title
         navigationItem.searchController = searchController
     }
     
@@ -128,7 +128,7 @@ final class TrackersViewController: UIViewController {
         ])
 
         descriptionLabel = UILabel()
-        descriptionLabel.text = "Что будем отслеживать?"
+        descriptionLabel.text = L10n.Empty.trackers
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .ypBlack
         descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)

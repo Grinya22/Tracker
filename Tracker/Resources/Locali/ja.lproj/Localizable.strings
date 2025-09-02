@@ -1,0 +1,90 @@
+// MARK: - Main Screen
+
+"title.mainScreen" = "トラッカー";
+"trackers.category" = "%@";
+"trackers.search.title" = "検索";
+"empty.trackers" = "何を記録しますか？";
+"trackers.filter.today" = "今日";
+"trackers.filter.all" = "すべてのトラッカー";
+
+// MARK: - Creating Trackers Screen
+
+"title.creatingTrackerScreen" = "トラッカーの作成";
+"habit.button" = "習慣";
+"irregularEvent.button" = "不定期イベント";
+"searchBar.nameTracker" = "トラッカー名を入力";
+"category" = "カテゴリー";
+"schedule" = "スケジュール";
+"title.chooseEmoji" = "絵文字";
+"title.chooseColor" = "色";
+"cancel.button" = "キャンセル";
+"create.button" = "作成";
+
+// MARK: - UINavigationBar Titles
+
+"new.habit.title" = "新しい習慣";
+"new.irregularEvent.title" = "新しい不定期イベント";
+
+// MARK: - Tracker Options Table View
+
+"edit.button" = "編集";
+"delete.button" = "削除";
+"error" = "エラー";
+"error.warning.message" = "このカテゴリーにはトラッカーが関連付けられています。本当に削除しますか？";
+"error.message.categoryortracker" = "カテゴリーまたはトラッカーの削除に失敗しました。再試行してください。";
+"error.message.category" = "カテゴリーまたはトラッカーの削除に失敗しました。再試行してください。";
+"ok.button" = "OK";
+
+// MARK: - Category Screen
+
+"categories" = "%@";
+"addCategory.button" = "カテゴリーを追加";
+"empty.category" = "習慣やイベントを意味ごとにまとめましょう";
+
+// MARK: - Creating Category Screen
+
+"new.category.title" = "新しいカテゴリー";
+"searchBar.nameCategory" = "カテゴリー名を入力";
+"done.button" = "完了";
+
+// MARK: - Schedule Table Screen
+
+"monday" = "月曜日";
+"tuesday" = "火曜日";
+"wednesday" = "水曜日";
+"thursday" = "木曜日";
+"friday" = "金曜日";
+"saturday" = "土曜日";
+"sunday" = "日曜日";
+
+// MARK: - Short Schedule
+
+"short.monday" = "月";
+"short.tuesday" = "火";
+"short.wednesday" = "水";
+"short.thursday" = "木";
+"short.friday" = "金";
+"short.saturday" = "土";
+"short.sunday" = "日";
+"everyday" = "毎日";
+
+// MARK: - Onboarding Screen
+
+"onboarding.title.blue" = "記録したいことだけを記録しよう";
+"onboarding.title.red" = "水やヨガじゃなくても大丈夫";
+"onboarding.button" = "すごい技術だね！";
+
+// MARK: - Tab Bar
+
+"tabBar.trackers" = "トラッカー";
+"tabBar.statistics" = "統計";
+
+// MARK: - Statistics Screen
+
+"title.statisticsScreen" = "統計";
+"empty.statistics" = "まだ分析する内容がありません";
+
+// MARK: - Day Count
+
+"day.count" = "%d 日";
+
