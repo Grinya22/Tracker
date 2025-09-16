@@ -39,7 +39,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     // MARK: - Setup UI
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .ypWhite // Убедитесь, что фон навигатора белый
+        navigationController?.navigationBar.barTintColor = .ypWhite
         navigationController?.navigationBar.shadowImage = UIImage() // Убираем разделитель под навигатором
         //        Свойство shadowImage — это изображение, которое используется для рендеринга тени под UINavigationBar. По умолчанию iOS предоставляет стандартное изображение для этой тени.
         //        Когда вы устанавливаете пустое UIImage(), система перестаёт рисовать что-либо в этой области, оставляя только фон NavigationBar (определяемый barTintColor).
@@ -65,17 +65,20 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.backgroundColor = .ypBackground
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.tableHeaderView = UIView(frame: .zero)
-        tableView.isScrollEnabled = true
         tableView.separatorStyle = .singleLine
+        tableView.isScrollEnabled = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         view.addSubview(buttonAddtNewCollection)
+        
+        let heightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+        heightConstraint.priority = .defaultHigh
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 28),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: buttonAddtNewCollection.topAnchor, constant: -28)
+            heightConstraint
         ])
         
         placeholderImage.image = UIImage(named: "TrakerSectionMainImage")
@@ -120,6 +123,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         ])
         
         buttonAddtNewCollection.addTarget(self, action: #selector(buttonAddtNewCollectionTapped), for: .touchUpInside)
+        
+        updateTableViewHeight()
     }
     
     // MARK: - Actions
@@ -217,6 +222,22 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         placeholderImage.isHidden = !shouldShowPlaceholder
         placeholderLabel.isHidden = !shouldShowPlaceholder
         
+    }
+    
+    private func updateTableViewHeight() {
+        let rowHeight: CGFloat = 75
+        let numberOfRows = CGFloat(categories.count)
+        let totalHeight = rowHeight * numberOfRows
+        let maxHeight = view.safeAreaLayoutGuide.layoutFrame.height - 28 - 60 - 44 - 16
+        
+        tableView.isScrollEnabled = totalHeight > maxHeight
+        
+        if let existingConstraint = tableView.constraints.first(where: { $0.firstAnchor == tableView.heightAnchor }) {
+            existingConstraint.constant = min(totalHeight, maxHeight)
+        } else {
+            let heightConstraint = tableView.heightAnchor.constraint(equalToConstant: min(totalHeight, maxHeight))
+            heightConstraint.isActive = true
+        }
     }
     
     private func showDeleteConfirmationAlert(for category: TrackerCategoryCoreData, at indexPath: IndexPath) {
@@ -358,6 +379,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             alert.addAction(UIAlertAction(title: "ОК", style: .default))
             present(alert, animated: true)
         }
+        
+        updateTableViewHeight()
     }
     
     // MARK: - CreatingCollectionDelegate
@@ -382,6 +405,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         } catch {
             print("Ошибка добавления категории: \(error)")
         }
+        
+        updateTableViewHeight()
     }
     
     // MARK: - Persistence
