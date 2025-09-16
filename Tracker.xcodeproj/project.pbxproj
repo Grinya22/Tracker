@@ -12,11 +12,9 @@
 		D2403B032DD9E37E00E65CDC /* ScheduleValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */; };
 		D2403B062DDA087700E65CDC /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B052DDA087700E65CDC /* CoreDataStack.swift */; };
 		D250216F2DEC6AB8001E95D1 /* TrackerDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D250216E2DEC6AB8001E95D1 /* TrackerDataProvider.swift */; };
-		D291747F2E0F2DBF0079A1AD /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D291747E2E0F2DBF0079A1AD /* Strings.swift */; };
 		D29174822E0F3D540079A1AD /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = D29174842E0F3D540079A1AD /* Localizable.stringsdict */; };
 		D2929C9D2DBEC574005CCC70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */; };
 		D2929C9F2DBEC574005CCC70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */; };
-		D2929CA42DBEC574005CCC70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2929CA22DBEC574005CCC70 /* Main.storyboard */; };
 		D2929CA72DBEC574005CCC70 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D2929CA52DBEC574005CCC70 /* Tracker.xcdatamodeld */; };
 		D2929CA92DBEC577005CCC70 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2929CA82DBEC577005CCC70 /* Assets.xcassets */; };
 		D2929CAC2DBEC577005CCC70 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2929CAA2DBEC577005CCC70 /* LaunchScreen.storyboard */; };
@@ -36,6 +34,7 @@
 		D2C6751A2DDBB1A7000255D8 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C675192DDBB1A7000255D8 /* TrackerStore.swift */; };
 		D2C6751C2DDBB1B2000255D8 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C6751B2DDBB1B2000255D8 /* TrackerCategoryStore.swift */; };
 		D2C6751E2DDBB1BC000255D8 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C6751D2DDBB1BC000255D8 /* TrackerRecordStore.swift */; };
+		D2CDB6832E72E16C00BC3140 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CDB6822E72E16C00BC3140 /* Strings.swift */; };
 		D2D110CA2DC34B70003AE980 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110C92DC34B70003AE980 /* TrackerCategory.swift */; };
 		D2D110CC2DC34B7A003AE980 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */; };
 		D2D110CE2DC34B8D003AE980 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110CD2DC34B8D003AE980 /* Tracker.swift */; };
@@ -84,14 +83,12 @@
 		D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleValueTransformer.swift; sourceTree = "<group>"; };
 		D2403B052DDA087700E65CDC /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		D250216E2DEC6AB8001E95D1 /* TrackerDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataProvider.swift; sourceTree = "<group>"; };
-		D291747E2E0F2DBF0079A1AD /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		D29174832E0F3D540079A1AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		D29174862E0F3D590079A1AD /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ar; path = ar.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		D29174872E0F3D5A0079A1AD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		D2929C992DBEC574005CCC70 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D2929CA32DBEC574005CCC70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D2929CA62DBEC574005CCC70 /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		D2929CA82DBEC577005CCC70 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D2929CAB2DBEC577005CCC70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -114,6 +111,7 @@
 		D2C675192DDBB1A7000255D8 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		D2C6751B2DDBB1B2000255D8 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		D2C6751D2DDBB1BC000255D8 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
+		D2CDB6822E72E16C00BC3140 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		D2D110C92DC34B70003AE980 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
 		D2D110CD2DC34B8D003AE980 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -189,7 +187,7 @@
 		D291747D2E0F2DBF0079A1AD /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				D291747E2E0F2DBF0079A1AD /* Strings.swift */,
+				D2CDB6822E72E16C00BC3140 /* Strings.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -230,7 +228,6 @@
 				D291747D2E0F2DBF0079A1AD /* Generated */,
 				D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */,
 				D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */,
-				D2929CA22DBEC574005CCC70 /* Main.storyboard */,
 				D2929CA52DBEC574005CCC70 /* Tracker.xcdatamodeld */,
 			);
 			path = Tracker;
@@ -445,10 +442,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D2929CC62DBEC577005CCC70 /* Build configuration list for PBXNativeTarget "Tracker" */;
 			buildPhases = (
-				D237811A2E0F2B860093BD83 /* Run SwiftGen */,
-				D2929C952DBEC574005CCC70 /* Sources */,
 				D2929C962DBEC574005CCC70 /* Frameworks */,
+				D2929C952DBEC574005CCC70 /* Sources */,
 				D2929C972DBEC574005CCC70 /* Resources */,
+				D2CDB6842E72E18100BC3140 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -549,7 +546,6 @@
 				D2929CAC2DBEC577005CCC70 /* LaunchScreen.storyboard in Resources */,
 				D2AC9FB52E0EA5AC00B8B4C1 /* Localizable.strings in Resources */,
 				D2929CA92DBEC577005CCC70 /* Assets.xcassets in Resources */,
-				D2929CA42DBEC574005CCC70 /* Main.storyboard in Resources */,
 				D2AC9FB82E0EA5AE00B8B4C1 /* InfoPlist.strings in Resources */,
 				D29174822E0F3D540079A1AD /* Localizable.stringsdict in Resources */,
 			);
@@ -572,8 +568,9 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D237811A2E0F2B860093BD83 /* Run SwiftGen */ = {
+		D2CDB6842E72E18100BC3140 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -581,14 +578,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Run SwiftGen";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftgen > /dev/null; then\n  swiftgen\nelse\n  echo \"warning: SwiftGen not installed\"\nfi\n";
+			shellScript = "if which swiftgen >/dev/null; then\n  swiftgen config run --config \"${SRCROOT}/swiftgen.yml\"\nelse\n  echo \"warning: SwiftGen not installed\"\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -597,7 +594,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D291747F2E0F2DBF0079A1AD /* Strings.swift in Sources */,
+				D2CDB6832E72E16C00BC3140 /* Strings.swift in Sources */,
 				D2DB26402DC7759600B913F4 /* CreatingIrregularEventViewContoller.swift in Sources */,
 				D2DB263E2DC7757800B913F4 /* CreatingHabitViewController.swift in Sources */,
 				D2D110CE2DC34B8D003AE980 /* Tracker.swift in Sources */,
@@ -678,14 +675,6 @@
 				D29174872E0F3D5A0079A1AD /* ru */,
 			);
 			name = Localizable.stringsdict;
-			sourceTree = "<group>";
-		};
-		D2929CA22DBEC574005CCC70 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D2929CA32DBEC574005CCC70 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		D2929CAA2DBEC577005CCC70 /* LaunchScreen.storyboard */ = {

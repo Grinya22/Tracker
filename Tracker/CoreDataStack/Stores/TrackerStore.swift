@@ -8,7 +8,7 @@ final class TrackerStore {
         self.context = context
     }
     
-    func addTracker(_ tracker: Tracker) throws {
+    func addTracker(_ tracker: Tracker, to category: TrackerCategoryCoreData) throws {
         let object = TrackerCoreData(context: context)
         object.id = tracker.id
         object.name = tracker.name
@@ -17,6 +17,10 @@ final class TrackerStore {
         object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
         
+        object.category = category
+        
+        print("💾 addTracker: \(tracker.name) -> категория: \(category.title ?? "nil")")
+
         CoreDataStack.shared.saveContext()
     }
     

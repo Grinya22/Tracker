@@ -46,20 +46,40 @@ final class TrackerDataProvider: NSObject {
     private var insertedSections: IndexSet = []
     private var deletedSections: IndexSet = []
     
-    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
-        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        
+//    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
+//        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//
+//        let controller = NSFetchedResultsController(
+//            fetchRequest: fetchRequest,
+//            managedObjectContext: context,
+//            sectionNameKeyPath: "title",
+//            cacheName: nil
+//        )
+//
+//        controller.delegate = self
+//        try? controller.performFetch()
+//
+//        return controller
+//    }()
+    
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
+        let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "category.title", ascending: true),
+            NSSortDescriptor(key: "name", ascending: true)
+        ]
+
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
-            sectionNameKeyPath: "title",
+            sectionNameKeyPath: "category.title",
             cacheName: nil
         )
-        
+
         controller.delegate = self
         try? controller.performFetch()
-        
+
         return controller
     }()
     
@@ -70,49 +90,66 @@ final class TrackerDataProvider: NSObject {
         self.recordStore = recordStore
         super.init()
     }
+    
+    func searchTrackers(with text: String, completion: @escaping ([TrackerCategory]) -> Void) {
+        context.perform {
+            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+            
+            if !text.isEmpty {
+                fetchRequest.predicate = NSPredicate(format: "name CONTAINS[c] %@", text)
+            }
+            
+            do {
+                let results = try self.context.fetch(fetchRequest)
+                print("Трекеров в базе:", results.count)
+                
+                var categoriesDict: [String: [Tracker]] = [:]
+                
+                for obj in results {
+                    print(">>", obj.name ?? "nil", "категория:", obj.category?.title ?? "nil")
+                    let tracker = Tracker(
+                        id: obj.id ?? UUID(),
+                        name: obj.name ?? "",
+                        color: obj.color as? UIColor ?? .ypWhite,
+                        emoji: obj.emoji ?? "",
+                        schedule: (obj.schedule as? [WeekDay]) ?? [],
+                        creationDate: obj.creationDate ?? Date()
+                    )
+                    
+                    let categoryTitle = obj.category?.title ?? "Без категории"
+                    categoriesDict[categoryTitle, default: []].append(tracker)
+                }
+                
+                let categories = categoriesDict.map { TrackerCategory(title: $0.key, trackers: $0.value) }
+                
+                DispatchQueue.main.async {
+                    completion(categories)
+                }
+            } catch {
+                print("Ошибка поиска: \(error)")
+                DispatchQueue.main.async {
+                    completion([])
+                }
+            }
+        }
+    }
 }
 
 // MARK: - TrackerDataProviderProtocol
 
-extension TrackerDataProvider: TrackerDataProviderProtocol {
+extension TrackerDataProvider: TrackerDataProviderProtocol {    
     var numberOfSections: Int {
-        // Возвращаем количество секций (каждая секция — одна категория).
-        // Если секций нет, возвращаем 0 (было 1, что могло вызывать ошибки).
-        // Зачем: Предотвращает попытку доступа к несуществующим секциям.
-        // Почему так: Если нет категорий, таблица должна быть пустой.
-        return fetchedResultsController.sections?.count ?? 1
+        return fetchedResultsController.sections?.count ?? 0
     }
     
     func numberOfRowsInSection(_ section: Int) -> Int {
-        // Возвращает количество трекеров в категории, извлекая их из отношения trackers
-        // Проверяем, что секция валидна.
-        guard section < fetchedResultsController.sections?.count ?? 0,
-              let sectionInfo = fetchedResultsController.sections?[section],
-              let category = sectionInfo.objects?.first as? TrackerCategoryCoreData,
-              let trackers = category.trackers?.allObjects as? [TrackerCoreData] else {
-                  return 0
-        }
-        // Возвращаем количество трекеров в категории.
-        // Зачем: Каждая строка в секции — это трекер, как в твоей исходной логике.
-        // Почему так: Проверки предотвращают краш, если секция или категория недоступны (например, после удаления).
-        return trackers.count
+        guard let sectionInfo = fetchedResultsController.sections?[section] else { return 0 }
+        return sectionInfo.numberOfObjects
     }
     
     func object(at indexPath: IndexPath) -> Tracker? {
-        // Извлекает трекер из отношения trackers категории и преобразует его в модель Tracker
-        guard indexPath.section < fetchedResultsController.sections?.count ?? 0,
-              let sectionInfo = fetchedResultsController.sections?[indexPath.section],
-              let category = sectionInfo.objects?.first as? TrackerCategoryCoreData,
-              let trackers = category.trackers?.allObjects as? [TrackerCoreData],
-              indexPath.row < trackers.count else {
-                  return nil
-        }
-        
-        let trackerObject = trackers[indexPath.row]
-                
-        // Возвращаем объект Tracker, созданный из TrackerCoreData.
-        // Зачем: Для отображения трекера в ячейке таблицы.
-        // Почему так: Проверки индексов предотвращают краш, если трекер недоступен.
+        let trackerObject = fetchedResultsController.object(at: indexPath)
         return Tracker(
             id: trackerObject.id ?? UUID(),
             name: trackerObject.name ?? "",
@@ -124,25 +161,20 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
     }
     
     func categoryTitle(forSection section: Int) -> String? {
-        // Возвращает название категории для заголовка секции
-        // Проверяем валидность секции.
-        guard section < fetchedResultsController.sections?.count ?? 0,
-              let sectionInfo = fetchedResultsController.sections?[section] else {
-                  return nil
-        }
-        // Возвращаем название секции (название категории).
-        // Зачем: Для отображения заголовка секции в таблице.
-        // Почему так: sectionInfo.name уже содержит title категории из sectionNameKeyPath.
-        return sectionInfo.name
+        return fetchedResultsController.sections?[section].name
     }
     
     func addTracker(_ tracker: Tracker, to categoryTitle: String) throws {
+        print("📦 TrackerDataProvider.addTracker вызван")
+        
         // Добавляет трекер и связывает его с категорией, проверяя, существует ли категория, или создавая новую
         // Ищем категорию по названию.
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         fetchRequest.predicate = NSPredicate(format: "title == %@", categoryTitle)
         let categories = try context.fetch(fetchRequest)
         
+        print("Категория найдена: \(categories.count > 0 ? "да" : "нет, создаю новую")")
+
         let category: TrackerCategoryCoreData
         if let existingCategory = categories.first {
             category = existingCategory
@@ -152,8 +184,8 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
         }
         
         // Добавляем трекер и связываем с категорией.
-        try trackerStore.addTracker(tracker)
-        
+        try trackerStore.addTracker(tracker, to: category)
+
         // Сохраняем изменения.
         // Зачем: Чтобы трекер появился в Core Data и таблице.
         // Почему так: Используем обновлённый addTracker, чтобы корректно установить связь.

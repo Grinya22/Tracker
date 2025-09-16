@@ -4,6 +4,7 @@ import UIKit
 
 final class CreatingTrackerViewController: UIViewController {
     weak var delegate: TrackerCreationDelegate?
+    weak var dataProvider: TrackerDataProvider?
     
     // MARK: - Lifecycle
     
@@ -63,6 +64,8 @@ final class CreatingTrackerViewController: UIViewController {
     func habitButtonTapped() {
         let creatingHabitVC = CreatingHabitViewController()
         creatingHabitVC.delegate = self.delegate
+        creatingHabitVC.dataProvider = self.dataProvider
+        print("Делегат установлен для CreatingHabitViewController")
         navigationController?.pushViewController(creatingHabitVC, animated: true)
     }
     
@@ -70,6 +73,7 @@ final class CreatingTrackerViewController: UIViewController {
     func irregularEventButtonTapped() {
         let irregularEventTrackerVC = CreatingIrregularEventViewContoller()
         irregularEventTrackerVC.delegate = self.delegate
+        print("Делегат установлен для CreatingIrregularEventViewContoller")
         navigationController?.pushViewController(irregularEventTrackerVC, animated: true)
     }
 }

@@ -1,19 +1,6 @@
 import UIKit
 
-// MARK: - TrackerCreationDelegate
-
-protocol TrackerCreationDelegate: AnyObject {
-    func didCreateTracker(_ tracker: Tracker, categoryTitle: String)
-}
-
-
-
-// MARK: - CreatingHabitViewController
-
-final class CreatingHabitViewController: UIViewController, TrackerOptionsTableViewDelegate, CollectionTableViewControllerDelegate, ScheduleTableViewControllerDelegate, EmojiSelectionDelegate, ColorSelectionDelegate {
-    
-    // MARK: - Properties
-    
+final class CreatingIrregularEventViewContoller: UIViewController, TrackerOptionsTableViewDelegate, CollectionTableViewControllerDelegate, EmojiSelectionDelegate, ColorSelectionDelegate {
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.keyboardDismissMode = .interactive
@@ -22,31 +9,26 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     }()
     
     private let contentView: UIView = {
-        let contentView = UIView()
+       let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
         return contentView
     }()
     
-    private let optionsTableView: TrackerOptionsTableView
+    private let optionTableView: TrackerOptionsTableView
     private let emojiCollectionView: EmojiCollectionView
     private let colorCollectionView: ColorCollectionView
     
     private let textField = UITextField()
     
     private var selectedCategory: String?
-    private var selectedDays: [WeekDay] = []
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
     private var trackerName: String?
     
     weak var delegate: TrackerCreationDelegate?
-    weak var dataProvider: TrackerDataProvider?
-
-    
-    // MARK: - Initialization
     
     init() {
-        optionsTableView = TrackerOptionsTableView(itemsOfTableView: [L10n.category, L10n.schedule])
+        optionTableView = TrackerOptionsTableView(itemsOfTableView: ["Категория"])
         emojiCollectionView = EmojiCollectionView(frame: .zero)
         colorCollectionView = ColorCollectionView(frame: .zero)
         super.init(nibName: nil, bundle: nil)
@@ -56,12 +38,12 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .ypWhite
+        
+        navigationItem.title = "Новое нерегулярное событие"
         
         setupNavigationBar()
         setUpCreatingTrackerViewController()
@@ -71,25 +53,23 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        optionsTableView.deselectSelectedRow()
+        optionTableView.deselectSelectedRow()
     }
-    
-    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
             target: self,
-            action: #selector(cancelTapped)
+            action: #selector(backTapped)
         )
-        
+            
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
         
-        navigationItem.title = L10n.New.Habit.title
+        navigationItem.title = "Новое нерегулярное событие"
     }
-    
+          
     func setUpCreatingTrackerViewController() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -109,16 +89,20 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         textField.textColor = .ypBlack
         textField.attributedPlaceholder = NSAttributedString(
-            string: L10n.SearchBar.nameTracker,
+            string: "Введите название трекера",
             attributes: [.foregroundColor: UIColor.ypGray]
         )
         textField.backgroundColor = .ypBackground
         textField.translatesAutoresizingMaskIntoConstraints = false
+        
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
         textField.leftView = leftPaddingView
         textField.leftViewMode = .always
+        
         textField.layer.cornerRadius = 16
         textField.layer.masksToBounds = true
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        
         contentView.addSubview(textField)
         
         NSLayoutConstraint.activate([
@@ -127,28 +111,27 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             textField.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: 75)
         ])
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-
-        optionsTableView.delegate = self
-        optionsTableView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(optionsTableView)
+        
+        optionTableView.delegate = self
+        optionTableView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(optionTableView)
         
         NSLayoutConstraint.activate([
-            optionsTableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            optionsTableView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            optionsTableView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            optionsTableView.heightAnchor.constraint(equalToConstant: 150)
+            optionTableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            optionTableView.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            optionTableView.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            optionTableView.heightAnchor.constraint(equalToConstant: 75)
         ])
         
         let emojiLabel = UILabel()
-        emojiLabel.text = L10n.Title.chooseEmoji
+        emojiLabel.text = "Emoji"
         emojiLabel.textColor = .ypBlack
-        emojiLabel.font = UIFont.boldSystemFont(ofSize: 19)
+        emojiLabel.font = UIFont.systemFont(ofSize: 19)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emojiLabel)
         
         NSLayoutConstraint.activate([
-            emojiLabel.topAnchor.constraint(equalTo: optionsTableView.bottomAnchor, constant: 32),
+            emojiLabel.topAnchor.constraint(equalTo: optionTableView.bottomAnchor, constant: 32),
             emojiLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor, constant: 28)
         ])
         
@@ -163,7 +146,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let colorLabel = UILabel()
-        colorLabel.text = L10n.Title.chooseColor
+        colorLabel.text = "Цвет"
         colorLabel.textColor = .ypBlack
         colorLabel.font = UIFont.boldSystemFont(ofSize: 19)
         colorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -185,7 +168,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         ])
         
         let cancelButton = UIButton()
-        cancelButton.setTitle(L10n.Cancel.button, for: .normal)
+        cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.setTitleColor(.ypRed, for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cancelButton.layer.cornerRadius = 16
@@ -200,9 +183,10 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             cancelButton.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.44),
             cancelButton.heightAnchor.constraint(equalToConstant: 60)
         ])
+        cancelButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         
         let createButton = UIButton()
-        createButton.setTitle(L10n.Create.button, for: .normal)
+        createButton.setTitle("Создать", for: .normal)
         createButton.setTitleColor(.ypWhite, for: .normal)
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.layer.cornerRadius = 16
@@ -217,13 +201,8 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             
             createButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
         ])
-        
-        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
-        print("Target для createButton добавлен: selector = #createTapped")
     }
-    
-    // MARK: - Actions
     
     @objc
     func textFieldDidChange() {
@@ -231,155 +210,76 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         updateCreateButtonState()
     }
     
+    func updateCreateButtonState() {
+        let isFormValid = trackerName?.isEmpty == false &&
+                        selectedCategory != nil &&
+                        selectedColor != nil &&
+                        selectedEmoji != nil
+        let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
+        creatButton?.isEnabled = isFormValid
+        creatButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+    }
+    
     @objc
-    func cancelTapped() {
-        print("backTapped вызван — это Отмена, а не Создать")
-        UserDefaults.standard.removeObject(forKey: "savedDays")
-        UserDefaults.standard.synchronize()
-        
+    func backTapped() {
         navigationController?.popViewController(animated: true)
     }
     
     @objc
     func createTapped() {
-        print("createTapped вызван, все данные: name=\(trackerName ?? "nil"), cat=\(selectedCategory ?? "nil")")
-        
         guard let name = trackerName,
-              let categoryTitle = selectedCategory,
+              let category = selectedCategory,
               let color = selectedColor,
-              let emoji = selectedEmoji else {
-            print("Ошибка: не все данные заполнены")
-            return
-        }
+              let emoji = selectedEmoji else { return }
         
-        let tracker = Tracker(
-            id: UUID(),
-            name: name,
-            color: color,
-            emoji: emoji,
-            schedule: selectedDays,
-            creationDate: Date()
+        print("CreatingIrregularEventVC: Делегат \(self.delegate == nil ? "nil" : "установлен")") // <-- ДОБАВЬТЕ ЭТУ СТРОКУ
+        
+        let tracker = Tracker(id: UUID(),
+                              name: name,
+                              color: color,
+                              emoji: emoji,
+                              schedule: [],
+                              creationDate: Date()
         )
+        print("Создан трекер в CreatingIrregularEventViewContoller: \(tracker)")
+        delegate?.didCreateTracker(tracker, categoryTitle: category)
         
-        do {
-            guard let dataProvider = dataProvider else {
-                print("Ошибка: dataProvider не установлен")
-                return
-            }
-            print("Категории до добавления:", dataProvider.numberOfSections)
-
-            print("dataProvider: \(dataProvider != nil ? "установлен" : "nil")")
-            // Добавляем трекер через исправленный TrackerDataProvider.
-            try dataProvider.addTracker(tracker, to: categoryTitle)
-            // Зачем: Чтобы трекер сохранился в Core Data и был связан с категорией.
-            // Почему так: TrackerDataProvider использует исправленный addTracker.
-            print("Категории после добавления:", dataProvider.numberOfSections)
-
-            // Уведомляем делегата.
-            delegate?.didCreateTracker(tracker, categoryTitle: categoryTitle)
-            // Зачем: Чтобы TrackersViewController обновил UI.
-            // Почему так: Это часть твоей архитектуры.
-            
-            // Переключаемся на TrackersViewController.
-            if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
-                tabBarController.selectedIndex = 0
-            }
-            // Зачем: Для перехода на главный экран.
-            // Почему так: Это твоя логика навигации.
-            
-            // Очищаем UserDefaults.
-            UserDefaults.standard.removeObject(forKey: "savedDays")
-            UserDefaults.standard.synchronize()
-            // Зачем: Чтобы сбросить временные данные.
-            // Почему так: Это часть твоего кода.
-            
-            // Закрываем контроллер.
-            dismiss(animated: true, completion: nil)
-        } catch {
-            print("Ошибка при создании трекера: \(error)")
+        if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
+            tabBarController.selectedIndex = 0
         }
         
-        print("Кнопка Создать нажата")
-    }
-    
-    // MARK: - Helper Methods
-    
-    private func updateCreateButtonState() {
-        let isFormValid = trackerName?.isEmpty == false &&
-                        selectedCategory != nil &&
-                        !selectedDays.isEmpty &&
-                        selectedColor != nil &&
-                        selectedEmoji != nil
-        let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == L10n.Create.button }) as? UIButton
-        createButton?.isEnabled = isFormValid
-        createButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - TrackerOptionsTableViewDelegate
-    
     func didSelectOption(at index: Int) {
         switch index {
         case 0:
             let collectionTableVC = CollectionTableViewController()
             collectionTableVC.delegate = self
             navigationController?.pushViewController(collectionTableVC, animated: true)
-        case 1:
-            let scheduleTableVC = ScheduleTableViewController()
-            scheduleTableVC.delegate = self
-            navigationController?.pushViewController(scheduleTableVC, animated: true)
         default:
             break
         }
     }
     
     // MARK: - CollectionTableViewControllerDelegate
-    
     func didSelectOption(_ category: String?) {
-        print("Выбрана категория: \(category ?? "нет")")
         selectedCategory = category
-        optionsTableView.updateCategorySubtitle(category)
-        updateCreateButtonState()
-    }
-    
-    // MARK: - ScheduleTableViewControllerDelegate
-    
-    func didSelectDays(_ days: [WeekDay]) {
-        selectedDays = days
-        let stringDays: String
-        if days.count == 7 {
-            stringDays = L10n.everyday
-        } else {
-            let dayNames = days.map { weekDay -> String in
-                switch weekDay {
-                case .monday: return L10n.Short.monday
-                case .tuesday: return L10n.Short.tuesday
-                case .wednesday: return L10n.Short.wednesday
-                case .thursday: return L10n.Short.thursday
-                case .friday: return L10n.Short.friday
-                case .saturday: return L10n.Short.saturday
-                case .sunday: return L10n.Short.sunday
-                }
-            }
-            stringDays = dayNames.joined(separator: ", ")
-        }
-        print("Выбраны дни: \(stringDays)")
-        optionsTableView.updateScheduleSubtitle(stringDays)
+        optionTableView.updateCategorySubtitle(selectedCategory)
         updateCreateButtonState()
     }
     
     // MARK: - EmojiSelectionDelegate
-    
     func didSelectEmoji(_ emoji: String?) {
         selectedEmoji = emoji
-        print("Выбран эмодзи: \(selectedEmoji ?? "нет")")
         updateCreateButtonState()
     }
     
     // MARK: - ColorSelectionDelegate
-    
     func didSelectColor(_ color: UIColor?) {
         selectedColor = color
-        print("Выбран цвет: \(selectedColor?.description ?? "нет")")
         updateCreateButtonState()
     }
 }
+ 
