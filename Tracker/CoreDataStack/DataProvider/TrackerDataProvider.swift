@@ -46,23 +46,6 @@ final class TrackerDataProvider: NSObject {
     private var insertedSections: IndexSet = []
     private var deletedSections: IndexSet = []
     
-//    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
-//        let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        let controller = NSFetchedResultsController(
-//            fetchRequest: fetchRequest,
-//            managedObjectContext: context,
-//            sectionNameKeyPath: "title",
-//            cacheName: nil
-//        )
-//
-//        controller.delegate = self
-//        try? controller.performFetch()
-//
-//        return controller
-//    }()
-    
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         fetchRequest.sortDescriptors = [
@@ -93,7 +76,7 @@ final class TrackerDataProvider: NSObject {
     
     func searchTrackers(with text: String, completion: @escaping ([TrackerCategory]) -> Void) {
         context.perform {
-            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreDataForSearchTrackers")
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
             
             if !text.isEmpty {
@@ -133,6 +116,24 @@ final class TrackerDataProvider: NSObject {
                 }
             }
         }
+    }
+    
+    func allTrackers() {
+        let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreDataForAllTrackers")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "", arguments: <#T##CVaListPointer#>)
+    }
+    
+    func todaysTrackers() {
+        
+    }
+    
+    func finishedTrackers() {
+        
+    }
+    
+    func notFinishedTrackers() {
+        
     }
 }
 

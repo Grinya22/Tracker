@@ -4,6 +4,9 @@ import UIKit
 
 protocol TrackerCollectionViewCellDelegate: AnyObject {
     func didTapTrackerPlusButton(trackerId: UUID, date: Date, isCompleted: Bool)
+    func didTapPinButton(trackerId: UUID)
+    func didTapEditButton(trackerId: UUID)
+    func didTapDeleteButton(trackerId: UUID)
 }
 
 // MARK: - TrackerCollectionViewCell
@@ -36,6 +39,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
         setUpUI()
         setUpConstraints()
+        setUpContextMenuInteraction()
     }
     
     required init?(coder: NSCoder) {
@@ -53,17 +57,17 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         circleViewEmoji.layer.cornerRadius = 12
         circleViewEmoji.backgroundColor = UIColor.ypLightGray.withAlphaComponent(0.5)
         circleViewEmoji.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(circleViewEmoji)
+        topView.addSubview(circleViewEmoji)
         
         emojiLabel.font = .systemFont(ofSize: 14)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(emojiLabel)
+        topView.addSubview(emojiLabel)
         
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         titleLabel.numberOfLines = 2
         titleLabel.textColor = .ypWhite
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(titleLabel)
+        topView.addSubview(titleLabel)
         
         // Настройка bottomView
         bottomView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +75,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
         dayCountLabel.font = .systemFont(ofSize: 12)
         dayCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(dayCountLabel)
+        bottomView.addSubview(dayCountLabel)
         
         plusButton.layer.cornerRadius = 17
         plusButton.clipsToBounds = true
@@ -80,8 +84,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         plusButton.setImage(UIImage(systemName: "plus", withConfiguration: config), for: .normal)
         plusButton.addTarget(self, action: #selector(didTapPlusButton(_:)), for: .touchUpInside)
         plusButton.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(plusButton)
-
+        bottomView.addSubview(plusButton)
     }
     
     func setUpConstraints() {
@@ -118,8 +121,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -12),
             plusButton.heightAnchor.constraint(equalToConstant: 34),
             plusButton.widthAnchor.constraint(equalToConstant: 34)
-            
-
         ])
     }
     
@@ -204,3 +205,34 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     }
 }
 
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func setUpContextMenuInteraction() {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        topView.addInteraction(interaction)
+    }
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(
+            identifier: nil,
+            previewProvider: nil
+        ) { _ in
+            let pinAction = UIAction(title: "Закрепить") { [weak self] _ in
+                guard let self = self else { return }
+                self.delegate?.didTapPinButton(trackerId: self.trackerID)
+            }
+            
+            let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                guard let self = self else { return }
+                self.delegate?.didTapEditButton(trackerId: self.trackerID)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                self.delegate?.didTapDeleteButton(trackerId: self.trackerID)
+            }
+            
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+        }
+    }
+    
+}

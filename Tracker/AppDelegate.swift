@@ -10,14 +10,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        CoreDataStack.shared.saveContext()
-        print("AppDelegate: Сохранение при background")
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        CoreDataStack.shared.saveContext()
-        print("AppDelegate: Сохранение при termination")
-    }
+            CoreDataStack.shared.saveContext()
+            print("AppDelegate: Сохранение при background")
+        }
+
+        func applicationWillTerminate(_ application: UIApplication) {
+            CoreDataStack.shared.saveContext()
+            print("AppDelegate: Сохранение при termination")
+        }
 
     // MARK: UISceneSession Lifecycle
 

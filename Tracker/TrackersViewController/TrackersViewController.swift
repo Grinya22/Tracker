@@ -17,12 +17,6 @@ final class TrackersViewController: UIViewController {
     
     private let trackerView = TrackerCollectionView()
     
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker(frame: .zero)
         datePicker.preferredDatePickerStyle = .compact
@@ -33,7 +27,9 @@ final class TrackersViewController: UIViewController {
     
     let searchController = UISearchController(searchResultsController: nil)
     
-    private var imageView: UIImageView!
+    private let descriptionLabel = UILabel()
+    private let imageView = UIImageView()
+    private let filterButton = UIButton(type: .system)
     
     private let trackerStore = TrackerStore()
     private let categoryStore = TrackerCategoryStore()
@@ -123,7 +119,6 @@ final class TrackersViewController: UIViewController {
     }
     
     func setUpTracker() {
-        imageView = UIImageView()
         imageView.image = UIImage(named: "TrakerSectionMainImage")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +131,6 @@ final class TrackersViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 80)
         ])
         
-        descriptionLabel = UILabel()
         descriptionLabel.text = L10n.Empty.trackers
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .ypBlack
@@ -149,6 +143,23 @@ final class TrackersViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
+        
+        filterButton.setTitle("Фильтры", for: .normal)
+        filterButton.setTitleColor(.ypWhite, for: .normal)
+        filterButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        filterButton.backgroundColor = .ypBlueTracker
+        filterButton.layer.cornerRadius = 16
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(filterButton)
+        
+        NSLayoutConstraint.activate([
+            filterButton.widthAnchor.constraint(equalToConstant: 114),
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+        
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Helper Methods
@@ -187,6 +198,14 @@ final class TrackersViewController: UIViewController {
         shouldFilterByDate = true // Включаем фильтрацию
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
+    }
+    
+    @objc
+    func filterButtonTapped() {
+        let filterVC = UINavigationController(rootViewController: FilterViewController())
+        filterVC.modalPresentationStyle = .pageSheet
+        filterVC.modalTransitionStyle = .coverVertical
+        present(filterVC, animated: true)
     }
 }
 
@@ -341,6 +360,74 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             trackerView.collectionView.reloadItems(at: [indexPath])
         }
     }
+    
+    func didTapPinButton(trackerId: UUID) {
+        // TODO: Реализовать функционал закрепления трекера
+        print("Закрепление трекера с ID: \(trackerId)")
+    }
+    
+    func didTapEditButton(trackerId: UUID) {
+        // TODO: Реализовать функционал редактирования трекера
+        print("Редактирование трекера с ID: \(trackerId)")
+    }
+    
+    func didTapDeleteButton(trackerId: UUID) {
+        // Находим indexPath для удаляемого трекера
+        var targetIndexPath: IndexPath?
+        let filteredCategories = filteredCategories()
+        
+        for section in 0..<filteredCategories.count {
+            for item in 0..<filteredCategories[section].trackers.count {
+                if filteredCategories[section].trackers[item].id == trackerId {
+                    targetIndexPath = IndexPath(item: item, section: section)
+                    break
+                }
+            }
+            if targetIndexPath != nil { break }
+        }
+
+        if let indexPath = targetIndexPath {
+            showDeleteConfirmationAlert(for: trackerId, at: indexPath)
+        } else {
+            // Если не нашли indexPath, просто перезагружаем
+            trackerView.collectionView.reloadData()
+            updatePlaceholderVisibility()
+        }
+    }
+
+    func showDeleteConfirmationAlert(for trackerId: UUID, at indexPath: IndexPath) {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Этот трекер точно не нужен?",
+            preferredStyle: .actionSheet
+        )
+        
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { _ in
+            print("Удаление трекера отменено.")
+        }
+        
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            do {
+                try self.trackerStore.deleteTracker(by: trackerId)
+                
+                self.trackerView.collectionView.performBatchUpdates({
+                    self.trackerView.collectionView.deleteItems(at: [indexPath])
+                }, completion: { _ in
+                    self.updatePlaceholderVisibility()
+                })
+                
+                print("Удаление трекера состоялось.")
+            } catch {
+                print("Ошибка при удалении трекера: \(error)")
+            }
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        present(alert, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - TrackerCreationDelegate
@@ -428,4 +515,3 @@ extension TrackersViewController: UISearchResultsUpdating {
         }
     }
 }
-

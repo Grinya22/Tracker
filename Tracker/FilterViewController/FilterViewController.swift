@@ -1,0 +1,83 @@
+import UIKit
+
+protocol FilterViewControllerDelegate: AnyObject {
+    
+}
+
+class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    private let tableView = UITableView()
+    private var itemsOfTableView: [String] = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+    
+    //Все трекеры
+    //Трекеры на сегодня
+    //Завершенные
+    //Не завершенные
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .ypWhite
+        title = "Фильтры"
+        tableView.tableHeaderView = UIView()
+
+        setupTableView()
+    }
+    
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .ypBackground
+        tableView.layer.cornerRadius = 16
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorStyle = .singleLine
+        tableView.isScrollEnabled = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableView.heightAnchor.constraint(equalToConstant: 75 * 4)
+        ])
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return itemsOfTableView.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+        cell.textLabel?.text = itemsOfTableView[indexPath.row]
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        cell.textLabel?.textColor = .ypBlack
+        cell.backgroundColor = .clear
+        
+        return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == itemsOfTableView.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
+        }
+    }
+    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        delegate?.didSelectOption(at: indexPath.row)
+//    }
+    
+    func deselectSelectedRow() {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+}
+
+

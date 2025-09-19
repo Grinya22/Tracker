@@ -6,8 +6,6 @@ protocol TrackerCreationDelegate: AnyObject {
     func didCreateTracker(_ tracker: Tracker, categoryTitle: String)
 }
 
-
-
 // MARK: - CreatingHabitViewController
 
 final class CreatingHabitViewController: UIViewController, TrackerOptionsTableViewDelegate, CollectionTableViewControllerDelegate, ScheduleTableViewControllerDelegate, EmojiSelectionDelegate, ColorSelectionDelegate {

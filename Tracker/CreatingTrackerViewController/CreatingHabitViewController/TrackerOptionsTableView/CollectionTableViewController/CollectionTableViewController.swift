@@ -238,6 +238,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             let heightConstraint = tableView.heightAnchor.constraint(equalToConstant: min(totalHeight, maxHeight))
             heightConstraint.isActive = true
         }
+
     }
     
     private func showDeleteConfirmationAlert(for category: TrackerCategoryCoreData, at indexPath: IndexPath) {

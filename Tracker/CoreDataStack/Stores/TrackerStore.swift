@@ -37,5 +37,19 @@ final class TrackerStore {
         }
         CoreDataStack.shared.saveContext()
     }
+    
+    func fetchTracker(by id: UUID) throws -> TrackerCoreData? {
+        let request = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        return try context.fetch(request).first
+    }
+
+    func deleteTracker(by id: UUID) throws {
+        if let obj = try fetchTracker(by: id) {
+            context.delete(obj)
+            CoreDataStack.shared.saveContext()
+        }
+    }
 }
 
