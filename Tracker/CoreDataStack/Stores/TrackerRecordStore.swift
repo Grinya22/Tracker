@@ -3,15 +3,21 @@ import CoreData
 
 final class TrackerRecordStore {
     private let context: NSManagedObjectContext
+    private let trackerStore: TrackerStore
     
     init(context: NSManagedObjectContext = CoreDataStack.shared.context) {
         self.context = context
+        self.trackerStore = TrackerStore(context: context)
     }
     
     func addRecord(_ record: TrackerRecord) throws {
         let object = TrackerRecordCoreData(context: context)
         object.id = record.id
         object.data = record.data
+        
+        if let tracker = try trackerStore.fetchTracker(by: record.id) {
+            object.tracker = tracker
+        }
         
         CoreDataStack.shared.saveContext()
     }

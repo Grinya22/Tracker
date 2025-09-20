@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - TrackersViewController
 
-final class TrackersViewController: UIViewController {
+final class TrackersViewController: UIViewController, UINavigationControllerDelegate {
     
     // MARK: - Properties
     
@@ -202,9 +202,13 @@ final class TrackersViewController: UIViewController {
     
     @objc
     func filterButtonTapped() {
-        let filterVC = UINavigationController(rootViewController: FilterViewController())
+        let filterViewController = FilterViewController()
+        filterViewController.delegate = self
+        let filterVC = UINavigationController(rootViewController: filterViewController)
+        
         filterVC.modalPresentationStyle = .pageSheet
         filterVC.modalTransitionStyle = .coverVertical
+        
         present(filterVC, animated: true)
     }
 }
@@ -484,7 +488,7 @@ extension TrackersViewController: TrackerCreationDelegate {
 //}
 
 extension TrackersViewController: TrackerDataProviderDelegate {
-    func didUpdate(_ update: TrackerStoreUpdate) {
+   func didUpdate(_ update: TrackerStoreUpdate) {
         print("Обновление: inserted \(update.insertedIndexes.count), deleted \(update.deletedIndexes.count)")
         
         // Просто перезагружаем collectionView — это решит проблему с invalid indexes
@@ -492,6 +496,12 @@ extension TrackersViewController: TrackerDataProviderDelegate {
         updatePlaceholderVisibility()
         
         // Если нужно анимации, добавьте позже, когда фильтры стабилизированы
+    }
+    
+    func setFilter(_ filter: FilterType) {
+        // Обновляем UI после применения фильтра
+        trackerView.collectionView.reloadData()
+        updatePlaceholderVisibility()
     }
 }
 
@@ -513,5 +523,20 @@ extension TrackersViewController: UISearchResultsUpdating {
                 self.trackerView.collectionView.reloadData()
             }
         }
+    }
+}
+
+extension TrackersViewController: FilterViewControllerDelegate {
+    func didSelectFilter(_ filter: FilterType) {
+        switch filter {
+        case .all:
+            shouldFilterByDate = false
+        case .today, .completed, .uncompleted:
+            shouldFilterByDate = true
+        }
+        
+        trackerDataProvider?.setFilter(filter)
+        trackerView.collectionView.reloadData()
+        updatePlaceholderVisibility()
     }
 }

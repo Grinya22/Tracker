@@ -1,17 +1,14 @@
 import UIKit
 
 protocol FilterViewControllerDelegate: AnyObject {
-    
+    func didSelectFilter(_ filter: FilterType)
 }
 
 class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private let tableView = UITableView()
     private var itemsOfTableView: [String] = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
     
-    //Все трекеры
-    //Трекеры на сегодня
-    //Завершенные
-    //Не завершенные
+    weak var delegate: FilterViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,9 +66,25 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        delegate?.didSelectOption(at: indexPath.row)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedFilter: FilterType
+        
+        switch indexPath.row {
+        case 0:
+            selectedFilter = .all
+        case 1:
+            selectedFilter = .today(Date())
+        case 2:
+            selectedFilter = .completed(Date())
+        case 3:
+            selectedFilter = .uncompleted(Date())
+        default:
+            selectedFilter = .all
+        }
+        
+        delegate?.didSelectFilter(selectedFilter)
+        dismiss(animated: true)
+    }
     
     func deselectSelectedRow() {
         if let indexPath = tableView.indexPathForSelectedRow {

@@ -1,7 +1,6 @@
 import UIKit
 import CoreData
 
-
 // MARK: - TrackerStoreUpdate
 
 struct TrackerStoreUpdate {
@@ -15,6 +14,7 @@ struct TrackerStoreUpdate {
 
 protocol TrackerDataProviderDelegate: AnyObject {
     func didUpdate(_ update: TrackerStoreUpdate)
+    func setFilter(_ filter: FilterType)
 }
 
 // MARK: - TrackerDataProviderProtocol
@@ -118,22 +118,52 @@ final class TrackerDataProvider: NSObject {
         }
     }
     
-    func allTrackers() {
-        let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreDataForAllTrackers")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "", arguments: <#T##CVaListPointer#>)
-    }
-    
-    func todaysTrackers() {
+    func setFilter(_ filter: FilterType) {
+        let fetchRequest = fetchedResultsController.fetchRequest
         
-    }
-    
-    func finishedTrackers() {
+        let date: Date
         
-    }
-    
-    func notFinishedTrackers() {
+        switch filter {
+        case .all:
+            date = Date()
+        case .today(let myDate), .completed(let myDate), .uncompleted(let myDate):
+            date = myDate
+        }
         
+        let weekday = Calendar.current.component(.weekday, from: date)
+        let adjustedWeekday = weekday == 1 ? 7 : weekday - 1
+        
+        let schedulePredicate = NSPredicate(format: "ANY schedule.rawValue == %d", adjustedWeekday)
+        
+        let startOfDay = Calendar.current.startOfDay(for: date) as NSDate
+        let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay as Date)! as NSDate
+        
+        switch filter {
+        case .all:
+            fetchRequest.predicate = nil
+            
+        case .today:
+            fetchRequest.predicate = nil
+            
+        case .completed:
+            let completedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.data >= %@ AND $r.data < %@).@count > 0", startOfDay, endOfDay)
+            fetchRequest.predicate = completedPredicate
+            
+        case .uncompleted:
+            let uncompletedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.data >= %@ AND $r.data < %@).@count == 0", startOfDay, endOfDay)
+            fetchRequest.predicate = uncompletedPredicate
+        }
+        
+        do {
+            try fetchedResultsController.performFetch()
+            let trackers = try context.fetch(fetchRequest)
+            print("Фильтр \(filter): найдено \(trackers.count) трекеров")
+            
+            // Уведомляем делегата об изменении фильтра
+            delegate?.setFilter(filter)
+        } catch {
+            print("Ошибка при выборке: \(error)")
+        }
     }
 }
 

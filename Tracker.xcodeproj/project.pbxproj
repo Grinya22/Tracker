@@ -36,6 +36,7 @@
 		D2C6751E2DDBB1BC000255D8 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C6751D2DDBB1BC000255D8 /* TrackerRecordStore.swift */; };
 		D2CDB6832E72E16C00BC3140 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CDB6822E72E16C00BC3140 /* Strings.swift */; };
 		D2CDB6872E7B475200BC3140 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CDB6862E7B475200BC3140 /* FilterViewController.swift */; };
+		D2CDB6892E7D60AB00BC3140 /* FilterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CDB6882E7D60AB00BC3140 /* FilterType.swift */; };
 		D2D110CA2DC34B70003AE980 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110C92DC34B70003AE980 /* TrackerCategory.swift */; };
 		D2D110CC2DC34B7A003AE980 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */; };
 		D2D110CE2DC34B8D003AE980 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D110CD2DC34B8D003AE980 /* Tracker.swift */; };
@@ -114,6 +115,7 @@
 		D2C6751D2DDBB1BC000255D8 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		D2CDB6822E72E16C00BC3140 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		D2CDB6862E7B475200BC3140 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		D2CDB6882E7D60AB00BC3140 /* FilterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterType.swift; sourceTree = "<group>"; };
 		D2D110C92DC34B70003AE980 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
 		D2D110CD2DC34B8D003AE980 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -361,6 +363,7 @@
 				D2D110CB2DC34B7A003AE980 /* TrackerRecord.swift */,
 				D2D110C92DC34B70003AE980 /* TrackerCategory.swift */,
 				D2D110CD2DC34B8D003AE980 /* Tracker.swift */,
+				D2CDB6882E7D60AB00BC3140 /* FilterType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -607,6 +610,7 @@
 			files = (
 				D2CDB6832E72E16C00BC3140 /* Strings.swift in Sources */,
 				D2DB26402DC7759600B913F4 /* CreatingIrregularEventViewContoller.swift in Sources */,
+				D2CDB6892E7D60AB00BC3140 /* FilterType.swift in Sources */,
 				D2DB263E2DC7757800B913F4 /* CreatingHabitViewController.swift in Sources */,
 				D2D110CE2DC34B8D003AE980 /* Tracker.swift in Sources */,
 				D2D110D12DC4147F003AE980 /* TrackerCollectionView.swift in Sources */,
