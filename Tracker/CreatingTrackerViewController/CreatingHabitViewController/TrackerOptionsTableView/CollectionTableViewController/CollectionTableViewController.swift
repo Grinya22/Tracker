@@ -8,7 +8,7 @@ protocol CollectionTableViewControllerDelegate: AnyObject {
 
 // MARK: - CollectionTableViewController
 
-final class CollectionTableViewController: UIViewController, CreatingCollectionDelegate, UITableViewDataSource, UITableViewDelegate {
+final class CollectionTableViewController: UIViewController, CreatingCollectionDelegate, UITableViewDataSource, UITableViewDelegate, UICollectionViewDelegate {
     
     // MARK: - Properties
     
@@ -199,7 +199,10 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 
                 return UIMenu(children: [
                     UIAction(title: L10n.Edit.button) { _ in
-                        
+                        let editCollectionVC = EditCollectionViewController()
+                        editCollectionVC.delegate = self
+                        editCollectionVC.categoryToEdit = categoryToDelete
+                        self.navigationController?.pushViewController(editCollectionVC, animated: true)
                     },
                     UIAction(title: L10n.Delete.button, attributes: .destructive) { _ in
                         self.deselectSelectedRow()
@@ -434,3 +437,10 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
 }
 
+extension CollectionTableViewController: EditCollectionDelegate {
+    func didUpdateCategory(_ category: TrackerCategoryCoreData, newName: String) {
+        category.title = newName
+        CoreDataStack.shared.saveContext()
+        tableView.reloadData()
+    }
+}

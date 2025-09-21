@@ -19,7 +19,7 @@ final class TrackerCategoryStore {
     
     func fetchCategories() throws -> [TrackerCategoryCoreData] {
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
-        // fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         do {
             let categories = try context.fetch(fetchRequest)

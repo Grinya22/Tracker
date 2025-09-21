@@ -6,13 +6,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     
     // MARK: - Properties
     
-//    var categories: [TrackerCategory] = [] {
-//        didSet {
-//            updatePlaceholderVisibility()
-//        }
-//    }
-    
-    private var shouldFilterByDate = false // Флаг для фильтрации
+    private var shouldFilterByDate = false
     weak var trackerCreationDelegate: TrackerCreationDelegate?
     
     private let trackerView = TrackerCollectionView()
@@ -46,17 +40,6 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         super.viewDidLoad()
         
         view.backgroundColor = .dynamicBackground
-        
-        // Загружаем категории из TrackerData
-        //        categories = TrackerData.getCategories()
-        //
-        //        // Тестовые трекеры
-        //        let calendar = Calendar.current
-        //        // Устанавливаем текущую дату с обнулением времени
-        //        let currentDate = calendar.startOfDay(for: Date()) // Обнуляем время
-        //        datePicker.date = currentDate
-        //
-        //        //shouldFilterByDate = true
         
         do {
             dataProviderProtocol = try TrackerDataProvider(trackerStore: trackerStore, categoryStore: categoryStore, recordStore: recordStore)
@@ -464,40 +447,6 @@ extension TrackersViewController: TrackerCreationDelegate {
 }
 
 // MARK: - TrackerDataProviderDelegate
-
-//extension TrackersViewController: TrackerDataProviderDelegate {
-//    func didUpdate(_ update: TrackerStoreUpdate) {
-//        // Кэшируем актуальные категории перед обновлением
-//        let currentCategories = filteredCategories()
-//
-//        // Проверяем, что индексы валидны
-//        let validInsertedIndexes = update.insertedIndexes.filter { indexPath in
-//            indexPath.section < currentCategories.count &&
-//            indexPath.item < currentCategories[indexPath.section].trackers.count
-//        }
-//
-//        let validDeletedIndexes = update.deletedIndexes.filter { indexPath in
-//            indexPath.section < currentCategories.count &&
-//            indexPath.item < currentCategories[indexPath.section].trackers.count
-//        }
-//
-//        // Выполняем обновления только для валидных индексов
-//        trackerView.collectionView.performBatchUpdates {
-//            if !validInsertedIndexes.isEmpty {
-//                trackerView.collectionView.insertItems(at: validInsertedIndexes)
-//            }
-//            if !validDeletedIndexes.isEmpty {
-//                trackerView.collectionView.deleteItems(at: validDeletedIndexes)
-//            }
-//        }
-//
-//        print("Обновление: inserted \(update.insertedIndexes.count), deleted \(update.deletedIndexes.count)")
-//
-//        // Перезагружаем данные, чтобы учесть возможные изменения
-//        trackerView.collectionView.reloadData()
-//        updatePlaceholderVisibility()
-//    }
-//}
 
 extension TrackersViewController: TrackerDataProviderDelegate {
    func didUpdate(_ update: TrackerStoreUpdate) {
