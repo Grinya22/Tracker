@@ -113,7 +113,7 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         // Установка нового выбора
         if let cell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell {
             UIView.animate(withDuration: 0.2) {
-                cell.contentView.layer.backgroundColor = UIColor.ypLightGray.cgColor
+                cell.contentView.backgroundColor = .dynamicSelectItemAtEmojiCollectionColor
             }
         }
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D2179B2B2DBF8B1D0029ED50 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */; };
+		D21E09322E800725001C8E6A /* UIColor+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21E09312E800724001C8E6A /* UIColor+Dynamic.swift */; };
 		D2403B012DD9E17100E65CDC /* UIColorValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B002DD9E17100E65CDC /* UIColorValueTransformer.swift */; };
 		D2403B032DD9E37E00E65CDC /* ScheduleValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B022DD9E37E00E65CDC /* ScheduleValueTransformer.swift */; };
 		D2403B062DDA087700E65CDC /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2403B052DDA087700E65CDC /* CoreDataStack.swift */; };
@@ -75,6 +76,7 @@
 
 /* Begin PBXFileReference section */
 		D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
+		D21E09312E800724001C8E6A /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
 		D23781142E0F295D0093BD83 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D23781152E0F295D0093BD83 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D23781162E0F29660093BD83 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 			children = (
 				D2929CD12DBF75BD005CCC70 /* UIColor+Extensions.swift */,
 				D2929CD32DBF762E005CCC70 /* UIColorForSections+Extensions.swift */,
+				D21E09312E800724001C8E6A /* UIColor+Dynamic.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				D2C45D4F2DCA5E0F00DA5D1F /* ScheduleTableViewController.swift in Sources */,
 				D2929CD42DBF762E005CCC70 /* UIColorForSections+Extensions.swift in Sources */,
 				D2DB264C2DC7A60B00B913F4 /* EmojiCollectionViewCell.swift in Sources */,
+				D21E09322E800725001C8E6A /* UIColor+Dynamic.swift in Sources */,
 				D2403B012DD9E17100E65CDC /* UIColorValueTransformer.swift in Sources */,
 				D2DB264E2DC7AD4B00B913F4 /* ColorCollectionViewCell.swift in Sources */,
 				D2B895492DF8906100775372 /* EditCollectionViewController.swift in Sources */,

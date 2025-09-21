@@ -50,7 +50,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         navigationItem.title = L10n.New.IrregularEvent.title
         
@@ -68,6 +68,17 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     // MARK: - Setup UI
     
     func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
@@ -75,7 +86,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
             action: #selector(backTapped)
         )
             
-        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .dynamicButtonBackground
         navigationItem.backBarButtonItem?.title = ""
         
         navigationItem.title = L10n.New.IrregularEvent.title
@@ -98,12 +109,12 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
         
-        textField.textColor = .ypBlack
+        textField.textColor = .dynamicTitleColor
         textField.attributedPlaceholder = NSAttributedString(
             string: L10n.SearchBar.nameTracker,
             attributes: [.foregroundColor: UIColor.ypGray]
         )
-        textField.backgroundColor = .ypBackground
+        textField.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
@@ -136,8 +147,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         
         let emojiLabel = UILabel()
         emojiLabel.text = L10n.Title.chooseEmoji
-        emojiLabel.textColor = .ypBlack
-        emojiLabel.font = UIFont.systemFont(ofSize: 19)
+        emojiLabel.textColor = .dynamicTitleColor
+        emojiLabel.font = UIFont.boldSystemFont(ofSize: 19)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emojiLabel)
         
@@ -157,9 +168,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         ])
         
         let colorLabel = UILabel()
-        colorLabel.text =
-        L10n.Title.chooseColor
-        colorLabel.textColor = .ypBlack
+        colorLabel.text = L10n.Title.chooseColor
+        colorLabel.textColor = .dynamicTitleColor
         colorLabel.font = UIFont.boldSystemFont(ofSize: 19)
         colorLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorLabel)
@@ -199,7 +209,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         
         let createButton = UIButton()
         createButton.setTitle(L10n.Create.button, for: .normal)
-        createButton.setTitleColor(.ypWhite, for: .normal)
+        createButton.setTitleColor(.dynamicButtonTitle, for: .normal)
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.layer.cornerRadius = 16
         createButton.translatesAutoresizingMaskIntoConstraints = false
@@ -236,7 +246,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
               let color = selectedColor,
               let emoji = selectedEmoji else { return }
         
-        print("CreatingIrregularEventVC: Делегат \(self.delegate == nil ? "nil" : "установлен")") // <-- ДОБАВЬТЕ ЭТУ СТРОКУ
+        print("CreatingIrregularEventVC: Делегат \(self.delegate == nil ? "nil" : "установлен")")
         
         let tracker = Tracker(id: UUID(),
                               name: name,
@@ -264,7 +274,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
                         selectedEmoji != nil
         let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == L10n.Create.button }) as? UIButton
         creatButton?.isEnabled = isFormValid
-        creatButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+        creatButton?.backgroundColor = isFormValid ? .dynamicButtonBackground : .ypGray
     }
     
     // MARK: - TrackerOptionsTableViewDelegate

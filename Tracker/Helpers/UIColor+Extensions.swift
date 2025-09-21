@@ -9,8 +9,8 @@ extension UIColor {
     static var ypBackground: UIColor { UIColor(named: "Background [day]") ?? UIColor.darkGray }
 
     // Базовые цвета (ночь)
-    static var ypBlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.black }
-    static var ypWhiteNight: UIColor { UIColor(named: "White [night]") ?? UIColor.white }
+    static var ypBlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.white }
+    static var ypWhiteNight: UIColor { UIColor(named: "White [night]") ?? UIColor.black }
     static var ypBackgroundNight: UIColor { UIColor(named: "Background [night]") ?? UIColor.darkGray }
     
     static var ypRedTracker: UIColor { UIColor(named: "Red") ?? UIColor.red }

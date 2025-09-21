@@ -10,8 +10,7 @@ final class CreatingTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         navigationItem.title = L10n.Title.creatingTrackerScreen
         
@@ -23,10 +22,10 @@ final class CreatingTrackerViewController: UIViewController {
     func setUpCreatingTrackerViewController() {
         let habitButton = UIButton()
         habitButton.setTitle(L10n.Habit.button, for: .normal)
-        habitButton.setTitleColor(.ypWhite, for: .normal)
+        habitButton.setTitleColor(.dynamicButtonTitle, for: .normal)
         habitButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         habitButton.layer.cornerRadius = 16
-        habitButton.backgroundColor = .ypBlack
+        habitButton.backgroundColor = .dynamicButtonBackground
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(habitButton)
         
@@ -40,10 +39,10 @@ final class CreatingTrackerViewController: UIViewController {
         
         let irregularEventButton = UIButton()
         irregularEventButton.setTitle(L10n.IrregularEvent.button, for: .normal)
-        irregularEventButton.setTitleColor(.ypWhite, for: .normal)
+        irregularEventButton.setTitleColor(.dynamicButtonTitle, for: .normal)
         irregularEventButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         irregularEventButton.layer.cornerRadius = 16
-        irregularEventButton.backgroundColor = .ypBlack
+        irregularEventButton.backgroundColor = .dynamicButtonBackground
         irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(irregularEventButton)
         

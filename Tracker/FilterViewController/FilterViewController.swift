@@ -12,9 +12,20 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         title = "Фильтры"
         tableView.tableHeaderView = UIView()
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
 
         setupTableView()
     }
@@ -22,11 +33,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         tableView.layer.cornerRadius = 16
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypGray
         tableView.isScrollEnabled = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -49,7 +61,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.text = itemsOfTableView[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .dynamicTitleColor
         cell.backgroundColor = .clear
         
         return cell

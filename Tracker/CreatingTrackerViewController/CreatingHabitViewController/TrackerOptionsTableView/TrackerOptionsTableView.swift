@@ -36,12 +36,13 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         tableView.layer.cornerRadius = 16
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16) // Убираем отступы для разделителей
         tableView.separatorStyle = .singleLine // Оставляем только линии между ячейками
+        tableView.separatorColor = .ypGray
         tableView.isScrollEnabled = false
         addSubview(tableView)
         
@@ -64,7 +65,7 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
         cell.textLabel?.text = itemsOfTableView[indexPath.row]
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .dynamicTitleColor
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator // Стрелка вправо
         

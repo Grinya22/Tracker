@@ -19,7 +19,7 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         title = L10n.Title.statisticsScreen
         
@@ -45,7 +45,7 @@ final class StatisticsViewController: UIViewController {
         descriptionLabel = UILabel()
         descriptionLabel.text = L10n.Empty.statistics
         descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .ypBlack
+        descriptionLabel.textColor = .dynamicTitleColor
         descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)

@@ -25,7 +25,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         setupNavigationBar()
         setUpScheduleTableViewController()
@@ -37,6 +37,17 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     // MARK: - Setup UI
     
     func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
@@ -44,7 +55,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
             action: #selector(backTapped)
         )  
         
-        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .dynamicButtonBackground
         navigationItem.backBarButtonItem?.title = ""
         
         navigationItem.title = L10n.schedule
@@ -54,8 +65,9 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         tableView.dataSource = self
         tableView.delegate = self
         tableView.layer.cornerRadius = 16
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.separatorStyle = .singleLine
         tableView.tableHeaderView = UIView(frame: .zero)
         tableView.isScrollEnabled = false 
@@ -72,8 +84,8 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         
         let doneButton = UIButton()
         doneButton.setTitle(L10n.Done.button, for: .normal)
-        doneButton.setTitleColor(.ypWhite, for: .normal)
-        doneButton.backgroundColor = .ypBlack
+        doneButton.setTitleColor(.dynamicButtonTitle, for: .normal)
+        doneButton.backgroundColor = .dynamicButtonBackground
         doneButton.layer.cornerRadius = 16
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         doneButton.translatesAutoresizingMaskIntoConstraints = false

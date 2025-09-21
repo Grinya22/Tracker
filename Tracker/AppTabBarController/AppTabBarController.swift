@@ -3,13 +3,13 @@ import UIKit
 // MARK: - AppTabBarController
 
 final class AppTabBarController: UITabBarController {
-    
+
     // MARK: - Lifecycle
     
-   override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
-       setUpTabBar()
+        setUpTabBar()
     }
     
     // MARK: - Setup UI
@@ -24,15 +24,42 @@ final class AppTabBarController: UITabBarController {
         trackerNavigationController.navigationBar.prefersLargeTitles = true
         statisticNavigationController.navigationBar.prefersLargeTitles = true
         
-        trackerNavigationController.tabBarItem = UITabBarItem(title: L10n.TabBar.trackers, image: UIImage(named: "TrakerTabBarItem"), tag: 0)
-        statisticNavigationController.tabBarItem = UITabBarItem(title: L10n.TabBar.statistics, image: UIImage(named: "StatisticsTabBarItem"), tag: 1)
+        configureNavigationBar(trackerNavigationController.navigationBar)
+        configureNavigationBar(statisticNavigationController.navigationBar)
+        
+        trackerNavigationController.tabBarItem = UITabBarItem(
+            title: L10n.TabBar.trackers,
+            image: UIImage(named: "TrakerTabBarItem"),
+            tag: 0
+        )
+        statisticNavigationController.tabBarItem = UITabBarItem(
+            title: L10n.TabBar.statistics,
+            image: UIImage(named: "StatisticsTabBarItem"),
+            tag: 1
+        )
         
         viewControllers = [trackerNavigationController, statisticNavigationController]
         
         tabBar.tintColor = .ypBlueTracker
         tabBar.unselectedItemTintColor = .ypGray
-        tabBar.backgroundColor = .ypWhite
+        tabBar.backgroundColor = .dynamicBackground
+        
+        tabBar.shadowImage = UIImage()
+        tabBar.backgroundImage = UIImage()
     }
-
+    
+    // MARK: - NavigationBar Appearance Helper
+    
+    private func configureNavigationBar(_ navigationBar: UINavigationBar) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+        navigationBar.compactAppearance = appearance
+    }
 }
-

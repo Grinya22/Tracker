@@ -28,7 +28,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         setupNavigationBar()
         loadCategories()
@@ -39,10 +39,16 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     // MARK: - Setup UI
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = .ypWhite
-        navigationController?.navigationBar.shadowImage = UIImage() // Убираем разделитель под навигатором
-        //        Свойство shadowImage — это изображение, которое используется для рендеринга тени под UINavigationBar. По умолчанию iOS предоставляет стандартное изображение для этой тени.
-        //        Когда вы устанавливаете пустое UIImage(), система перестаёт рисовать что-либо в этой области, оставляя только фон NavigationBar (определяемый barTintColor).
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
@@ -51,7 +57,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             action: #selector(backTapped)
         )
         
-        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .dynamicButtonBackground
         navigationItem.backBarButtonItem?.title = ""
         
         navigationItem.title = L10n.category
@@ -62,11 +68,13 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.layer.cornerRadius = 16
-        tableView.backgroundColor = .ypBackground
+        tableView.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.tableHeaderView = UIView(frame: .zero)
         tableView.separatorStyle = .singleLine
         tableView.isScrollEnabled = false
+        tableView.tableFooterView = UIView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
         view.addSubview(buttonAddtNewCollection)
@@ -95,7 +103,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
         placeholderLabel.text = L10n.Empty.category
         placeholderLabel.textAlignment = .center
-        placeholderLabel.textColor = .ypBlack
+        placeholderLabel.textColor = .dynamicTitleColor
         placeholderLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         placeholderLabel.numberOfLines = 0
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -107,9 +115,9 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             placeholderLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
         
+        buttonAddtNewCollection.backgroundColor = .dynamicButtonBackground
         buttonAddtNewCollection.setTitle(L10n.AddCategory.button, for: .normal)
-        buttonAddtNewCollection.setTitleColor(.ypWhite, for: .normal)
-        buttonAddtNewCollection.backgroundColor = .ypBlack
+        buttonAddtNewCollection.setTitleColor(.dynamicButtonTitle, for: .normal)
         buttonAddtNewCollection.layer.cornerRadius = 16
         buttonAddtNewCollection.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         buttonAddtNewCollection.translatesAutoresizingMaskIntoConstraints = false
@@ -159,7 +167,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         
         cell.textLabel?.text = categories[indexPath.row].title
         cell.backgroundColor = .clear
-        cell.textLabel?.textColor = .ypBlack
+        cell.textLabel?.textColor = .dynamicTitleColor
         cell.accessoryType = indexPath.row == selectedCategoryIndex ? .checkmark : .none
         return cell
     }
@@ -168,13 +176,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == categories.count - 1 {
-            // Убираем разделитель под последней строкой
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
-        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -21,7 +21,7 @@ class ScheduleTableViewCell: UITableViewCell {
         backgroundColor = .clear // Ячейка прозрачная, чтобы виден был серый фон таблицы
         
         dayLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        dayLabel.textColor = .ypBlack
+        dayLabel.textColor = .dynamicTitleColor
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(dayLabel)
         

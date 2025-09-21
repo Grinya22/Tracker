@@ -59,7 +59,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .dynamicBackground
         
         setupNavigationBar()
         setUpCreatingTrackerViewController()
@@ -75,6 +75,17 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     // MARK: - Setup UI
     
     func setupNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
@@ -82,7 +93,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             action: #selector(cancelTapped)
         )
         
-        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .dynamicButtonBackground
         navigationItem.backBarButtonItem?.title = ""
         
         navigationItem.title = L10n.New.Habit.title
@@ -105,12 +116,12 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
         
-        textField.textColor = .ypBlack
+        textField.textColor = .dynamicTitleColor
         textField.attributedPlaceholder = NSAttributedString(
             string: L10n.SearchBar.nameTracker,
             attributes: [.foregroundColor: UIColor.ypGray]
         )
-        textField.backgroundColor = .ypBackground
+        textField.backgroundColor = .dynamicTextFieldOrTableViewBackgroundColor
         textField.translatesAutoresizingMaskIntoConstraints = false
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
         textField.leftView = leftPaddingView
@@ -140,7 +151,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         let emojiLabel = UILabel()
         emojiLabel.text = L10n.Title.chooseEmoji
-        emojiLabel.textColor = .ypBlack
+        emojiLabel.textColor = .dynamicTitleColor
         emojiLabel.font = UIFont.boldSystemFont(ofSize: 19)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(emojiLabel)
@@ -162,7 +173,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         let colorLabel = UILabel()
         colorLabel.text = L10n.Title.chooseColor
-        colorLabel.textColor = .ypBlack
+        colorLabel.textColor = .dynamicTitleColor
         colorLabel.font = UIFont.boldSystemFont(ofSize: 19)
         colorLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(colorLabel)
@@ -201,7 +212,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         let createButton = UIButton()
         createButton.setTitle(L10n.Create.button, for: .normal)
-        createButton.setTitleColor(.ypWhite, for: .normal)
+        createButton.setTitleColor(.dynamicButtonTitle, for: .normal)
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.layer.cornerRadius = 16
         createButton.translatesAutoresizingMaskIntoConstraints = false
@@ -310,7 +321,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
                         selectedEmoji != nil
         let createButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == L10n.Create.button }) as? UIButton
         createButton?.isEnabled = isFormValid
-        createButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+        createButton?.backgroundColor = isFormValid ? .dynamicButtonBackground : .ypGray
     }
     
     // MARK: - TrackerOptionsTableViewDelegate

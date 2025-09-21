@@ -45,6 +45,8 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .dynamicBackground
+        
         // Загружаем категории из TrackerData
         //        categories = TrackerData.getCategories()
         //
@@ -81,7 +83,17 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     // MARK: - Setup UI
     
     func setupNavigationBar() {
-        view.backgroundColor = .ypWhite
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .dynamicBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.dynamicTitleColor]
+        appearance.shadowColor = nil
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
         title = L10n.Title.mainScreen
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -90,7 +102,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
             target: self,
             action: #selector(plusTapped)
         )
-        navigationItem.leftBarButtonItem?.tintColor = .ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .dynamicButtonBackground
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         
         // Добавляем поиск
@@ -133,7 +145,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         
         descriptionLabel.text = L10n.Empty.trackers
         descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .ypBlack
+        descriptionLabel.textColor = .dynamicTitleColor
         descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(descriptionLabel)

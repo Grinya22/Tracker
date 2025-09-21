@@ -19,6 +19,7 @@ final class TrackerCollectionView: UIView {
         collectionView.scrollIndicatorInsets = collectionView.contentInset
         collectionView.isScrollEnabled = true
         collectionView.collectionViewLayout = layout
+        collectionView.backgroundColor = .dynamicBackground
         addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
 

@@ -16,7 +16,7 @@ class SupplementaryView: UICollectionReusableView {
         
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        titleLabel.textColor = .ypBlack
+        titleLabel.textColor = .dynamicTitleColor
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
