@@ -2,7 +2,6 @@ import UIKit
 
 // MARK: - ColorSelectionDelegate
 
-// Протокол для уведомления о выборе цвета
 protocol ColorSelectionDelegate: AnyObject {
     func didSelectColor(_ color: UIColor?)
 }
@@ -74,6 +73,17 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         collectionView.delegate = self
     }
     
+    // MARK: - Helper Methods
+    
+    func preselectColor(_ color: UIColor?) {
+        guard let color = color else { return }
+
+        if let index = colors.firstIndex(where: { $0.isEqualToColor(color) }) {
+            selectedIndexPath = IndexPath(item: index, section: 0)
+            collectionView.reloadData()
+        }
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -82,8 +92,16 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCollectionViewCell.reuseIdentifier, for: indexPath) as! ColorCollectionViewCell
-        //let color = colors[indexPath.row]
-        cell.colorView.backgroundColor = colors[indexPath.row]
+        let color = colors[indexPath.row]
+        cell.colorView.backgroundColor = color
+        
+        if indexPath == selectedIndexPath {
+            cell.borderView.layer.borderWidth = 3
+            cell.borderView.layer.borderColor = color.withAlphaComponent(0.3).cgColor
+        } else {
+            cell.borderView.layer.borderWidth = 0
+            cell.borderView.layer.borderColor = UIColor.clear.cgColor
+        }
         return cell
     }
     

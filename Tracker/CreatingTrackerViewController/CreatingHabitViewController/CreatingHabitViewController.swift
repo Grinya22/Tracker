@@ -229,7 +229,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
-        print("Target для createButton добавлен: selector = #createTapped")
     }
     
     // MARK: - Actions
@@ -242,7 +241,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     @objc
     func cancelTapped() {
-        print("backTapped вызван — это Отмена, а не Создать")
         UserDefaults.standard.removeObject(forKey: "savedDays")
         UserDefaults.standard.synchronize()
         
@@ -251,13 +249,10 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     @objc
     func createTapped() {
-        print("createTapped вызван, все данные: name=\(trackerName ?? "nil"), cat=\(selectedCategory ?? "nil")")
-        
         guard let name = trackerName,
               let categoryTitle = selectedCategory,
               let color = selectedColor,
               let emoji = selectedEmoji else {
-            print("Ошибка: не все данные заполнены")
             return
         }
         
@@ -272,17 +267,13 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         
         do {
             guard let dataProvider = dataProvider else {
-                print("Ошибка: dataProvider не установлен")
                 return
             }
-            print("Категории до добавления:", dataProvider.numberOfSections)
-
-            print("dataProvider: \(dataProvider != nil ? "установлен" : "nil")")
+            
             // Добавляем трекер через исправленный TrackerDataProvider.
             try dataProvider.addTracker(tracker, to: categoryTitle)
             // Зачем: Чтобы трекер сохранился в Core Data и был связан с категорией.
             // Почему так: TrackerDataProvider использует исправленный addTracker.
-            print("Категории после добавления:", dataProvider.numberOfSections)
 
             // Уведомляем делегата.
             delegate?.didCreateTracker(tracker, categoryTitle: categoryTitle)
@@ -307,8 +298,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         } catch {
             print("Ошибка при создании трекера: \(error)")
         }
-        
-        print("Кнопка Создать нажата")
     }
     
     // MARK: - Helper Methods
@@ -344,7 +333,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     // MARK: - CollectionTableViewControllerDelegate
     
     func didSelectOption(_ category: String?) {
-        print("Выбрана категория: \(category ?? "нет")")
         selectedCategory = category
         optionsTableView.updateCategorySubtitle(category)
         updateCreateButtonState()
@@ -371,7 +359,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             }
             stringDays = dayNames.joined(separator: ", ")
         }
-        print("Выбраны дни: \(stringDays)")
         optionsTableView.updateScheduleSubtitle(stringDays)
         updateCreateButtonState()
     }
@@ -380,7 +367,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     func didSelectEmoji(_ emoji: String?) {
         selectedEmoji = emoji
-        print("Выбран эмодзи: \(selectedEmoji ?? "нет")")
         updateCreateButtonState()
     }
     
@@ -388,7 +374,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     func didSelectColor(_ color: UIColor?) {
         selectedColor = color
-        print("Выбран цвет: \(selectedColor?.description ?? "нет")")
         updateCreateButtonState()
     }
 }

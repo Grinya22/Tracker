@@ -18,7 +18,7 @@ class ScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .clear // Ячейка прозрачная, чтобы виден был серый фон таблицы
+        backgroundColor = .clear
         
         dayLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         dayLabel.textColor = .dynamicTitleColor
@@ -26,7 +26,7 @@ class ScheduleTableViewCell: UITableViewCell {
         contentView.addSubview(dayLabel)
         
         daySwitch.translatesAutoresizingMaskIntoConstraints = false
-        daySwitch.onTintColor = .systemBlue // Устанавливаем синий цвет для переключателя
+        daySwitch.onTintColor = .systemBlue
         contentView.addSubview(daySwitch)
         
         NSLayoutConstraint.activate([

@@ -11,25 +11,66 @@ final class TrackerRecordStore {
     }
     
     func addRecord(_ record: TrackerRecord) throws {
-        let object = TrackerRecordCoreData(context: context)
-        object.id = record.id
-        object.data = record.data
+        let normalizedDate = Calendar.current.startOfDay(for: record.date)
         
-        if let tracker = try trackerStore.fetchTracker(by: record.id) {
-            object.tracker = tracker
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(
+            format: "trackerId == %@ AND date == %@",
+            record.trackerId as CVarArg,
+            normalizedDate as NSDate
+        )
+        
+        let records = try context.fetch(fetchRequest)
+        
+        if records.isEmpty {
+            let object = TrackerRecordCoreData(context: context)
+            object.id = record.id
+            object.trackerId = record.trackerId
+            object.date = normalizedDate
+            
+            if let tracker = try trackerStore.fetchTracker(by: record.trackerId) {
+                object.tracker = tracker
+            }
+            
+            CoreDataStack.shared.saveContext()
+        } else {
+            return
+        }
+    }
+    
+    func deleteRecord(trackerId: UUID, date: Date) throws {
+        let normalizedDate = Calendar.current.startOfDay(for: date)
+        
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.predicate = NSPredicate(
+            format: "trackerId == %@ AND date == %@",
+            trackerId as CVarArg,
+            normalizedDate as NSDate
+        )
+        
+        let records = try context.fetch(fetchRequest)
+        
+        
+        if !records.isEmpty {
+            for record in records {
+                context.delete(record)
+            }
         }
         
         CoreDataStack.shared.saveContext()
     }
     
-    func deleteRecord(trackerId: UUID, date: Date) throws {
+    func fetchAllRecords() throws -> [TrackerRecord] {
         let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
-        fetchRequest.predicate = NSPredicate(format: "id == %@ AND data == %@", trackerId as CVarArg, date as NSDate)
-        let records = try context.fetch(fetchRequest)
         
-        if let record = records.first {
-            context.delete(record)
-            CoreDataStack.shared.saveContext()
+        let objects = try context.fetch(fetchRequest)
+        
+        return objects.compactMap { object in
+            guard let id = object.id,
+                  let trackerId = object.trackerId,
+                  let date = object.date else { return nil }
+            
+            return TrackerRecord(id: id, trackerId: trackerId, date: date)
         }
     }
 }

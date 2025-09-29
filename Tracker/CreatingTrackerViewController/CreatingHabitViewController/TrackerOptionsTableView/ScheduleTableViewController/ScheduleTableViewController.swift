@@ -30,8 +30,16 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         setupNavigationBar()
         setUpScheduleTableViewController()
         
+        selectedDays = Array(repeating: false, count: 7)
         
         loadDays()
+        
+        for day in selectedWeekDays {
+            let index = day.rawValue - 1
+            selectedDays[index] = true
+        }
+        
+        tableView.reloadData()
     }
     
     // MARK: - Setup UI
@@ -109,6 +117,8 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     @objc
     func doneButtonTapped() {
+        selectedWeekDays = []
+        
         for i in 0..<days.count {
             if selectedDays[i] {
                 let weekDay = WeekDay(rawValue: i + 1) // Индекс + 1 соответствует WeekDay (monday = 1, tuesday = 2, ...)
@@ -116,12 +126,11 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
             }
         }
         
-        print("Выбраны дни: \(selectedWeekDays)")
         saveDays()
-        
         delegate?.didSelectDays(selectedWeekDays)
         navigationController?.popViewController(animated: true)
     }
+
     
     // MARK: - UITableViewDataSource
     

@@ -68,6 +68,16 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         collectionView.delegate = self
     }
     
+    // MARK: - Helper Methods
+    
+    func preselectEmoji(_ emoji: String?) {
+        guard let emoji = emoji,
+              let index = emojis.firstIndex(of: emoji) else { return }
+        
+        selectedIndexPath = IndexPath(item: index, section: 0)
+        collectionView.reloadData()
+    }
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -78,6 +88,13 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.reuseIdentifier, for: indexPath) as! EmojiCollectionViewCell
         cell.emojiLabel.text = emojis[indexPath.row]
         cell.contentView.layer.cornerRadius = 16
+        
+        if indexPath == selectedIndexPath {
+            cell.contentView.backgroundColor = .dynamicSelectItemAtEmojiCollectionColor
+        } else {
+            cell.contentView.backgroundColor = .clear
+        }
+        
         return cell
     }
     

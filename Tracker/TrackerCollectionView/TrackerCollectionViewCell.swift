@@ -46,6 +46,27 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        // анимка лагала
+        // Сброс визуальных элементов
+        emojiLabel.text = nil
+        titleLabel.text = nil
+        dayCountLabel.text = nil
+        topView.backgroundColor = nil
+        plusButton.backgroundColor = nil
+        plusButton.setImage(nil, for: .normal)
+        plusButton.transform = .identity  // Важно: сброс анимации
+        
+        // Сброс локальных переменных
+        isCompletedPlusButton = false
+        completedDays = 0
+        currentDate = Date()
+        color = .ypWhite
+        trackerID = UUID()
+    }
+    
     // MARK: - Setup UI
     
     func setUpUI() {
@@ -188,20 +209,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         isCompletedPlusButton.toggle()
         
         delegate?.didTapTrackerPlusButton(trackerId: trackerID, date: currentDate, isCompleted: isCompletedPlusButton)
-
-        if isCompletedPlusButton {
-            completedDays += 1
-            plusButton.setImage(UIImage(named: "ChekMark"), for: .normal)
-            plusButton.backgroundColor = color.withAlphaComponent(0.3)
-        } else {
-            completedDays = max(0, completedDays - 1)
-            let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .semibold)
-            let plusImage = UIImage(systemName: "plus", withConfiguration: config)
-            plusButton.setImage(plusImage, for: .normal)
-            plusButton.backgroundColor = color
-        }
-
-        dayCountLabel.text = L10n.Day.count(completedDays)
     }
 }
 

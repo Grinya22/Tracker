@@ -40,13 +40,12 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
         tableView.layer.cornerRadius = 16
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16) // Убираем отступы для разделителей
-        tableView.separatorStyle = .singleLine // Оставляем только линии между ячейками
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorStyle = .singleLine
         tableView.separatorColor = .ypGray
         tableView.isScrollEnabled = false
         addSubview(tableView)
         
-        // Ограничения относительно текущего TrackerOptionsTableView
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: self.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -113,16 +112,12 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
     
     func updateCategorySubtitle(_ subtitle: String?) {
         self.categorySubtitle = subtitle
-        print("Подзаголовок: \(subtitle ?? "нет")")
+        
         tableView.reloadData()
     }
     
     func updateScheduleSubtitle(_ subtitle: String?) {
         self.scheduleSubtitle = subtitle
-        print("Подзаголовок: \(subtitle ?? "нет")")
         tableView.reloadData()
     }
 }
-
-
-

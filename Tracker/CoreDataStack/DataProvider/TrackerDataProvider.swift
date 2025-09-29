@@ -85,12 +85,10 @@ final class TrackerDataProvider: NSObject {
             
             do {
                 let results = try self.context.fetch(fetchRequest)
-                print("Трекеров в базе:", results.count)
                 
                 var categoriesDict: [String: [Tracker]] = [:]
                 
                 for obj in results {
-                    print(">>", obj.name ?? "nil", "категория:", obj.category?.title ?? "nil")
                     let tracker = Tracker(
                         id: obj.id ?? UUID(),
                         name: obj.name ?? "",
@@ -157,7 +155,6 @@ final class TrackerDataProvider: NSObject {
         do {
             try fetchedResultsController.performFetch()
             let trackers = try context.fetch(fetchRequest)
-            print("Фильтр \(filter): найдено \(trackers.count) трекеров")
             
             // Уведомляем делегата об изменении фильтра
             delegate?.setFilter(filter)
@@ -196,15 +193,11 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
     }
     
     func addTracker(_ tracker: Tracker, to categoryTitle: String) throws {
-        print("📦 TrackerDataProvider.addTracker вызван")
-        
         // Добавляет трекер и связывает его с категорией, проверяя, существует ли категория, или создавая новую
         // Ищем категорию по названию.
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         fetchRequest.predicate = NSPredicate(format: "title == %@", categoryTitle)
         let categories = try context.fetch(fetchRequest)
-        
-        print("Категория найдена: \(categories.count > 0 ? "да" : "нет, создаю новую")")
 
         let category: TrackerCategoryCoreData
         if let existingCategory = categories.first {

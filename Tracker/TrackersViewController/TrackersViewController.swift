@@ -1,5 +1,11 @@
 import UIKit
 
+// MARK: - TrackersViewControllerDelegate
+
+protocol TrackersViewControllerDelegate: AnyObject {
+    func trackerForEdit(_ tracker: Tracker, in category: TrackerCategoryCoreData)
+}
+
 // MARK: - TrackersViewController
 
 final class TrackersViewController: UIViewController, UINavigationControllerDelegate {
@@ -34,6 +40,8 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     
     var filteredCategoriesFromSearchBar: [TrackerCategory] = []
     
+    let editTrackerViewController = EditTrackerViewController()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -53,11 +61,12 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
         
+        completedTrackers = (try? recordStore.fetchAllRecords()) ?? []
+        
         setupNavigationBar()
         setUpTrackersViewController()
         setUpTracker()
         
-        // Применяем фильтрацию сразу после загрузки
         trackerView.collectionView.reloadData()
         
         updatePlaceholderVisibility()
@@ -174,7 +183,6 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         if let creatingVC = creatingTrackerVC.viewControllers.first as? CreatingTrackerViewController {
             creatingVC.delegate = self
             creatingVC.dataProvider = self.trackerDataProvider
-            print("Делегат установлен для CreatingHabitViewController")
         }
         
         creatingTrackerVC.modalPresentationStyle = .pageSheet
@@ -188,9 +196,8 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let formattedDate = dateFormatter.string(from: selectedDate)
-        print("Выбранная дата: \(formattedDate)")
         
-        shouldFilterByDate = true // Включаем фильтрацию
+        shouldFilterByDate = true
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
     }
@@ -235,13 +242,14 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         let tracker = currentCategories[indexPath.section].trackers[indexPath.item]
         let date = datePicker.date
         
+        let normalizedDate = Calendar.current.startOfDay(for: datePicker.date)
         let isCompletedToday = completedTrackers.contains {
-            $0.id == tracker.id && Calendar.current.isDate($0.data, inSameDayAs: date)
+            $0.trackerId == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: normalizedDate)
         }
-        
-        let completedDays = completedTrackers.filter { $0.id == tracker.id }.count
+        let completedDays = completedTrackers.filter { $0.trackerId == tracker.id }.count
         
         cell.delegate = self
+        
         cell.configure(
             emoji: tracker.emoji,
             title: tracker.name,
@@ -310,7 +318,6 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         
         return categories.map { category -> TrackerCategory in
             let filteredTrackers = category.trackers.filter { tracker in
-                print("Проверка трекера \(tracker.name): schedule = \(tracker.schedule), creationDate = \(tracker.creationDate)")
                 if tracker.schedule.isEmpty {
                     return isSameDay(date, as: tracker.creationDate)
                 } else {
@@ -318,7 +325,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
                 }
             }
             return TrackerCategory(title: category.title, trackers: filteredTrackers)
-        }.filter { !$0.trackers.isEmpty } // Убираем пустые категории после фильтрации
+        }.filter { !$0.trackers.isEmpty }
     }
     
     private func isSameDay(_ date1: Date, as date2: Date) -> Bool {
@@ -336,11 +343,30 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func didTapTrackerPlusButton(trackerId: UUID, date: Date, isCompleted: Bool) {
         if isCompleted {
-            let record = TrackerRecord(id: trackerId, data: date)
-            completedTrackers.append(record)
+            let normalizedDate = Calendar.current.startOfDay(for: date)
+            
+            let record = TrackerRecord(id: UUID(), trackerId: trackerId, date: normalizedDate)
+            if !completedTrackers.contains { $0.trackerId == trackerId && Calendar.current.isDate($0.date, inSameDayAs: normalizedDate)} {
+                completedTrackers.append(record)
+                
+                do {
+                    try recordStore.addRecord(record)
+                } catch {
+                    completedTrackers.removeAll { $0.id == record.id }
+                    print("Failed to save record: \(error)")
+                }
+            }
+            
         } else {
-            completedTrackers.removeAll { $0.id == trackerId && Calendar.current.isDate($0.data, inSameDayAs: date) }
-            try? recordStore.deleteRecord(trackerId: trackerId, date: date)
+            completedTrackers.removeAll { rec in
+                rec.trackerId == trackerId && Calendar.current.isDate(rec.date, inSameDayAs: date)
+            }
+            
+            do {
+                try recordStore.deleteRecord(trackerId: trackerId, date: date)
+            } catch {
+                print("Failed to delete record: \(error)")
+            }
         }
         
         var targetIndexPath: IndexPath?
@@ -362,16 +388,41 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     
     func didTapPinButton(trackerId: UUID) {
         // TODO: Реализовать функционал закрепления трекера
-        print("Закрепление трекера с ID: \(trackerId)")
     }
     
     func didTapEditButton(trackerId: UUID) {
-        // TODO: Реализовать функционал редактирования трекера
-        print("Редактирование трекера с ID: \(trackerId)")
+        let filteredCategories = filteredCategories()
+        
+        var selectedTracker: Tracker? = nil
+        var selectedCategory: TrackerCategory? = nil
+        
+        for section in 0..<filteredCategories.count {
+            for item in 0..<filteredCategories[section].trackers.count {
+                let tracker = filteredCategories[section].trackers[item]
+                if tracker.id == trackerId {
+                    selectedTracker = tracker
+                    selectedCategory = filteredCategories[section]
+                    break
+                }
+            }
+            if selectedTracker != nil { break }
+        }
+        
+        let editTrackerViewController = EditTrackerViewController()
+        
+        editTrackerViewController.delegate = self
+        editTrackerViewController.tracker = selectedTracker
+        editTrackerViewController.category = selectedCategory
+
+        let editTrackerVC = UINavigationController(rootViewController: editTrackerViewController)
+        
+        editTrackerVC.modalPresentationStyle = .pageSheet
+        editTrackerVC.modalTransitionStyle = .coverVertical
+        
+        present(editTrackerVC, animated: true)
     }
     
     func didTapDeleteButton(trackerId: UUID) {
-        // Находим indexPath для удаляемого трекера
         var targetIndexPath: IndexPath?
         let filteredCategories = filteredCategories()
         
@@ -388,7 +439,6 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         if let indexPath = targetIndexPath {
             showDeleteConfirmationAlert(for: trackerId, at: indexPath)
         } else {
-            // Если не нашли indexPath, просто перезагружаем
             trackerView.collectionView.reloadData()
             updatePlaceholderVisibility()
         }
@@ -401,9 +451,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             preferredStyle: .actionSheet
         )
         
-        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel) { _ in
-            print("Удаление трекера отменено.")
-        }
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
         
         let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
             guard let self = self else { return }
@@ -416,7 +464,6 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
                     self.updatePlaceholderVisibility()
                 })
                 
-                print("Удаление трекера состоялось.")
             } catch {
                 print("Ошибка при удалении трекера: \(error)")
             }
@@ -433,10 +480,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 
 extension TrackersViewController: TrackerCreationDelegate {
     func didCreateTracker(_ tracker: Tracker, categoryTitle: String) {
-        print("🔥 didCreateTracker вызван: \(tracker.name) -> \(categoryTitle)")
         do {
             //try? dataProviderProtocol?.addTracker(tracker, to: categoryTitle)
-            print("💾 Трекер добавлен через dataProviderProtocol")
             
             trackerView.collectionView.reloadData()
             updatePlaceholderVisibility()
@@ -450,17 +495,12 @@ extension TrackersViewController: TrackerCreationDelegate {
 
 extension TrackersViewController: TrackerDataProviderDelegate {
    func didUpdate(_ update: TrackerStoreUpdate) {
-        print("Обновление: inserted \(update.insertedIndexes.count), deleted \(update.deletedIndexes.count)")
         
-        // Просто перезагружаем collectionView — это решит проблему с invalid indexes
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
-        
-        // Если нужно анимации, добавьте позже, когда фильтры стабилизированы
     }
     
     func setFilter(_ filter: FilterType) {
-        // Обновляем UI после применения фильтра
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
     }
@@ -497,6 +537,13 @@ extension TrackersViewController: FilterViewControllerDelegate {
         }
         
         trackerDataProvider?.setFilter(filter)
+        trackerView.collectionView.reloadData()
+        updatePlaceholderVisibility()
+    }
+}
+
+extension TrackersViewController: EditTrackerViewControllerDelegate {
+    func didUpdateTracker(_ tracker: Tracker, categoryTitle: String) {
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
     }

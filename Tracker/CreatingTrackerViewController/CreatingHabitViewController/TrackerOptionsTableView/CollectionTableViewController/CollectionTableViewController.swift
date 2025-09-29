@@ -23,6 +23,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     private let categoryStore = TrackerCategoryStore()
     private var selectedCategoryIndex: Int?
     
+    var selectedCategoryTitle: String?
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -157,7 +159,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.row < categories.count else {
-            print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
             cell.textLabel?.text = L10n.error
             return cell
@@ -181,9 +182,11 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if selectedCategoryIndex == indexPath.row {
             selectedCategoryIndex = nil
+            selectedCategoryTitle = nil
             delegate?.didSelectOption(nil)
         } else {
             selectedCategoryIndex = indexPath.row
+            selectedCategoryTitle = categories[indexPath.row].title
             delegate?.didSelectOption(categories[indexPath.row].title)
         }
         tableView.reloadData()
@@ -278,7 +281,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         }
         
         let cancelAction = UIAlertAction(title: L10n.Cancel.button, style: .cancel) { [weak self] _ in
-            print("Удаление отменено.")
         }
         
         alert.addAction(deleteConfirmAction)
@@ -332,7 +334,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             }
             
             let cancelAction = UIAlertAction(title: L10n.Cancel.button, style: .cancel) { [weak self] _ in
-                print("Удаление отменено.")
             }
             
             alert.addAction(deleteConfirmAction)
@@ -373,7 +374,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
             // Зачем: Удаляет категорию и обновляет UI.
             // Почему так: Это твоя исходная логика с добавленной проверкой.
             
-            print("Категория \"\(category.title ?? "")\" успешно удалена.")
         } catch {
             print("Ошибка при удалении категории: \(error)")
             let alert = UIAlertController(
@@ -434,6 +434,15 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
         } catch {
             print("Ошибка загрузки категорий: \(error)")
         }
+        
+        if let selectedTitle = selectedCategoryTitle,
+           let index = categories.firstIndex(where: { $0.title == selectedTitle }) {
+            selectedCategoryIndex = index
+        } else {
+            selectedCategoryIndex = nil
+        }
+        
+        tableView.reloadData()
     }
 }
 

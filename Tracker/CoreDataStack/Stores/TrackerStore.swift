@@ -18,8 +18,6 @@ final class TrackerStore {
         object.creationDate = tracker.creationDate
         
         object.category = category
-        
-        print("💾 addTracker: \(tracker.name) -> категория: \(category.title ?? "nil")")
 
         CoreDataStack.shared.saveContext()
     }
@@ -50,6 +48,28 @@ final class TrackerStore {
             context.delete(obj)
             CoreDataStack.shared.saveContext()
         }
+    }
+    
+    func updateTracker(_ tracker: Tracker, toCategoryWithTitle categoryTitle: String) throws {
+        guard let object = try fetchTracker(by: tracker.id) else {
+            return
+        }
+        
+        object.name = tracker.name
+        object.color = tracker.color
+        object.emoji = tracker.emoji
+        object.schedule = tracker.schedule as NSObject
+        object.creationDate = tracker.creationDate
+        
+        let catFetch = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+        catFetch.fetchLimit = 1
+        catFetch.predicate = NSPredicate(format: "title == %@", categoryTitle)
+
+        if let newCategory = try context.fetch(catFetch).first {
+            object.category = newCategory
+        }
+        
+        CoreDataStack.shared.saveContext()
     }
 }
 
