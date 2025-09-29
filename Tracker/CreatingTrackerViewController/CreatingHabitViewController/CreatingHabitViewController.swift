@@ -67,6 +67,16 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         updateCreateButtonState()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "CreateHabit"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "CreateHabit"))
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         optionsTableView.deselectSelectedRow()
@@ -241,6 +251,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     @objc
     func cancelTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateHabit", item: "cancel"))
         UserDefaults.standard.removeObject(forKey: "savedDays")
         UserDefaults.standard.synchronize()
         
@@ -249,6 +260,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     
     @objc
     func createTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateHabit", item: "create"))
         guard let name = trackerName,
               let categoryTitle = selectedCategory,
               let color = selectedColor,
@@ -316,6 +328,7 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
     // MARK: - TrackerOptionsTableViewDelegate
     
     func didSelectOption(at index: Int) {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateHabit", item: "option_\(index)"))
         switch index {
         case 0:
             let collectionTableVC = CollectionTableViewController()

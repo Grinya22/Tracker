@@ -35,6 +35,16 @@ class EditCollectionViewController: UIViewController {
         textField.becomeFirstResponder()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "EditCategory"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "EditCategory"))
+    }
+    
     // MARK: - Setup UI
     
     func setupNavigationBar() {
@@ -109,11 +119,13 @@ class EditCollectionViewController: UIViewController {
     
     @objc
     func backTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "EditCategory", item: "back"))
         navigationController?.popViewController(animated: true)
     }
     
     @objc
     func buttonDoneCollectionTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "EditCategory", item: "done"))
         let newCategoryName = textField.text?.trimmingCharacters(in: .whitespaces) ?? ""
         guard let categoryToEdit = categoryToEdit else { return }
         delegate?.didUpdateCategory(categoryToEdit, newName: newCategoryName)

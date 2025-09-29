@@ -1,11 +1,19 @@
 import UIKit
 import CoreData
+import YandexMobileMetrica
+import YandexMobileMetricaCrashes
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UIColorValueTransformer.register()
         ScheduleValueTransformer.register()
+        
+        if let configuration = YMMYandexMetricaConfiguration(apiKey: "a9533351-d3a3-4f5d-95fc-a5ed31896c0e") {
+            configuration.crashReporting = true
+            YMMYandexMetrica.activate(with: configuration)
+        }
+
         return true
     }
     

@@ -72,6 +72,16 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         updatePlaceholderVisibility()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "Main"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "Main"))
+    }
+    
     // MARK: - Setup UI
     
     func setupNavigationBar() {
@@ -179,6 +189,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     
     @objc
     func plusTapped(_ sender: UITabBarItem) {
+        AnalyticsService.shared.logEvent(.click(screen: "Main", item: "add_track"))
         let creatingTrackerVC = UINavigationController(rootViewController: CreatingTrackerViewController())
         if let creatingVC = creatingTrackerVC.viewControllers.first as? CreatingTrackerViewController {
             creatingVC.delegate = self
@@ -204,6 +215,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     
     @objc
     func filterButtonTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "Main", item: "filter"))
         let filterViewController = FilterViewController()
         filterViewController.delegate = self
         let filterVC = UINavigationController(rootViewController: filterViewController)
@@ -342,6 +354,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
 
 extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func didTapTrackerPlusButton(trackerId: UUID, date: Date, isCompleted: Bool) {
+        AnalyticsService.shared.logEvent(.click(screen: "Main", item: "track"))
         if isCompleted {
             let normalizedDate = Calendar.current.startOfDay(for: date)
             
@@ -391,6 +404,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func didTapEditButton(trackerId: UUID) {
+        AnalyticsService.shared.logEvent(.click(screen: "Main", item: "edit"))
         let filteredCategories = filteredCategories()
         
         var selectedTracker: Tracker? = nil
@@ -423,6 +437,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func didTapDeleteButton(trackerId: UUID) {
+        AnalyticsService.shared.logEvent(.click(screen: "Main", item: "delete"))
         var targetIndexPath: IndexPath?
         let filteredCategories = filteredCategories()
         

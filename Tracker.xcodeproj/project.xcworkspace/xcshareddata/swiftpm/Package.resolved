@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "YandexMobileMetrica",
+        "repositoryURL": "https://github.com/yandexmobile/metrica-sdk-ios",
+        "state": {
+          "branch": null,
+          "revision": "13d8b11181a33938ef42759d49466a621df5e7db",
+          "version": "4.5.2"
+        }
+      },
+      {
+        "package": "swift-snapshot-testing",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing",
+        "state": {
+          "branch": null,
+          "revision": "26ed3a2b4a2df47917ca9b790a57f91285b923fb",
+          "version": "1.12.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

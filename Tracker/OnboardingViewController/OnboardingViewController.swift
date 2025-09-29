@@ -126,6 +126,7 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
     }
     
     @objc private func didTapButton() {
+        AnalyticsService.shared.logEvent(.click(screen: "Onboarding", item: "start_button"))
         UserDefaults.standard.set(true, forKey: "hasSeenOnboarding")
         
         let tabBarController = AppTabBarController()

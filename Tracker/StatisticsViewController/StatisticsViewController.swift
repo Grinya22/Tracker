@@ -26,6 +26,16 @@ final class StatisticsViewController: UIViewController {
         setUpTracker()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "Statistics"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "Statistics"))
+    }
+    
     // MARK: - Setup UI
     
     func setUpTracker() {

@@ -112,6 +112,7 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        AnalyticsService.shared.logEvent(.click(screen: "ColorSelection", item: "color_\(indexPath.row)"))
         // Если уже была выбрана — сбросить и выйти
         if selectedIndexPath == indexPath {
             collectionView.deselectItem(at: indexPath, animated: false)

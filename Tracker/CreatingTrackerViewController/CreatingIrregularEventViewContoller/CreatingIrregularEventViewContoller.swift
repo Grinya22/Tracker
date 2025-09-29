@@ -60,6 +60,16 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         updateCreateButtonState()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "CreateIrregularEvent"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "CreateIrregularEvent"))
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         optionTableView.deselectSelectedRow()
@@ -236,11 +246,13 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     
     @objc
     func backTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateIrregularEvent", item: "cancel"))
         navigationController?.popViewController(animated: true)
     }
     
     @objc
     func createTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateIrregularEvent", item: "create"))
         guard let name = trackerName,
               let category = selectedCategory,
               let color = selectedColor,
@@ -278,6 +290,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     // MARK: - TrackerOptionsTableViewDelegate
     
     func didSelectOption(at index: Int) {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateIrregularEvent", item: "create"))
         switch index {
         case 0:
             let collectionTableVC = CollectionTableViewController()

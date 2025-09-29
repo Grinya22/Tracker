@@ -72,6 +72,16 @@ final class EditTrackerViewController: UIViewController, TrackerOptionsTableView
         populateFields()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "EditTracker"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "EditTracker"))
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         optionsTableView.deselectSelectedRow()
@@ -259,11 +269,13 @@ final class EditTrackerViewController: UIViewController, TrackerOptionsTableView
     
     @objc
     func cancelTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "EditTracker", item: "cancel"))
         dismiss(animated: true)
     }
     
     @objc
     func saveTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "EditTracker", item: "save"))
         guard let name = trackerName ?? tracker?.name,
               let categoryTitle = selectedCategory ?? category?.title,
               let color = selectedColor ?? tracker?.color,
@@ -352,6 +364,7 @@ final class EditTrackerViewController: UIViewController, TrackerOptionsTableView
     // MARK: - TrackerOptionsTableViewDelegate
     
     func didSelectOption(at index: Int) {
+        AnalyticsService.shared.logEvent(.click(screen: "EditTracker", item: "option_\(index)"))
         switch index {
         case 0:
             let collectionTableVC = CollectionTableViewController()

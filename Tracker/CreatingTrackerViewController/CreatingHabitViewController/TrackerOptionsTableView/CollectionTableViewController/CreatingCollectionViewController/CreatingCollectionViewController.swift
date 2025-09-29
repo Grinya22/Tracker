@@ -28,6 +28,16 @@ class CreatingCollectionViewController: UIViewController {
         setUpCreatingCollectionTableViewController()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AnalyticsService.shared.logEvent(.open(screen: "CreateCategory"))
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        AnalyticsService.shared.logEvent(.close(screen: "CreateCategory"))
+    }
+    
     // MARK: - Setup UI
     
     func setupNavigationBar() {
@@ -102,6 +112,7 @@ class CreatingCollectionViewController: UIViewController {
     
     @objc
     func backTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateCategory", item: "back"))
         navigationController?.popViewController(animated: true)
     }
     
@@ -114,6 +125,7 @@ class CreatingCollectionViewController: UIViewController {
     
     @objc
     func buttonDoneCollectionTapped() {
+        AnalyticsService.shared.logEvent(.click(screen: "CreateCategory", item: "done"))
         let categoryName = textField.text?.trimmingCharacters(in: .whitespaces) ?? ""
         delegate?.didCreateNewCategory(categoryName)
         navigationController?.popViewController(animated: true)

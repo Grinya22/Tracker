@@ -144,11 +144,11 @@ final class TrackerDataProvider: NSObject {
             fetchRequest.predicate = nil
             
         case .completed:
-            let completedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.data >= %@ AND $r.data < %@).@count > 0", startOfDay, endOfDay)
+            let completedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.date >= %@ AND $r.date < %@).@count > 0", startOfDay, endOfDay)
             fetchRequest.predicate = completedPredicate
             
         case .uncompleted:
-            let uncompletedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.data >= %@ AND $r.data < %@).@count == 0", startOfDay, endOfDay)
+            let uncompletedPredicate = NSPredicate(format: "SUBQUERY(records, $r, $r.date >= %@ AND $r.date < %@).@count == 0", startOfDay, endOfDay)
             fetchRequest.predicate = uncompletedPredicate
         }
         
