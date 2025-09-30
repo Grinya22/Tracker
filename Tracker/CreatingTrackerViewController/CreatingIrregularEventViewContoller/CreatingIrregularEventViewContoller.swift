@@ -258,6 +258,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
               let color = selectedColor,
               let emoji = selectedEmoji else { return }
         
+        //let currentDayForIrregularEvent = Calendar.current.isDate(<#T##date1: Date##Date#>, inSameDayAs: <#T##Date#>)
+        
         let tracker = Tracker(id: UUID(),
                               name: name,
                               color: color,

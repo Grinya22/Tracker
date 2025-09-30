@@ -12,7 +12,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
     
     // MARK: - Properties
     
-    private var shouldFilterByDate = false
+    private var shouldFilterByDate = true
     weak var trackerCreationDelegate: TrackerCreationDelegate?
     
     private let trackerView = TrackerCollectionView()
@@ -66,6 +66,8 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         setupNavigationBar()
         setUpTrackersViewController()
         setUpTracker()
+        
+        datePicker.date = Date()
         
         trackerView.collectionView.reloadData()
         
@@ -317,9 +319,7 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
             }
         }
         
-        guard shouldFilterByDate else {
-            return categories
-        }
+        guard shouldFilterByDate else { return categories }
         
         let date = datePicker.date
         let weekday = Calendar.current.component(.weekday, from: date) // 1 = Воскресенье, 2 = Понедельник, ...
@@ -546,8 +546,10 @@ extension TrackersViewController: FilterViewControllerDelegate {
     func didSelectFilter(_ filter: FilterType) {
         switch filter {
         case .all:
+            datePicker.date = Date()
             shouldFilterByDate = false
         case .today, .completed, .uncompleted:
+            datePicker.date = Date()
             shouldFilterByDate = true
         }
         

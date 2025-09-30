@@ -128,11 +128,6 @@ final class TrackerDataProvider: NSObject {
             date = myDate
         }
         
-        let weekday = Calendar.current.component(.weekday, from: date)
-        let adjustedWeekday = weekday == 1 ? 7 : weekday - 1
-        
-        let schedulePredicate = NSPredicate(format: "ANY schedule.rawValue == %d", adjustedWeekday)
-        
         let startOfDay = Calendar.current.startOfDay(for: date) as NSDate
         let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay as Date)! as NSDate
         
@@ -154,8 +149,6 @@ final class TrackerDataProvider: NSObject {
         
         do {
             try fetchedResultsController.performFetch()
-            let trackers = try context.fetch(fetchRequest)
-            
             // Уведомляем делегата об изменении фильтра
             delegate?.setFilter(filter)
         } catch {
