@@ -278,15 +278,6 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         )
         
         do {
-            guard let dataProvider = dataProvider else {
-                return
-            }
-            
-            // Добавляем трекер через исправленный TrackerDataProvider.
-            try dataProvider.addTracker(tracker, to: categoryTitle)
-            // Зачем: Чтобы трекер сохранился в Core Data и был связан с категорией.
-            // Почему так: TrackerDataProvider использует исправленный addTracker.
-
             // Уведомляем делегата.
             delegate?.didCreateTracker(tracker, categoryTitle: categoryTitle)
             // Зачем: Чтобы TrackersViewController обновил UI.

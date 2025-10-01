@@ -63,6 +63,8 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
         
         completedTrackers = (try? recordStore.fetchAllRecords()) ?? []
         
+        trackerDataProvider?.cleanExpiredIrregularTrackers()
+        
         setupNavigationBar()
         setUpTrackersViewController()
         setUpTracker()
@@ -496,9 +498,8 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 extension TrackersViewController: TrackerCreationDelegate {
     func didCreateTracker(_ tracker: Tracker, categoryTitle: String) {
         do {
-            //try? dataProviderProtocol?.addTracker(tracker, to: categoryTitle)
-            
-            trackerView.collectionView.reloadData()
+            try dataProviderProtocol?.addTracker(tracker, to: categoryTitle)
+            trackerDataProvider?.setFilter(.today(Date()))
             updatePlaceholderVisibility()
         } catch {
             print("Ошибка при добавлении трекера: \(error)")
@@ -509,14 +510,12 @@ extension TrackersViewController: TrackerCreationDelegate {
 // MARK: - TrackerDataProviderDelegate
 
 extension TrackersViewController: TrackerDataProviderDelegate {
-   func didUpdate(_ update: TrackerStoreUpdate) {
-        
+    func didUpdate(_ update: TrackerStoreUpdate) {
         trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
     }
     
     func setFilter(_ filter: FilterType) {
-        trackerView.collectionView.reloadData()
         updatePlaceholderVisibility()
     }
 }
@@ -527,17 +526,16 @@ extension TrackersViewController: UISearchResultsUpdating {
         
         shouldFilterByDate = false
         
-        if text.isEmpty {
-            filteredCategoriesFromSearchBar = [] 
-            trackerView.collectionView.reloadData()
-        } else {
-            trackerDataProvider?.searchTrackers(with: text) { [weak self] categories in
-                guard let self = self else { return }
-                
+        trackerDataProvider?.searchTrackers(with: text) { [weak self] categories in
+            guard let self = self else { return }
+            
+            if text.isEmpty {
+                self.filteredCategoriesFromSearchBar = []
+            } else {
                 self.filteredCategoriesFromSearchBar = categories
-                
-                self.trackerView.collectionView.reloadData()
             }
+            
+            self.trackerView.collectionView.reloadData()
         }
     }
 }

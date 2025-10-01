@@ -21,6 +21,7 @@
 		D27F4A1A2E8AFA3A00F5D36B /* YandexMobileMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = D27F4A192E8AFA3A00F5D36B /* YandexMobileMetricaCrashes */; };
 		D27F4A1C2E8AFD7300F5D36B /* APIKeyForSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27F4A1B2E8AFD7200F5D36B /* APIKeyForSDK.swift */; };
 		D27F4A1F2E8AFF6D00F5D36B /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27F4A1E2E8AFF6D00F5D36B /* AnalyticsService.swift */; };
+		D27F4A212E8BDDD700F5D36B /* TrackerStoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27F4A202E8BDDD700F5D36B /* TrackerStoreUpdate.swift */; };
 		D29174822E0F3D540079A1AD /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = D29174842E0F3D540079A1AD /* Localizable.stringsdict */; };
 		D2929C9D2DBEC574005CCC70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9C2DBEC574005CCC70 /* AppDelegate.swift */; };
 		D2929C9F2DBEC574005CCC70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2929C9E2DBEC574005CCC70 /* SceneDelegate.swift */; };
@@ -98,6 +99,7 @@
 		D250216E2DEC6AB8001E95D1 /* TrackerDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataProvider.swift; sourceTree = "<group>"; };
 		D27F4A1B2E8AFD7200F5D36B /* APIKeyForSDK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeyForSDK.swift; sourceTree = "<group>"; };
 		D27F4A1E2E8AFF6D00F5D36B /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		D27F4A202E8BDDD700F5D36B /* TrackerStoreUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStoreUpdate.swift; sourceTree = "<group>"; };
 		D29174832E0F3D540079A1AD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		D29174862E0F3D590079A1AD /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ar; path = ar.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		D29174872E0F3D5A0079A1AD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				D2D110C92DC34B70003AE980 /* TrackerCategory.swift */,
 				D2D110CD2DC34B8D003AE980 /* Tracker.swift */,
 				D2CDB6882E7D60AB00BC3140 /* FilterType.swift */,
+				D27F4A202E8BDDD700F5D36B /* TrackerStoreUpdate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -677,6 +680,7 @@
 				D2DB264E2DC7AD4B00B913F4 /* ColorCollectionViewCell.swift in Sources */,
 				D21E09392E80477A001C8E6A /* FilterViewController.swift in Sources */,
 				D27F4A1C2E8AFD7300F5D36B /* APIKeyForSDK.swift in Sources */,
+				D27F4A212E8BDDD700F5D36B /* TrackerStoreUpdate.swift in Sources */,
 				D2B895492DF8906100775372 /* EditCollectionViewController.swift in Sources */,
 				D2C6751C2DDBB1B2000255D8 /* TrackerCategoryStore.swift in Sources */,
 				D2929CD22DBF75BD005CCC70 /* UIColor+Extensions.swift in Sources */,

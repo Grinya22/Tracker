@@ -1,15 +1,6 @@
 import UIKit
 import CoreData
 
-// MARK: - TrackerStoreUpdate
-
-struct TrackerStoreUpdate {
-    let insertedIndexes: [IndexPath]
-    let deletedIndexes: [IndexPath]
-    let insertedSections: IndexSet
-    let deletedSections: IndexSet
-}
-
 // MARK: - TrackerDataProviderDelegate
 
 protocol TrackerDataProviderDelegate: AnyObject {
@@ -76,7 +67,7 @@ final class TrackerDataProvider: NSObject {
     
     func searchTrackers(with text: String, completion: @escaping ([TrackerCategory]) -> Void) {
         context.perform {
-            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreDataForSearchTrackers")
+            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
             
             if !text.isEmpty {
@@ -117,6 +108,8 @@ final class TrackerDataProvider: NSObject {
     }
     
     func setFilter(_ filter: FilterType) {
+        cleanExpiredIrregularTrackers()
+        
         let fetchRequest = fetchedResultsController.fetchRequest
         
         let date: Date
@@ -149,10 +142,39 @@ final class TrackerDataProvider: NSObject {
         
         do {
             try fetchedResultsController.performFetch()
-            // Уведомляем делегата об изменении фильтра
             delegate?.setFilter(filter)
         } catch {
             print("Ошибка при выборке: \(error)")
+        }
+    }
+    
+    func cleanExpiredIrregularTrackers() {
+        do {
+            let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+            fetchRequest.predicate = NSPredicate(format: "creationDate < %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate)
+            
+            let allTrackers = try context.fetch(fetchRequest)
+            let expiredIrregularTracker = allTrackers.filter { ($0.schedule as? [WeekDay])?.isEmpty ?? true }
+            
+            // Удаляем без сбора индексов — просто удаляем
+            for tracker in expiredIrregularTracker {
+                try trackerStore.deleteTracker(tracker)
+            }
+            
+            let categoryFetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
+            let categories = try context.fetch(categoryFetchRequest)
+            for category in categories {
+                if let trackers = category.trackers, trackers.count == 0 {
+                    try categoryStore.deleteCategory(category)
+                }
+            }
+            
+            CoreDataStack.shared.saveContext()
+            
+            try fetchedResultsController.performFetch()
+            delegate?.didUpdate(TrackerStoreUpdate(insertedIndexes: [], deletedIndexes: [], insertedSections: [], deletedSections: []))
+        } catch {
+            print("Ошибка при очистке устаревших трекеров или категорий: \(error)")
         }
     }
 }
@@ -199,14 +221,14 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
             // Создаём новую категорию, если не нашли.
             category = try categoryStore.addCategory(categoryTitle)
         }
-        
+
         // Добавляем трекер и связываем с категорией.
         try trackerStore.addTracker(tracker, to: category)
 
         // Сохраняем изменения.
         // Зачем: Чтобы трекер появился в Core Data и таблице.
         // Почему так: Используем обновлённый addTracker, чтобы корректно установить связь.
-        
+
         CoreDataStack.shared.saveContext()
     }
     
@@ -298,12 +320,14 @@ extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 deletedIndexes.append(indexPath)
             }
-        case .update, .move:
+        case .update:
             if let indexPath = indexPath {
                 deletedIndexes.append(indexPath)
+                insertedIndexes.append(indexPath)
             }
-            
-            if let newIndexPath = newIndexPath {
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                deletedIndexes.append(indexPath)
                 insertedIndexes.append(newIndexPath)
             }
         @unknown default:
