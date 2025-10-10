@@ -74,3 +74,109 @@ final class TrackerRecordStore {
         }
     }
 }
+
+extension TrackerRecordStore {
+    
+    // Все завершённые записи (для кэша или общих расчётов)
+    func fetchAllCompletedRecords() throws -> [TrackerRecord] {
+        let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
+        let object = try context.fetch(fetchRequest)
+        return object.compactMap { TrackerRecord(id: $0.id ?? UUID(), trackerId: $0.trackerId ?? UUID(), date: $0.date ?? Date()) }
+    }
+    
+    // Трекеров завершено (всего или за день)
+    func completedTrackersCount(for date: Date? = nil) throws -> Int {
+        let fetchRequest = NSFetchRequest<NSNumber>(entityName: "TrackerRecordCoreData")
+        fetchRequest.resultType = .countResultType
+        
+        if let date = date {
+            let startOfDay = Calendar.current.startOfDay(for: date) as NSDate
+            let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay as Date)! as NSDate
+            fetchRequest.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay, endOfDay)
+        }
+        
+        return try context.count(for: fetchRequest)
+    }
+    
+    // Идеальные дни (дни, когда все запланированные трекеры завершены)
+    // Предполагаем: "идеальный" = все трекеры на этот день завершены
+    func idealDaysCount() throws -> Int {
+        let allRecords = try fetchAllCompletedRecords()
+        let groupedByDate = Dictionary(grouping: allRecords, by: { Calendar.current.startOfDay(for: $0.date) })
+        
+        var idealDays = 0
+        
+        for (date, records) in groupedByDate {
+            let plannedTrackers = try fetchPlannedTrackers(for: date)
+            print("Дата: \(date), Завершено: \(records.count), Запланировано: \(plannedTrackers.count)") // Отладка
+            if records.count == plannedTrackers.count {
+                idealDays += 1
+            }
+        }
+        print("Итоговое количество идеальных дней: \(idealDays)") // Отладка
+        return idealDays
+    }
+    
+    // Вспомогательный: запланированные трекеры на день (на основе schedule)
+    private func fetchPlannedTrackers(for date: Date) throws -> [TrackerCoreData] {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: date)
+        let adjustedWeekday = (weekday == 1 ? 7 : weekday - 1)  // 1 (вс) -> 7, 2 (пн) -> 1 и т.д.
+        print("Дата: \(date), Локальный день недели: \(weekday), Корректированный: \(adjustedWeekday)")
+        
+        let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        let trackers = try context.fetch(fetchRequest)
+        print("Всего трекеров в БД: \(trackers.count)")  // Проверяем, есть ли трекеры вообще
+        
+        let filteredTrackers = trackers.filter { tracker in
+            guard let scheduleData = tracker.schedule as? Data else {
+                print("Трекер \(tracker.id ?? UUID()): Нет данных в schedule (nil или не Data)")
+                return false
+            }
+            
+            do {
+                let schedule = try JSONDecoder().decode([WeekDay].self, from: scheduleData)
+                print("Трекер \(tracker.id ?? UUID()): Декодированный schedule: \(schedule.map { $0.rawValue })")
+                return schedule.contains { $0.rawValue == adjustedWeekday }
+            } catch {
+                print("Трекер \(tracker.id ?? UUID()): Ошибка декодирования schedule: \(error.localizedDescription)")
+                return false
+            }
+        }
+        
+        print("Найдено запланированных трекеров: \(filteredTrackers.count)")
+        return filteredTrackers
+    }
+    
+    // Лучший период (самый длинный стрик — последовательные дни с завершением трекеров)
+    func bestPeriod() throws -> Int {
+        let allRecords = try fetchAllCompletedRecords()
+        let uniqueDates = Set(allRecords.map { Calendar.current.startOfDay(for: $0.date) }).sorted()
+        
+        var maxStreak = 0
+        var currentStreak = 0
+        var previousDate: Date?
+        
+        for date in uniqueDates {
+            if let previousDate = previousDate, Calendar.current.dateComponents([.day], from: previousDate, to: date).day == 1 {
+                currentStreak += 1
+            } else {
+                currentStreak = 1
+            }
+            maxStreak = max(maxStreak, currentStreak)
+            previousDate = date
+        }
+        return maxStreak
+    }
+    
+    // Среднее значение (среднее завершённых трекеров в день)
+    func averageCompletedPerDay() throws -> Int {
+        let totalCompleted = try completedTrackersCount()
+        let allRecords = try fetchAllCompletedRecords()
+        let uniqueDays = Set(allRecords.map { Calendar.current.startOfDay(for: $0.date) }).count
+        let average = uniqueDays > 0 ? Double(totalCompleted) / Double(uniqueDays) : 0
+        print("Total completed: \(totalCompleted), Unique days: \(uniqueDays), Average: \(average)")
+        return Int(round(average))
+    }
+}

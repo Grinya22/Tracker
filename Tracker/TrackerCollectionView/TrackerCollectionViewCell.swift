@@ -191,7 +191,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     @objc
     func didTapPlusButton(_ sender: UIButton) {
-        AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "plus_button"))
+        //AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "plus_button"))
         guard Calendar.current.isDateInToday(currentDate) || currentDate < Date() else {
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.error)
@@ -225,19 +225,19 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             previewProvider: nil
         ) { _ in
             let pinAction = UIAction(title: "Закрепить") { [weak self] _ in
-                AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "pin"))
+                //AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "pin"))
                 guard let self = self else { return }
                 self.delegate?.didTapPinButton(trackerId: self.trackerID)
             }
             
             let editAction = UIAction(title: "Редактировать") { [weak self] _ in
-                AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "edit"))
+                //AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "edit"))
                 guard let self = self else { return }
                 self.delegate?.didTapEditButton(trackerId: self.trackerID)
             }
             
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "delete"))
+                //AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "delete"))
                 guard let self = self else { return }
                 self.delegate?.didTapDeleteButton(trackerId: self.trackerID)
             }

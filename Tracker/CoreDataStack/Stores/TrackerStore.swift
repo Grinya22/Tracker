@@ -14,12 +14,19 @@ final class TrackerStore {
         object.name = tracker.name
         object.color = tracker.color
         object.emoji = tracker.emoji
-        object.schedule = tracker.schedule as NSObject
+        do {
+            let encodedSchedule = try JSONEncoder().encode(tracker.schedule)
+            object.schedule = encodedSchedule as NSObject
+            print("Трекер \(object.id ?? UUID()) имеет такие данные в schedule: \(encodedSchedule.count) байт")
+        } catch {
+            print("Ошибка кодирования schedule для трекера \(object.id ?? UUID()): \(error.localizedDescription)")
+            object.schedule = Data() as NSObject
+        }
         object.creationDate = tracker.creationDate
-        
         object.category = category
 
         CoreDataStack.shared.saveContext()
+        print("Трекер \(tracker.id) сохранён с schedule: \(String(describing: object.schedule))")
     }
     
     func deleteTracker(_ tracker: NSManagedObject) throws {
@@ -58,7 +65,14 @@ final class TrackerStore {
         object.name = tracker.name
         object.color = tracker.color
         object.emoji = tracker.emoji
-        object.schedule = tracker.schedule as NSObject
+        do {
+            let encodedSchedule = try JSONEncoder().encode(tracker.schedule)
+            object.schedule = encodedSchedule as NSObject
+            print("Трекер \(object.id ?? UUID()) имеет такие данные в schedule: \(encodedSchedule.count) байт")
+        } catch {
+            print("Ошибка кодирования schedule для трекера \(object.id ?? UUID()): \(error.localizedDescription)")
+            object.schedule = Data() as NSObject
+        }
         object.creationDate = tracker.creationDate
         
         let catFetch = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
@@ -68,8 +82,6 @@ final class TrackerStore {
         if let newCategory = try context.fetch(catFetch).first {
             object.category = newCategory
         }
-        
         CoreDataStack.shared.saveContext()
     }
 }
-

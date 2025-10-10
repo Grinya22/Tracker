@@ -44,12 +44,12 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AnalyticsService.shared.logEvent(.open(screen: "ScheduleSelection"))
+        //AnalyticsService.shared.logEvent(.open(screen: "ScheduleSelection"))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        AnalyticsService.shared.logEvent(.close(screen: "ScheduleSelection"))
+        //AnalyticsService.shared.logEvent(.close(screen: "ScheduleSelection"))
     }
     
     // MARK: - Setup UI
@@ -122,13 +122,13 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
     
     @objc
     func backTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "ScheduleSelection", item: "back"))
+        //AnalyticsService.shared.logEvent(.click(screen: "ScheduleSelection", item: "back"))
         navigationController?.popViewController(animated: true)
     }
     
     @objc
     func doneButtonTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "ScheduleSelection", item: "done"))
+        //AnalyticsService.shared.logEvent(.click(screen: "ScheduleSelection", item: "done"))
         selectedWeekDays = []
         
         for i in 0..<days.count {

@@ -32,12 +32,12 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AnalyticsService.shared.logEvent(.open(screen: "FilterSelection"))
+        //AnalyticsService.shared.logEvent(.open(screen: "FilterSelection"))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        AnalyticsService.shared.logEvent(.close(screen: "FilterSelection"))
+        //AnalyticsService.shared.logEvent(.close(screen: "FilterSelection"))
     }
     
     private func setupTableView() {
@@ -89,7 +89,7 @@ class FilterViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        AnalyticsService.shared.logEvent(.click(screen: "FilterSelection", item: "filter_\(indexPath.row)"))
+        //AnalyticsService.shared.logEvent(.click(screen: "FilterSelection", item: "filter_\(indexPath.row)"))
         let selectedFilter: FilterType
         
         switch indexPath.row {

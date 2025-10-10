@@ -19,12 +19,12 @@ final class CreatingTrackerViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AnalyticsService.shared.logEvent(.open(screen: "CreateTracker"))
+        //AnalyticsService.shared.logEvent(.open(screen: "CreateTracker"))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        AnalyticsService.shared.logEvent(.close(screen: "CreateTracker"))
+        //AnalyticsService.shared.logEvent(.close(screen: "CreateTracker"))
     }
     
     // MARK: - Setup UI
@@ -71,7 +71,7 @@ final class CreatingTrackerViewController: UIViewController {
     
     @objc
     func habitButtonTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "CreateTracker", item: "habit"))
+        //AnalyticsService.shared.logEvent(.click(screen: "CreateTracker", item: "habit"))
         let creatingHabitVC = CreatingHabitViewController()
         creatingHabitVC.delegate = self.delegate
         creatingHabitVC.dataProvider = self.dataProvider
@@ -80,7 +80,7 @@ final class CreatingTrackerViewController: UIViewController {
     
     @objc
     func irregularEventButtonTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "CreateTracker", item: "irregular_event"))
+        //AnalyticsService.shared.logEvent(.click(screen: "CreateTracker", item: "irregular_event"))
         let irregularEventTrackerVC = CreatingIrregularEventViewContoller()
         irregularEventTrackerVC.delegate = self.delegate
         navigationController?.pushViewController(irregularEventTrackerVC, animated: true)

@@ -68,8 +68,7 @@ final class CoreDataStack {
                 print("CoreData: Ошибка сохранения: \(error.localizedDescription)")
             }
         } else {
-            print("CoreData: Нет изменений для сохранения. контекст уже чистый - так сказал гпт")
-
+            print("CoreData: Нет изменений для сохранения")
         }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D203ADD52E8E85C60093E23C /* StatisticCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D203ADD42E8E85C60093E23C /* StatisticCardView.swift */; };
 		D2179B2B2DBF8B1D0029ED50 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */; };
 		D21E09322E800725001C8E6A /* UIColor+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21E09312E800724001C8E6A /* UIColor+Dynamic.swift */; };
 		D21E09372E804749001C8E6A /* EditTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21E09362E804749001C8E6A /* EditTrackerViewController.swift */; };
@@ -81,6 +82,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D203ADD42E8E85C60093E23C /* StatisticCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCardView.swift; sourceTree = "<group>"; };
 		D2179B2A2DBF8B1D0029ED50 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
 		D21E09312E800724001C8E6A /* UIColor+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Dynamic.swift"; sourceTree = "<group>"; };
 		D21E09362E804749001C8E6A /* EditTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTrackerViewController.swift; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 			isa = PBXGroup;
 			children = (
 				D2FD0B882DBFC4A900552FFC /* StatisticsViewController.swift */,
+				D203ADD42E8E85C60093E23C /* StatisticCardView.swift */,
 			);
 			path = StatisticsViewController;
 			sourceTree = "<group>";
@@ -668,6 +671,7 @@
 				D2DB263E2DC7757800B913F4 /* CreatingHabitViewController.swift in Sources */,
 				D2D110CE2DC34B8D003AE980 /* Tracker.swift in Sources */,
 				D2D110D12DC4147F003AE980 /* TrackerCollectionView.swift in Sources */,
+				D203ADD52E8E85C60093E23C /* StatisticCardView.swift in Sources */,
 				D2D110D52DC41501003AE980 /* SupplementaryView.swift in Sources */,
 				D2929CA72DBEC574005CCC70 /* Tracker.xcdatamodeld in Sources */,
 				D2FB9CF92DCF68E500DFFAF4 /* CreatingCollectionViewController.swift in Sources */,

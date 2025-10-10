@@ -40,12 +40,12 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AnalyticsService.shared.logEvent(.open(screen: "CategorySelection"))
+        //AnalyticsService.shared.logEvent(.open(screen: "CategorySelection"))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        AnalyticsService.shared.logEvent(.close(screen: "CategorySelection"))
+        //AnalyticsService.shared.logEvent(.close(screen: "CategorySelection"))
     }
     
     // MARK: - Setup UI
@@ -151,13 +151,13 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     
     @objc
     func backTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "back"))
+        //AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "back"))
         navigationController?.popViewController(animated: true)
     }
     
     @objc
     func buttonAddtNewCollectionTapped() {
-        AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "add_category"))
+        //AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "add_category"))
         let creatingCollectionVC = CreatingCollectionViewController()
         creatingCollectionVC.delegate = self
         navigationController?.pushViewController(creatingCollectionVC, animated: true)
@@ -192,7 +192,7 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "category_\(indexPath.row)"))
+        //AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "category_\(indexPath.row)"))
         if selectedCategoryIndex == indexPath.row {
             selectedCategoryIndex = nil
             selectedCategoryTitle = nil
@@ -215,14 +215,14 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 
                 return UIMenu(children: [
                     UIAction(title: L10n.Edit.button) { _ in
-                        AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "edit"))
+                        //AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "edit"))
                         let editCollectionVC = EditCollectionViewController()
                         editCollectionVC.delegate = self
                         editCollectionVC.categoryToEdit = categoryToDelete
                         self.navigationController?.pushViewController(editCollectionVC, animated: true)
                     },
                     UIAction(title: L10n.Delete.button, attributes: .destructive) { _ in
-                        AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "delete"))
+                        //AnalyticsService.shared.logEvent(.click(screen: "CategorySelection", item: "delete"))
                         self.deselectSelectedRow()
                         self.showDeleteConfirmationAlert(for: categoryToDelete, at: indexPath)
                     }

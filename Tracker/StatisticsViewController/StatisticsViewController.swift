@@ -1,18 +1,28 @@
 import UIKit
 
+// MARK: - StatisticItem
+
+struct StatisticItem {
+    let value: Int
+    let title: String
+}
+
 // MARK: - StatisticsViewController
 
 final class StatisticsViewController: UIViewController {
     
     // MARK: - Properties
     
-    private lazy var descriptionLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private var descriptionLabel = UILabel()
+    private var imageView = UIImageView()
     
-    private var imageView: UIImageView!
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 12
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
     
     // MARK: - Lifecycle
     
@@ -23,23 +33,34 @@ final class StatisticsViewController: UIViewController {
         
         title = L10n.Title.statisticsScreen
         
-        setUpTracker()
+        setUpImageView()
+        
+        setUpStatisticsView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        loadStatistics()
+        
+        updatePlaceholderVisibility()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AnalyticsService.shared.logEvent(.open(screen: "Statistics"))
+        //AnalyticsService.shared.logEvent(.open(screen: "Statistics"))
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        AnalyticsService.shared.logEvent(.close(screen: "Statistics"))
+        //AnalyticsService.shared.logEvent(.close(screen: "Statistics"))
     }
     
     // MARK: - Setup UI
     
-    func setUpTracker() {
-        imageView = UIImageView()
+    func setUpImageView() {
         imageView.image = UIImage(named: "StaticticsSectionMainImage")
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +73,6 @@ final class StatisticsViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 80)
         ])
         
-        descriptionLabel = UILabel()
         descriptionLabel.text = L10n.Empty.statistics
         descriptionLabel.textAlignment = .center
         descriptionLabel.textColor = .dynamicTitleColor
@@ -65,6 +85,52 @@ final class StatisticsViewController: UIViewController {
             descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
+    }
+    
+    func setUpStatisticsView() {
+        view.addSubview(stackView)
         
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+        ])
+        
+        
+    }
+    
+    // MARK: - Helper Methods
+
+    func updatePlaceholderVisibility() {
+        let hasTrackers = !stackView.arrangedSubviews.isEmpty
+        imageView.isHidden = hasTrackers
+        descriptionLabel.isHidden = hasTrackers
+    }
+    
+    func loadStatistics() {
+        let recordStore = TrackerRecordStore()
+        
+        do {
+            let idealDays = try recordStore.idealDaysCount()
+            let bestPeriod = try recordStore.bestPeriod()
+            let average = try recordStore.averageCompletedPerDay()
+            let completedTotal = try recordStore.completedTrackersCount()
+            let completedToday = try recordStore.completedTrackersCount(for: Date())
+            
+            let items: [StatisticItem] = [
+                StatisticItem(value: bestPeriod, title: "Лучший период"),
+                StatisticItem(value: idealDays, title: "Идеальные дни"),
+                StatisticItem(value: completedToday, title: "Трекеров завершено"),
+                StatisticItem(value: average, title: "Среднее значение")
+            ]
+            
+            for item in items {
+                let card = StatisticCardView(value: item.value, title: item.title)
+                stackView.addArrangedSubview(card)
+            }
+            
+        } catch {
+            print("Ошибка статистики: \(error)")
+        }
     }
 }
