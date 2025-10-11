@@ -79,7 +79,7 @@ final class StatisticsViewController: UIViewController {
                 StatisticItem(value: bestPeriod, title: "Лучший период"),
                 StatisticItem(value: idealDays, title: "Идеальные дни"),
                 StatisticItem(value: completedToday, title: "Трекеров завершено сегодня"),
-                StatisticItem(value: completedTotal, title: "Трекеров завершено"),
+                StatisticItem(value: completedTotal, title: "Трекеров завершено всего"),
                 StatisticItem(value: average, title: "Среднее значение")
             ]
             
