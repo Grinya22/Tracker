@@ -1,6 +1,11 @@
 import UIKit
 
+// MARK: - ColorCollectionViewCell
+
 class ColorCollectionViewCell: UICollectionViewCell {
+    
+    // MARK: - Properties
+    
     static let reuseIdentifier = "ColorCell"
     
     var borderView: UIView = {
@@ -17,6 +22,8 @@ class ColorCollectionViewCell: UICollectionViewCell {
         view.layer.masksToBounds = true
         return view
     }()
+    
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)

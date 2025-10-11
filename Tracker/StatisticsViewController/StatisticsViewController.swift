@@ -1,6 +1,10 @@
 import UIKit
 
+// MARK: - StatisticsViewController
+
 final class StatisticsViewController: UIViewController {
+    
+    // MARK: - Properties
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -9,6 +13,8 @@ final class StatisticsViewController: UIViewController {
     }()
     
     private var imageView: UIImageView!
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +25,8 @@ final class StatisticsViewController: UIViewController {
         
         setUpTracker()
     }
+    
+    // MARK: - Setup UI
     
     func setUpTracker() {
         imageView = UIImageView()

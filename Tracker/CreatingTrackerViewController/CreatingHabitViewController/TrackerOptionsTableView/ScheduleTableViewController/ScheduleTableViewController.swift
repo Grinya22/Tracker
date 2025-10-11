@@ -1,28 +1,26 @@
 import UIKit
 
+// MARK: - ScheduleTableViewControllerDelegate
+
 protocol ScheduleTableViewControllerDelegate: AnyObject {
-    func didSelectDays(_ days: [String])
+    func didSelectDays(_ days: [WeekDay])
 }
 
+// MARK: - ScheduleTableViewController
+
 final class ScheduleTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
+    
     let days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
     var selectedDays: [Bool] = Array(repeating: false, count: 7)
-    
-    var selectedDaysAbbreviations: [String] = []
-    
-    let dayAbbreviations: [String: String] = [
-        "Понедельник": "Пн",
-        "Вторник": "Вт",
-        "Среда": "Ср",
-        "Четверг": "Чт",
-        "Пятница": "Пт",
-        "Суббота": "Сб",
-        "Воскресенье": "Вс"
-    ]
+    var selectedWeekDays: [WeekDay] = []
     
     weak var delegate: ScheduleTableViewControllerDelegate?
             
     private let tableView = UITableView()
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +29,12 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         
         setupNavigationBar()
         setUpScheduleTableViewController()
+        
+        
         loadDays()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -40,7 +42,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
             style: .plain,
             target: self,
             action: #selector(backTapped)
-        )
+        )  
         
         navigationItem.leftBarButtonItem?.tintColor = .ypBlack
         navigationItem.backBarButtonItem?.title = ""
@@ -56,6 +58,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorStyle = .singleLine
         tableView.tableHeaderView = UIView(frame: .zero)
+        tableView.isScrollEnabled = false 
         tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -85,31 +88,53 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         ])
     }
     
+    // MARK: - Actions
+    
     @objc
     func backTapped() {
         navigationController?.popViewController(animated: true)
     }
     
-    // MARK: - TableView Data Source
+    @objc
+    func doneButtonTapped() {
+        for i in 0..<days.count {
+            if selectedDays[i] {
+                let weekDay = WeekDay(rawValue: i + 1) // Индекс + 1 соответствует WeekDay (monday = 1, tuesday = 2, ...)
+                selectedWeekDays.append(weekDay!)
+            }
+        }
+        
+        print("Выбраны дни: \(selectedWeekDays)")
+        saveDays()
+        
+        delegate?.didSelectDays(selectedWeekDays)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - UITableViewDataSource
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
-    }
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.reuseIdentifier) as? ScheduleTableViewCell else { return UITableViewCell() }
+        
         cell.dayLabel.text = days[indexPath.row]
         cell.daySwitch.isOn = selectedDays[indexPath.row]
-
+        
         cell.selectionStyle = .none
-
+        
         cell.switchChanged = { [ weak self ] isOn in
             self?.selectedDays[indexPath.row] = isOn
         }
         return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -118,24 +143,8 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         }
     }
     
-    @objc
-    func doneButtonTapped() {
-        for i in 0..<days.count {
-            if selectedDays[i] {
-                let fullDay = days[i]
-                let shortDay = dayAbbreviations[fullDay]
-                selectedDaysAbbreviations.append(shortDay ?? "")
-            }
-        }
-        
-        print(selectedDaysAbbreviations)
-        saveDays()
-        delegate?.didSelectDays(selectedDaysAbbreviations)
-        
-        navigationController?.popViewController(animated: true)
-    }
+    // MARK: - Persistence
     
-    // MARK: - Сохранение и загрузка дней
     private func saveDays() {
         UserDefaults.standard.set(selectedDays, forKey: "savedDays")
     }

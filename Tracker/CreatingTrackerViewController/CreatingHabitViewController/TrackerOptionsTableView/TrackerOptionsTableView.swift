@@ -1,16 +1,25 @@
 import UIKit
 
+// MARK: - TrackerOptionsTableViewDelegate
+
 protocol TrackerOptionsTableViewDelegate: AnyObject {
     func didSelectOption(at index: Int)
 }
 
+// MARK: - TrackerOptionsTableView
+
 class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: - Properties
+    
     private let tableView = UITableView()
     private var itemsOfTableView: [String] = []
     private var categorySubtitle: String?
     private var scheduleSubtitle: String?
     
     weak var delegate: TrackerOptionsTableViewDelegate?
+    
+    // MARK: - Initialization
 
     init(itemsOfTableView: [String]) {
         self.itemsOfTableView = itemsOfTableView
@@ -21,6 +30,8 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup UI
     
     private func setupTableView() {
         tableView.dataSource = self
@@ -42,6 +53,8 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
             tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
+    
+    // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemsOfTableView.count
@@ -70,6 +83,8 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
         return cell
     }
     
+    // MARK: - UITableViewDelegate
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
@@ -86,6 +101,8 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didSelectOption(at: indexPath.row)
     }
+    
+    // MARK: - Helper Methods
     
     func deselectSelectedRow() {
         if let indexPath = tableView.indexPathForSelectedRow {

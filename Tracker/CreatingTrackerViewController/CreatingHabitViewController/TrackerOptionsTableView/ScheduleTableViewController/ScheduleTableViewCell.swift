@@ -1,12 +1,19 @@
 import UIKit
 
+// MARK: - ScheduleTableViewCell
+
 class ScheduleTableViewCell: UITableViewCell {
+    
+    // MARK: - Properties
+    
     static let reuseIdentifier = "ScheduleTableViewCell"
     
     let dayLabel = UILabel()
     let daySwitch = UISwitch()
     
     var switchChanged: ((Bool) -> Void)?
+    
+    // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,6 +39,8 @@ class ScheduleTableViewCell: UITableViewCell {
         
         daySwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
     }
+    
+    // MARK: - Actions
     
     @objc
     func switchValueChanged() {

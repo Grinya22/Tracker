@@ -1,6 +1,11 @@
 import UIKit
 
+// MARK: - CreatingIrregularEventViewController
+
 final class CreatingIrregularEventViewContoller: UIViewController, TrackerOptionsTableViewDelegate, CollectionTableViewControllerDelegate, EmojiSelectionDelegate, ColorSelectionDelegate {
+    
+    // MARK: - Properties
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.keyboardDismissMode = .interactive
@@ -27,6 +32,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     
     weak var delegate: TrackerCreationDelegate?
     
+    // MARK: - Initialization
+    
     init() {
         optionTableView = TrackerOptionsTableView(itemsOfTableView: ["Категория"])
         emojiCollectionView = EmojiCollectionView(frame: .zero)
@@ -37,6 +44,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +64,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         super.viewWillAppear(animated)
         optionTableView.deselectSelectedRow()
     }
+    
+    // MARK: - Setup UI
     
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -204,20 +215,12 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         createButton.addTarget(self, action: #selector(createTapped), for: .touchUpInside)
     }
     
+    // MARK: - Actions
+    
     @objc
     func textFieldDidChange() {
         trackerName = textField.text?.trimmingCharacters(in: .whitespaces)
         updateCreateButtonState()
-    }
-    
-    func updateCreateButtonState() {
-        let isFormValid = trackerName?.isEmpty == false &&
-                        selectedCategory != nil &&
-                        selectedColor != nil &&
-                        selectedEmoji != nil
-        let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
-        creatButton?.isEnabled = isFormValid
-        creatButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
     }
     
     @objc
@@ -251,7 +254,20 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - Helper Methods
+    
+    func updateCreateButtonState() {
+        let isFormValid = trackerName?.isEmpty == false &&
+                        selectedCategory != nil &&
+                        selectedColor != nil &&
+                        selectedEmoji != nil
+        let creatButton = contentView.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text == "Создать" }) as? UIButton
+        creatButton?.isEnabled = isFormValid
+        creatButton?.backgroundColor = isFormValid ? .ypBlack : .ypGray
+    }
+    
     // MARK: - TrackerOptionsTableViewDelegate
+    
     func didSelectOption(at index: Int) {
         switch index {
         case 0:
@@ -264,6 +280,7 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     }
     
     // MARK: - CollectionTableViewControllerDelegate
+    
     func didSelectOption(_ category: String?) {
         selectedCategory = category
         optionTableView.updateCategorySubtitle(selectedCategory)
@@ -271,12 +288,14 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
     }
     
     // MARK: - EmojiSelectionDelegate
+    
     func didSelectEmoji(_ emoji: String?) {
         selectedEmoji = emoji
         updateCreateButtonState()
     }
     
     // MARK: - ColorSelectionDelegate
+    
     func didSelectColor(_ color: UIColor?) {
         selectedColor = color
         updateCreateButtonState()
