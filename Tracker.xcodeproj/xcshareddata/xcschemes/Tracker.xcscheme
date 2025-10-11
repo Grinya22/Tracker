@@ -28,43 +28,12 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D2929CB12DBEC577005CCC70"
-               BuildableName = "TrackerTests.xctest"
-               BlueprintName = "TrackerTests"
-               ReferencedContainer = "container:Tracker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D2929CBB2DBEC577005CCC70"
-               BuildableName = "TrackerUITests.xctest"
-               BlueprintName = "TrackerUITests"
-               ReferencedContainer = "container:Tracker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D24FA3532E8AE23C00E63DB5"
-               BuildableName = "TrackerSnaphootsTests.xctest"
-               BlueprintName = "TrackerSnaphootsTests"
-               ReferencedContainer = "container:Tracker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = "ru"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"

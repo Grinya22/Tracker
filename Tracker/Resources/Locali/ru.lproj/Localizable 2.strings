@@ -1,0 +1,89 @@
+// MARK: - Main Screen
+
+"title.mainScreen" = "Трекеры";
+"trackers.category" = "%@";
+"trackers.search.title" = "Поиск";
+"empty.trackers" = "Что будем отслеживать?";
+"trackers.filter.today" = "Сегодня";
+"trackers.filter.all" = "Все трекеры";
+
+// MARK: - Creating Trackers Screen
+
+"title.creatingTrackerScreen" = "Создание трекера";
+"habit.button" = "Привычка";
+"irregularEvent.button" = "Нерегулярное событие";
+"searchBar.nameTracker" = "Введите название трекера";
+"category" = "Категория";
+"schedule" = "Расписание";
+"title.chooseEmoji" = "Emoji";
+"title.chooseColor" = "Цвет";
+"cancel.button" = "Отменить";
+"create.button" = "Создать";
+
+// MARK: - UINavigationBar Titles
+
+"new.habit.title" = "Новая привычка";
+"new.irregularEvent.title" = "Новое нерегулярное событие";
+
+// MARK: - Tracker Options Table View
+
+"edit.button" = "Редактировать";
+"delete.button" = "Удалить";
+"error" = "Ошибка";
+"error.warning.message" = "Вы уврены что хотите удалить категорию, к ней привязаны трекеры.";
+"error.message.categoryortracker" = "Не удалось удалить категорию или трекеры. Попробуйте снова.";
+"error.message.category" = "Не удалось удалить категорию или трекеры. Попробуйте снова.";
+"ok.button" = "OK";
+
+// MARK: - Category Screen
+
+"categories" = "%@";
+"addCategory.button" = "Добавить категорию";
+"empty.category" = "Привычки и события можно \n объединить по смыслу";
+
+// MARK: - Creating Category Screen
+
+"new.category.title" = "Новая категория";
+"searchBar.nameCategory" = "Введите название категории";
+"done.button" = "Готово";
+
+// MARK: - Schedule Table Screen
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+
+// MARK: - Short Schedule
+
+"short.monday" = "Пн";
+"short.tuesday" = "Вт";
+"short.wednesday" = "Ср";
+"short.thursday" = "Чт";
+"short.friday" = "Пт";
+"short.saturday" = "Сб";
+"short.sunday" = "Вс";
+"everyday" = "Каждый день";
+
+// MARK: - Onboarding Screen
+
+"onboarding.title.blue" = "Отслеживайте только \nто, что хотите";
+"onboarding.title.red" = "Даже если это \nне литры воды и йога";
+"onboarding.button" = "Вот это технологии!";
+
+// MARK: - Tab Bar
+
+"tabBar.trackers" = "Трекеры";
+"tabBar.statistics" = "Статистика";
+
+// MARK: - Statistics Screen
+
+"title.statisticsScreen" = "Статистика";
+"empty.statistics" = "Анализировать пока нечего";
+
+// MARK: - Day Count
+
+"day.count" = "%d день";

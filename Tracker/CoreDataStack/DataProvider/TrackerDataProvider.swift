@@ -83,7 +83,7 @@ final class TrackerDataProvider: NSObject {
                     let tracker = Tracker(
                         id: obj.id ?? UUID(),
                         name: obj.name ?? "",
-                        color: obj.color as? UIColor ?? .ypWhite,
+                        color: obj.color as? UIColor ?? .ypGray,
                         emoji: obj.emoji ?? "",
                         schedule: (obj.schedule as? [WeekDay]) ?? [],
                         creationDate: obj.creationDate ?? Date()
@@ -196,7 +196,7 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
         return Tracker(
             id: trackerObject.id ?? UUID(),
             name: trackerObject.name ?? "",
-            color: trackerObject.color as? UIColor ?? .ypWhite,
+            color: trackerObject.color as? UIColor ?? .ypGray,
             emoji: trackerObject.emoji ?? "",
             schedule: (trackerObject.schedule as? [WeekDay]) ?? [],
             creationDate: trackerObject.creationDate ?? Date()

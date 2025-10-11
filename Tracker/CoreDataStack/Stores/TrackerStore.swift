@@ -14,14 +14,7 @@ final class TrackerStore {
         object.name = tracker.name
         object.color = tracker.color
         object.emoji = tracker.emoji
-        do {
-            let encodedSchedule = try JSONEncoder().encode(tracker.schedule)
-            object.schedule = encodedSchedule as NSObject
-            print("Трекер \(object.id ?? UUID()) имеет такие данные в schedule: \(encodedSchedule.count) байт")
-        } catch {
-            print("Ошибка кодирования schedule для трекера \(object.id ?? UUID()): \(error.localizedDescription)")
-            object.schedule = Data() as NSObject
-        }
+        object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
         object.category = category
 
@@ -65,14 +58,7 @@ final class TrackerStore {
         object.name = tracker.name
         object.color = tracker.color
         object.emoji = tracker.emoji
-        do {
-            let encodedSchedule = try JSONEncoder().encode(tracker.schedule)
-            object.schedule = encodedSchedule as NSObject
-            print("Трекер \(object.id ?? UUID()) имеет такие данные в schedule: \(encodedSchedule.count) байт")
-        } catch {
-            print("Ошибка кодирования schedule для трекера \(object.id ?? UUID()): \(error.localizedDescription)")
-            object.schedule = Data() as NSObject
-        }
+        object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
         
         let catFetch = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
@@ -84,4 +70,33 @@ final class TrackerStore {
         }
         CoreDataStack.shared.saveContext()
     }
+    
+    func fetchAllTrackers() throws -> [Tracker] {
+        let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
+        
+        let trackers = try context.fetch(fetchRequest)
+        
+        return trackers.compactMap { tracker in
+            guard
+                let id = tracker.id,
+                let name = tracker.name,
+                let color = tracker.color as? UIColor,
+                let emoji = tracker.emoji,
+                let schedule = tracker.schedule as? [WeekDay],
+                let creationDate = tracker.creationDate
+            else {
+                return nil
+            }
+            
+            return Tracker(
+                id: id,
+                name: name,
+                color: color,
+                emoji: emoji,
+                schedule: schedule,
+                creationDate: creationDate
+            )
+        }
+    }
+
 }

@@ -162,7 +162,7 @@ final class TrackersViewController: UIViewController, UINavigationControllerDele
             descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        filterButton.setTitle("Фильтры", for: .normal)
+        filterButton.setTitle("Фильтрация", for: .normal)
         filterButton.setTitleColor(.ypWhite, for: .normal)
         filterButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         filterButton.backgroundColor = .ypBlueTracker

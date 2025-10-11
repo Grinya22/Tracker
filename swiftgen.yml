@@ -5,3 +5,4 @@ strings:
     - templateName: structured-swift5
       output: Tracker/Generated/Strings.swift
 
+

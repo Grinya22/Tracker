@@ -102,19 +102,17 @@ extension TrackerRecordStore {
     // Идеальные дни (дни, когда все запланированные трекеры завершены)
     // Предполагаем: "идеальный" = все трекеры на этот день завершены
     func idealDaysCount() throws -> Int {
+        var idealDays = 0
+        
         let allRecords = try fetchAllCompletedRecords()
         let groupedByDate = Dictionary(grouping: allRecords, by: { Calendar.current.startOfDay(for: $0.date) })
         
-        var idealDays = 0
-        
         for (date, records) in groupedByDate {
             let plannedTrackers = try fetchPlannedTrackers(for: date)
-            print("Дата: \(date), Завершено: \(records.count), Запланировано: \(plannedTrackers.count)") // Отладка
             if records.count == plannedTrackers.count {
                 idealDays += 1
             }
         }
-        print("Итоговое количество идеальных дней: \(idealDays)") // Отладка
         return idealDays
     }
     
@@ -123,29 +121,19 @@ extension TrackerRecordStore {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
         let adjustedWeekday = (weekday == 1 ? 7 : weekday - 1)  // 1 (вс) -> 7, 2 (пн) -> 1 и т.д.
-        print("Дата: \(date), Локальный день недели: \(weekday), Корректированный: \(adjustedWeekday)")
         
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         let trackers = try context.fetch(fetchRequest)
-        print("Всего трекеров в БД: \(trackers.count)")  // Проверяем, есть ли трекеры вообще
         
         let filteredTrackers = trackers.filter { tracker in
-            guard let scheduleData = tracker.schedule as? Data else {
-                print("Трекер \(tracker.id ?? UUID()): Нет данных в schedule (nil или не Data)")
+            guard let schedule = tracker.schedule as? [WeekDay] else {
                 return false
             }
+            let isPlanned = schedule.contains { $0.rawValue == adjustedWeekday }
             
-            do {
-                let schedule = try JSONDecoder().decode([WeekDay].self, from: scheduleData)
-                print("Трекер \(tracker.id ?? UUID()): Декодированный schedule: \(schedule.map { $0.rawValue })")
-                return schedule.contains { $0.rawValue == adjustedWeekday }
-            } catch {
-                print("Трекер \(tracker.id ?? UUID()): Ошибка декодирования schedule: \(error.localizedDescription)")
-                return false
-            }
+            return isPlanned
         }
         
-        print("Найдено запланированных трекеров: \(filteredTrackers.count)")
         return filteredTrackers
     }
     

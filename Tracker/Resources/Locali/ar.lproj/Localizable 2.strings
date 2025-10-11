@@ -1,0 +1,90 @@
+// MARK: - Main Screen
+
+"title.mainScreen" = "المتعقّبات";
+"trackers.category" = "%@";
+"trackers.search.title" = "بحث";
+"empty.trackers" = "ما الذي تريد تتبعه؟";
+"trackers.filter.today" = "اليوم";
+"trackers.filter.all" = "جميع المتعقّبات";
+
+// MARK: - Creating Trackers Screen
+
+"title.creatingTrackerScreen" = "إنشاء متعقّب";
+"habit.button" = "عادة";
+"irregularEvent.button" = "حدث غير منتظم";
+"searchBar.nameTracker" = "أدخل اسم المتعقّب";
+"category" = "الفئة";
+"schedule" = "الجدول الزمني";
+"title.chooseEmoji" = "رمز تعبيري";
+"title.chooseColor" = "اللون";
+"cancel.button" = "إلغاء";
+"create.button" = "إنشاء";
+
+// MARK: - UINavigationBar Titles
+
+"new.habit.title" = "عادة جديدة";
+"new.irregularEvent.title" = "حدث غير منتظم جديد";
+
+// MARK: - Tracker Options Table View
+
+"edit.button" = "تحرير";
+"delete.button" = "حذف";
+"error" = "خطأ";
+"error.warning.message" = "هل أنت متأكد من حذف هذه الفئة؟ هناك متعقّبات مرتبطة بها.";
+"error.message.categoryortracker" = "فشل في حذف الفئة أو المتعقّبات. حاول مرة أخرى.";
+"error.message.category" = "فشل في حذف الفئة أو المتعقّبات. حاول مرة أخرى.";
+"ok.button" = "موافق";
+
+// MARK: - Category Screen
+
+"categories" = "%@";
+"addCategory.button" = "إضافة فئة";
+"empty.category" = "يمكنك تصنيف العادات والأحداث حسب المعنى";
+
+// MARK: - Creating Category Screen
+
+"new.category.title" = "فئة جديدة";
+"searchBar.nameCategory" = "أدخل اسم الفئة";
+"done.button" = "تم";
+
+// MARK: - Schedule Table Screen
+
+"monday" = "الاثنين";
+"tuesday" = "الثلاثاء";
+"wednesday" = "الأربعاء";
+"thursday" = "الخميس";
+"friday" = "الجمعة";
+"saturday" = "السبت";
+"sunday" = "الأحد";
+
+// MARK: - Short Schedule
+
+"short.monday" = "اثن";
+"short.tuesday" = "ثلث";
+"short.wednesday" = "أرب";
+"short.thursday" = "خمي";
+"short.friday" = "جمع";
+"short.saturday" = "سبت";
+"short.sunday" = "أحد";
+"everyday" = "كل يوم";
+
+// MARK: - Onboarding Screen
+
+"onboarding.title.blue" = "تابع فقط ما تريد متابعته";
+"onboarding.title.red" = "حتى وإن لم تكن لترات ماء أو يوغا";
+"onboarding.button" = "يا لها من تقنية!";
+
+// MARK: - Tab Bar
+
+"tabBar.trackers" = "المتعقّبات";
+"tabBar.statistics" = "الإحصائيات";
+
+// MARK: - Statistics Screen
+
+"title.statisticsScreen" = "الإحصائيات";
+"empty.statistics" = "لا يوجد شيء لتحليله بعد";
+
+// MARK: - Day Count
+
+"day.count" = "%d يوم";
+
