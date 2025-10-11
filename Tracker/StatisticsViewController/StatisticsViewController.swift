@@ -12,10 +12,6 @@ struct StatisticItem {
 final class StatisticsViewController: UIViewController {
     
     // MARK: - Properties
-    
-    private var descriptionLabel = UILabel()
-    private var imageView = UIImageView()
-    
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -33,8 +29,6 @@ final class StatisticsViewController: UIViewController {
         
         title = L10n.Title.statisticsScreen
         
-        setUpImageView()
-        
         setUpStatisticsView()
     }
     
@@ -44,8 +38,6 @@ final class StatisticsViewController: UIViewController {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         loadStatistics()
-        
-        updatePlaceholderVisibility()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -59,34 +51,6 @@ final class StatisticsViewController: UIViewController {
     }
     
     // MARK: - Setup UI
-    
-    func setUpImageView() {
-        imageView.image = UIImage(named: "StaticticsSectionMainImage")
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        
-        NSLayoutConstraint.activate([
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 80),
-            imageView.heightAnchor.constraint(equalToConstant: 80)
-        ])
-        
-        descriptionLabel.text = L10n.Empty.statistics
-        descriptionLabel.textAlignment = .center
-        descriptionLabel.textColor = .dynamicTitleColor
-        descriptionLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(descriptionLabel)
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-    }
-    
     func setUpStatisticsView() {
         view.addSubview(stackView)
         
@@ -100,12 +64,6 @@ final class StatisticsViewController: UIViewController {
     }
     
     // MARK: - Helper Methods
-
-    func updatePlaceholderVisibility() {
-        let hasTrackers = !stackView.arrangedSubviews.isEmpty
-        imageView.isHidden = hasTrackers
-        descriptionLabel.isHidden = hasTrackers
-    }
     
     func loadStatistics() {
         let recordStore = TrackerRecordStore()
@@ -120,7 +78,8 @@ final class StatisticsViewController: UIViewController {
             let items: [StatisticItem] = [
                 StatisticItem(value: bestPeriod, title: "Лучший период"),
                 StatisticItem(value: idealDays, title: "Идеальные дни"),
-                StatisticItem(value: completedToday, title: "Трекеров завершено"),
+                StatisticItem(value: completedToday, title: "Трекеров завершено сегодня"),
+                StatisticItem(value: completedTotal, title: "Трекеров завершено"),
                 StatisticItem(value: average, title: "Среднее значение")
             ]
             

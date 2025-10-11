@@ -264,13 +264,10 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     private func showDeleteConfirmationAlert(for category: TrackerCategoryCoreData, at indexPath: IndexPath) {
-        // Проверяем валидность индекса.
         guard indexPath.row < categories.count else {
             print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
             return
         }
-        // Зачем: Чтобы избежать ошибок при работе с массивом.
-        // Почему так: Индекс может быть неверным из-за асинхронных изменений.
         
         let alert = UIAlertController(
             title: nil,
@@ -286,7 +283,6 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 return
             }
             
-            // Проверяем, есть ли трекеры.
             if let trackers = category.trackers as? Set<TrackerCoreData>, !trackers.isEmpty {
                 self.showDeleteConfirmationAlertOfAlert(category: category, at: indexPath)
                 return
@@ -305,13 +301,10 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     private func showDeleteConfirmationAlertOfAlert(category: TrackerCategoryCoreData, at indexPath: IndexPath) {
-        // Проверяем валидность индекса.
         guard indexPath.row < categories.count else {
             print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
             return
         }
-        // Зачем: Для безопасности при работе с массивом.
-        // Почему так: Защищает от ошибок при быстрых изменениях.
         
         if let trackers = category.trackers as? Set<TrackerCoreData>, !trackers.isEmpty {
             let alert = UIAlertController(
@@ -330,12 +323,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
                 
                 do {
                     let trackerStore = TrackerStore()
-                    // Удаляем трекеры.
                     try trackerStore.deleteTrackers(for: category)
-                    // Удаляем категорию.
                     self.performDelete(category: category, at: indexPath)
-                    // Зачем: Реализует вторую алерту для удаления категории с трекерами.
-                    // Почему так: Это твоя исходная логика, сохранена без изменений.
                 } catch {
                     print("Ошибка при удалении трекеров или категории: \(error)")
                     let errorAlert = UIAlertController(
@@ -359,36 +348,25 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     }
     
     private func performDelete(category: TrackerCategoryCoreData, at indexPath: IndexPath) {
-        // Проверяем валидность индекса.
         guard indexPath.row < categories.count else {
             print("Ошибка: индекс \(indexPath.row) вне границ массива categories")
             return
         }
-        // Зачем: Для защиты от ошибок при удалении.
-        // Почему так: Массив может измениться асинхронно.
-        
         do {
-            // Если удаляемая категория была выбрана, сбрасываем выбор
             if selectedCategoryIndex == indexPath.row {
                 selectedCategoryIndex = nil
                 delegate?.didSelectOption(nil)
             }
             
-            // Удаляем категорию через TrackerCategoryStore.
             try categoryStore.deleteCategory(category)
             
-            // Удаляем из локального массива.
             categories.remove(at: indexPath.row)
             
-            // Обновляем таблицу.
             tableView.performBatchUpdates({
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }, completion: { [weak self] _ in
                 self?.updatePlaceholderVisibility()
             })
-            // Зачем: Удаляет категорию и обновляет UI.
-            // Почему так: Это твоя исходная логика с добавленной проверкой.
-            
         } catch {
             print("Ошибка при удалении категории: \(error)")
             let alert = UIAlertController(
@@ -408,9 +386,8 @@ final class CollectionTableViewController: UIViewController, CreatingCollectionD
     func didCreateNewCategory(_ name: String) {
         do {
             try categoryStore.addCategory(name)
-            loadCategories() // Перезагружаем категории
+            loadCategories()
             
-            // Устанавливаем selectedCategoryIndex для новой категории
             if let newIndex = categories.firstIndex(where: { $0.title == name }) {
                 selectedCategoryIndex = newIndex
                 delegate?.didSelectOption(name)

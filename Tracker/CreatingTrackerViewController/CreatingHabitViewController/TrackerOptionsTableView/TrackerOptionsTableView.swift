@@ -66,7 +66,7 @@ class TrackerOptionsTableView: UIView, UITableViewDataSource, UITableViewDelegat
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.textColor = .dynamicTitleColor
         cell.backgroundColor = .clear
-        cell.accessoryType = .disclosureIndicator // Стрелка вправо
+        cell.accessoryType = .disclosureIndicator
         
         if indexPath.row == 0 {
             cell.detailTextLabel?.text = categorySubtitle

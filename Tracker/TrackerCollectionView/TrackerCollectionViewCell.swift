@@ -57,7 +57,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         topView.backgroundColor = nil
         plusButton.backgroundColor = nil
         plusButton.setImage(nil, for: .normal)
-        plusButton.transform = .identity  // Важно: сброс анимации
+        plusButton.transform = .identity
         
         // Сброс локальных переменных
         isCompletedPlusButton = false
@@ -171,21 +171,6 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.backgroundColor = color
         }
     }
-    
-    // MARK: - Helper Methods
-//
-//    private func pluralForm(for count: Int) -> String {
-//        let remainder10 = count % 10
-//        let remainder100 = count % 100
-//        if remainder100 >= 11 && remainder100 <= 14 {
-//            return "дней"
-//        }
-//        switch remainder10 {
-//        case 1: return "день"
-//        case 2...4: return "дня"
-//        default: return "дней"
-//        }
-//    }
     
     // MARK: - Actions
     

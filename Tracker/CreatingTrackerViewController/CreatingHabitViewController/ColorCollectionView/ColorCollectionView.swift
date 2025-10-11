@@ -113,7 +113,6 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //AnalyticsService.shared.logEvent(.click(screen: "ColorSelection", item: "color_\(indexPath.row)"))
-        // Если уже была выбрана — сбросить и выйти
         if selectedIndexPath == indexPath {
             collectionView.deselectItem(at: indexPath, animated: false)
             if let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell {
@@ -127,7 +126,6 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
             return
         }
 
-        // Сброс предыдущего выбора
         if let previous = selectedIndexPath,
            let previousCell = collectionView.cellForItem(at: previous) as? ColorCollectionViewCell {
             UIView.animate(withDuration: 0.2) {
@@ -137,7 +135,6 @@ class ColorCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
             collectionView.deselectItem(at: previous, animated: false)
         }
 
-        // Установка нового выбора
         if let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell {
             UIView.animate(withDuration: 0.2) {
                 cell.borderView.layer.borderWidth = 3

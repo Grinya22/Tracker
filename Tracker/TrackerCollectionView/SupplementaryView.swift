@@ -1,5 +1,4 @@
 import UIKit
-//Домашний уют
 
 // MARK: - SupplementaryView
 

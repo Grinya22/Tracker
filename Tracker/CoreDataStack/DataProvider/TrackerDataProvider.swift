@@ -156,7 +156,6 @@ final class TrackerDataProvider: NSObject {
             let allTrackers = try context.fetch(fetchRequest)
             let expiredIrregularTracker = allTrackers.filter { ($0.schedule as? [WeekDay])?.isEmpty ?? true }
             
-            // Удаляем без сбора индексов — просто удаляем
             for tracker in expiredIrregularTracker {
                 try trackerStore.deleteTracker(tracker)
             }
@@ -208,8 +207,6 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
     }
     
     func addTracker(_ tracker: Tracker, to categoryTitle: String) throws {
-        // Добавляет трекер и связывает его с категорией, проверяя, существует ли категория, или создавая новую
-        // Ищем категорию по названию.
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         fetchRequest.predicate = NSPredicate(format: "title == %@", categoryTitle)
         let categories = try context.fetch(fetchRequest)
@@ -218,22 +215,15 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
         if let existingCategory = categories.first {
             category = existingCategory
         } else {
-            // Создаём новую категорию, если не нашли.
             category = try categoryStore.addCategory(categoryTitle)
         }
 
-        // Добавляем трекер и связываем с категорией.
         try trackerStore.addTracker(tracker, to: category)
-
-        // Сохраняем изменения.
-        // Зачем: Чтобы трекер появился в Core Data и таблице.
-        // Почему так: Используем обновлённый addTracker, чтобы корректно установить связь.
 
         CoreDataStack.shared.saveContext()
     }
     
     func deleteTracker(at indexPath: IndexPath) throws {
-        // Извлекает трекер из категории по indexPath и удаляет его
         guard indexPath.section < fetchedResultsController.sections?.count ?? 0,
               let sectionInfo = fetchedResultsController.sections?[indexPath.section],
               let category = sectionInfo.objects?.first as? TrackerCategoryCoreData,
@@ -243,9 +233,6 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
         }
         
         let tracker = trackers[indexPath.row]
-        // Удаляем трекер.
-        // Зачем: Для удаления трекера из категории.
-        // Почему так: Проверки предотвращают попытку удаления несуществующего трекера.
         try trackerStore.deleteTracker(tracker)
     }
 }
@@ -253,26 +240,14 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
-    /* 1:   Метод controllerWillChangeContent срабатывает перед тем, как
-            изменится состояние объектов, которые добавляются или удаляются.
-            В нём мы инициализируем переменные, которые содержат индексы
-            изменённых объектов. */
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        // Очищаем массивы перед обработкой изменений.
-        // Зачем: Чтобы начать сбор новых изменений с чистого листа.
-        // Почему так: Предотвращает накопление старых данных.
         insertedIndexes = []
         deletedIndexes = []
         insertedSections = []
         deletedSections = []
     }
     
-    /* 2:   Метод controllerDidChangeContent срабатывает после
-            добавления или удаления объектов. В нём мы передаём индексы
-            изменённых объектов в класс MainViewController и очищаем до следующего изменения
-            переменные, которые содержат индексы. */
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        // Уведомляем делегата об изменениях.
         delegate?.didUpdate(TrackerStoreUpdate(
             insertedIndexes: insertedIndexes,
             deletedIndexes: deletedIndexes,
@@ -290,7 +265,6 @@ extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
         atSectionIndex sectionIndex: Int,
         for type: NSFetchedResultsChangeType
     ) {
-        // Обрабатываем вставку или удаление секций.
         switch type {
         case .insert:
             insertedSections.insert(sectionIndex)
@@ -299,8 +273,6 @@ extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
         default:
             break
         }
-        // Зачем: Чтобы таблица обновляла секции при добавлении/удалении категорий.
-        // Почему так: NSFetchedResultsController сообщает об изменениях секций.
     }
     
     func controller(
@@ -310,7 +282,6 @@ extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?
     ) {
-        
         switch type {
         case .insert:
             if let newIndexPath = newIndexPath {
@@ -333,8 +304,5 @@ extension TrackerDataProvider: NSFetchedResultsControllerDelegate {
         @unknown default:
             break
         }
-        
-        // Зачем: Чтобы таблица обновляла строки при добавлении/удалении трекеров.
-        // Почему так: NSFetchedResultsController сообщает об изменениях объектов.
     }
 }

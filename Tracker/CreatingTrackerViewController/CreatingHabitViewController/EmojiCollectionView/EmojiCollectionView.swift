@@ -2,7 +2,6 @@ import UIKit
 
 // MARK: - EmojiSelectionDelegate
 
-// Протокол для уведомления о выборе эмодзи
 protocol EmojiSelectionDelegate: AnyObject {
     func didSelectEmoji(_ emoji: String?)
 }
@@ -106,7 +105,6 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //AnalyticsService.shared.logEvent(.click(screen: "EmojiSelection", item: "emoji_\(indexPath.row)"))
-        // Если уже была выбрана — сбросить и выйти
         if selectedIndexPath == indexPath {
             collectionView.deselectItem(at: indexPath, animated: false)
             if let cell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell {
@@ -119,7 +117,6 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
             return
         }
 
-        // Сброс предыдущего выбора
         if let previous = selectedIndexPath,
            let previousCell = collectionView.cellForItem(at: previous) as? EmojiCollectionViewCell {
             UIView.animate(withDuration: 0.2) {
@@ -128,7 +125,6 @@ class EmojiCollectionView: UIView, UICollectionViewDataSource, UICollectionViewD
             collectionView.deselectItem(at: previous, animated: false)
         }
 
-        // Установка нового выбора
         if let cell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell {
             UIView.animate(withDuration: 0.2) {
                 cell.contentView.backgroundColor = .dynamicSelectItemAtEmojiCollectionColor

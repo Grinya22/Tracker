@@ -278,25 +278,15 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
         )
         
         do {
-            // Уведомляем делегата.
             delegate?.didCreateTracker(tracker, categoryTitle: categoryTitle)
-            // Зачем: Чтобы TrackersViewController обновил UI.
-            // Почему так: Это часть твоей архитектуры.
             
-            // Переключаемся на TrackersViewController.
             if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? AppTabBarController {
                 tabBarController.selectedIndex = 0
             }
-            // Зачем: Для перехода на главный экран.
-            // Почему так: Это твоя логика навигации.
             
-            // Очищаем UserDefaults.
             UserDefaults.standard.removeObject(forKey: "savedDays")
             UserDefaults.standard.synchronize()
-            // Зачем: Чтобы сбросить временные данные.
-            // Почему так: Это часть твоего кода.
             
-            // Закрываем контроллер.
             dismiss(animated: true, completion: nil)
         } catch {
             print("Ошибка при создании трекера: \(error)")

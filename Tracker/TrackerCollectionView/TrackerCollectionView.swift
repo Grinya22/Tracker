@@ -12,9 +12,9 @@ final class TrackerCollectionView: UIView {
     
     func setUpCollectionView() {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 8 // Отступ между ячейками в строке
-        layout.minimumLineSpacing = 0 // Отступ между строками
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) // Отступы по краям
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 49, right: 0)
         collectionView.scrollIndicatorInsets = collectionView.contentInset
         collectionView.isScrollEnabled = true

@@ -133,7 +133,7 @@ final class ScheduleTableViewController: UIViewController, UITableViewDataSource
         
         for i in 0..<days.count {
             if selectedDays[i] {
-                let weekDay = WeekDay(rawValue: i + 1) // Индекс + 1 соответствует WeekDay (monday = 1, tuesday = 2, ...)
+                let weekDay = WeekDay(rawValue: i + 1) 
                 selectedWeekDays.append(weekDay!)
             }
         }

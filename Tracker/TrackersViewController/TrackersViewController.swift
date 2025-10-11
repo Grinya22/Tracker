@@ -282,8 +282,8 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     // MARK: Delegate Flow Layout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let availableWidth = collectionView.bounds.width // Уже учли отступы в TrackerCollectionView (16 + 16)
-        let widthPerItem = (availableWidth - 16) / 2 // 16 — это interitemSpacing между двумя ячейками (в макете 8)
+        let availableWidth = collectionView.bounds.width
+        let widthPerItem = (availableWidth - 16) / 2
         return CGSize(width: widthPerItem, height: 148)
     }
     
@@ -324,10 +324,8 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
         guard shouldFilterByDate else { return categories }
         
         let date = datePicker.date
-        let weekday = Calendar.current.component(.weekday, from: date) // 1 = Воскресенье, 2 = Понедельник, ...
-        // Преобразуем календарный weekday в WeekDay (monday = 1, tuesday = 2, ..., sunday = 7)
-        let adjustedWeekday = weekday == 1 ? 7 : weekday - 1 // Воскресенье (1) -> 7, Понедельник (2) -> 1, и т.д.
-        // условие ? значениеЕслиУсловиеИстинно : значениеЕслиУсловиеЛожно
+        let weekday = Calendar.current.component(.weekday, from: date)
+        let adjustedWeekday = weekday == 1 ? 7 : weekday - 1 
         let currentWeekDay = WeekDay(rawValue: adjustedWeekday)
         
         return categories.map { category -> TrackerCategory in

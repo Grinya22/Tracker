@@ -40,7 +40,6 @@ final class CreatingTrackerViewController: UIViewController {
         view.addSubview(habitButton)
         
         NSLayoutConstraint.activate([
-            //habitButton.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 295),
             habitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             habitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             habitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
