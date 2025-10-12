@@ -273,7 +273,8 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
             isCompletedToday: isCompletedToday,
             date: date,
             color: tracker.color,
-            trackerID: tracker.id
+            trackerID: tracker.id,
+            isPinned: tracker.isPinned
         )
         
         return cell
@@ -307,18 +308,28 @@ extension TrackersViewController: UICollectionViewDataSource, UICollectionViewDe
     func filteredCategories() -> [TrackerCategory] {
         guard let dataProvider = dataProviderProtocol else { return [] }
         var categories: [TrackerCategory] = []
+        var pinnedTrackers: [Tracker] = []
         
         for section in 0..<dataProvider.numberOfSections {
             guard let title = dataProvider.categoryTitle(forSection: section) else { continue }
             var trackers: [Tracker] = []
             for item in 0..<dataProvider.numberOfRowsInSection(section) {
                 if let tracker = dataProvider.object(at: IndexPath(item: item, section: section)) {
-                    trackers.append(tracker)
+                    if tracker.isPinned == true {
+                        pinnedTrackers.append(tracker)
+                    } else {
+                        trackers.append(tracker)
+                    }
                 }
             }
             if !trackers.isEmpty {
                 categories.append(TrackerCategory(title: title, trackers: trackers))
             }
+        }
+        
+        if !pinnedTrackers.isEmpty {
+            let pinnedCategory = TrackerCategory(title: "Закреплённые", trackers: pinnedTrackers)
+            categories.insert(pinnedCategory, at: 0)
         }
         
         guard shouldFilterByDate else { return categories }
@@ -400,7 +411,16 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     }
     
     func didTapPinButton(trackerId: UUID) {
-        // TODO: Реализовать функционал закрепления трекера
+        do {
+            guard let tracker = try trackerStore.fetchTracker(by: trackerId) else { return }
+            
+            tracker.isPinned.toggle()
+            CoreDataStack.shared.saveContext()
+            
+            trackerView.collectionView.reloadData()
+        } catch {
+            print("Ошибка при изменении закрепления трекера: \(error)")
+        }
     }
     
     func didTapEditButton(trackerId: UUID) {

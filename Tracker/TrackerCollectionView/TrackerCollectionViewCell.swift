@@ -25,12 +25,15 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     private let plusButton = UIButton(type: .custom)
     
     private var isCompletedPlusButton = false
+    private var isPinnedMark = UIImageView()
     private var completedDays = 0
     private var currentDate: Date = Date()
     private var color: UIColor = .ypWhite
     private var trackerID: UUID = UUID()
     
     weak var delegate: TrackerCollectionViewCellDelegate?
+    
+    private var isPinned = false
     
     // MARK: - Initialization
     
@@ -65,6 +68,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         currentDate = Date()
         color = .ypWhite
         trackerID = UUID()
+        isPinned = false
     }
     
     // MARK: - Setup UI
@@ -83,6 +87,11 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.font = .systemFont(ofSize: 14)
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         topView.addSubview(emojiLabel)
+        
+        isPinnedMark.image = UIImage(named: "PinMark")
+        isPinnedMark.contentMode = .scaleAspectFill
+        isPinnedMark.translatesAutoresizingMaskIntoConstraints = false
+        topView.addSubview(isPinnedMark)
         
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
         titleLabel.numberOfLines = 2
@@ -124,6 +133,9 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             emojiLabel.centerYAnchor.constraint(equalTo: circleViewEmoji.centerYAnchor),
             emojiLabel.centerXAnchor.constraint(equalTo: circleViewEmoji.centerXAnchor),
             
+            isPinnedMark.centerYAnchor.constraint(equalTo: circleViewEmoji.centerYAnchor),
+            isPinnedMark.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -4),
+            
             titleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 12),
             titleLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -12),
             titleLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -12),
@@ -147,7 +159,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Configuration
     
-    func configure(emoji: String, title: String, completedDays: Int, isCompletedToday: Bool, date: Date, color: UIColor, trackerID: UUID) {
+    func configure(emoji: String, title: String, completedDays: Int, isCompletedToday: Bool, date: Date, color: UIColor, trackerID: UUID, isPinned: Bool) {
         emojiLabel.text = emoji
         titleLabel.text = title
         dayCountLabel.text = L10n.Day.count(completedDays)
@@ -157,6 +169,7 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         self.currentDate = date
         self.color = color
         self.trackerID = trackerID
+        self.isPinned = isPinned
         
         topView.backgroundColor = color
         plusButton.backgroundColor = color
@@ -170,6 +183,8 @@ class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.setImage(plusImage, for: .normal)
             plusButton.backgroundColor = color
         }
+        
+        updatePinVisibility()
     }
     
     // MARK: - Actions
@@ -196,6 +211,12 @@ class TrackerCollectionViewCell: UICollectionViewCell {
         
         delegate?.didTapTrackerPlusButton(trackerId: trackerID, date: currentDate, isCompleted: isCompletedPlusButton)
     }
+    
+    // MARK: Helper Methods
+
+    func updatePinVisibility() {
+        isPinnedMark.isHidden = !isPinned
+    }
 }
 
 extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
@@ -209,8 +230,9 @@ extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
             identifier: nil,
             previewProvider: nil
         ) { _ in
-            let pinAction = UIAction(title: "Закрепить") { [weak self] _ in
-                //AnalyticsService.shared.logEvent(.click(screen: "TrackerCell", item: "pin"))
+            let pinTitle = self.isPinned ? "Открепить" : "Закрепить"
+
+            let pinAction = UIAction(title: pinTitle) { [weak self] _ in
                 guard let self = self else { return }
                 self.delegate?.didTapPinButton(trackerId: self.trackerID)
             }

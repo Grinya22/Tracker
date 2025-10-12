@@ -86,7 +86,8 @@ final class TrackerDataProvider: NSObject {
                         color: obj.color as? UIColor ?? .ypGray,
                         emoji: obj.emoji ?? "",
                         schedule: (obj.schedule as? [WeekDay]) ?? [],
-                        creationDate: obj.creationDate ?? Date()
+                        creationDate: obj.creationDate ?? Date(),
+                        isPinned: obj.isPinned
                     )
                     
                     let categoryTitle = obj.category?.title ?? "Без категории"
@@ -198,7 +199,8 @@ extension TrackerDataProvider: TrackerDataProviderProtocol {
             color: trackerObject.color as? UIColor ?? .ypGray,
             emoji: trackerObject.emoji ?? "",
             schedule: (trackerObject.schedule as? [WeekDay]) ?? [],
-            creationDate: trackerObject.creationDate ?? Date()
+            creationDate: trackerObject.creationDate ?? Date(),
+            isPinned: trackerObject.isPinned
         )
     }
     

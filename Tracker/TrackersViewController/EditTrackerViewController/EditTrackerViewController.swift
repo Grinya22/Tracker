@@ -293,7 +293,8 @@ final class EditTrackerViewController: UIViewController, TrackerOptionsTableView
             color: color,
             emoji: emoji,
             schedule: selectedDays,
-            creationDate: tracker.creationDate
+            creationDate: tracker.creationDate,
+            isPinned: tracker.isPinned
         )
         
         do {

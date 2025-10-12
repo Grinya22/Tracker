@@ -274,7 +274,8 @@ final class CreatingHabitViewController: UIViewController, TrackerOptionsTableVi
             color: color,
             emoji: emoji,
             schedule: selectedDays,
-            creationDate: Date()
+            creationDate: Date(),
+            isPinned: false
         )
         
         do {

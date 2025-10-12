@@ -16,6 +16,7 @@ final class TrackerStore {
         object.emoji = tracker.emoji
         object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
+        object.isPinned = tracker.isPinned
         object.category = category
 
         CoreDataStack.shared.saveContext()
@@ -60,6 +61,7 @@ final class TrackerStore {
         object.emoji = tracker.emoji
         object.schedule = tracker.schedule as NSObject
         object.creationDate = tracker.creationDate
+        object.isPinned = tracker.isPinned
         
         let catFetch = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         catFetch.fetchLimit = 1
@@ -94,7 +96,8 @@ final class TrackerStore {
                 color: color,
                 emoji: emoji,
                 schedule: schedule,
-                creationDate: creationDate
+                creationDate: creationDate,
+                isPinned: tracker.isPinned
             )
         }
     }

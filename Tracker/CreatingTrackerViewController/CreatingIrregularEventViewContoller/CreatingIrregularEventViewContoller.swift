@@ -263,7 +263,8 @@ final class CreatingIrregularEventViewContoller: UIViewController, TrackerOption
                               color: color,
                               emoji: emoji,
                               schedule: [],
-                              creationDate: Date()
+                              creationDate: Date(),
+                              isPinned: false
         )
         
         delegate?.didCreateTracker(tracker, categoryTitle: category)
